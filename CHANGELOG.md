@@ -2,6 +2,28 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.7-dev - User CRUD with Password Hashing
+
+### Added
+
+- Added spring-boot-starter-security dependency for password hashing and security infrastructure.
+- Added PasswordHashingService using BCrypt with strength 12 for password hashing and verification.
+- Added SecurityConfig with disabled CSRF and stateless session management (JWT preparation).
+- Enhanced UserService with create(), update(), and updatePassword() methods with password hashing.
+- Added UserController with REST endpoints (GET, POST, PATCH users, PATCH password, DELETE).
+- Added UpdatePasswordRequest and UpdateUserRequest DTOs.
+- Added structured logging for user creation, updates, password changes, and deletion.
+- Username and email uniqueness validation on create and update operations.
+
+### Notes
+
+- `v1.0.7-dev` starts the v1.2.0-dev milestone (Auth and Users).
+- BCrypt strength set to 12 for balance between security and performance.
+- SecurityConfig currently permits all requests (authentication enforcement in v1.0.10-dev).
+- PATCH /api/users/{id} supports partial updates (only provided fields updated).
+- PATCH /api/users/{id}/password allows password changes without exposing hash.
+- User updates track before/after values for username, email, and role.
+
 ## v1.0.6-dev - API Error Model and Request Correlation
 
 ### Added
