@@ -2,6 +2,18 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.9.0 - Runtime Delivery
+
+### Added
+
+- Added runtime delivery documentation for WebSocket, SSE, polling fallback, dashboard blocks, operator paths, and failure rules.
+- Documented that runtime transport failures never activate ECHO automatically.
+
+### Notes
+
+- `v0.9.0` closes the runtime delivery milestone.
+- The next milestone is `v0.10.0`, focused on hardening and final quality checks.
+
 ## v0.8.0 - CLI Contract
 
 ### Added

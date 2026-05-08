@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.8.0`
+**Current version:** `v0.9.0`
 
 ---
 
@@ -413,7 +413,7 @@
 
 **Target version:** `v0.9.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Wire the user-facing runtime surfaces that make the system observable and usable day to day.
@@ -436,15 +436,17 @@
 - `v0.9.3` heartbeat and learning-loop polish
 
 **Exit criteria**
-- Runtime feedback is visible to operators.
-- Logging, heartbeat, and UI behavior are consistent.
-- The dashboard has a defined theming contract.
+- Runtime feedback is visible to operators. Complete.
+- Logging, heartbeat, and UI behavior are consistent. Complete.
+- The dashboard has a defined theming contract. Complete.
 
 ---
 
 ## 13. Phase 10 - Hardening
 
 **Target version:** `v0.10.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Validate the whole system against the quality rules before release candidate work is considered done.
