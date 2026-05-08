@@ -13,7 +13,7 @@
 
     <groupId>dev.synapse</groupId>
     <artifactId>synapse-core</artifactId>
-    <version>1.0.8-dev</version>
+    <version>1.0.9-dev</version>
     <name>synapse-core</name>
     <description>SYNAPSE Spring Boot backend</description>
 
@@ -46,6 +46,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>1.78.1</version>
         </dependency>
         <dependency>
             <groupId>io.jsonwebtoken</groupId>

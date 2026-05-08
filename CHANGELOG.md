@@ -2,6 +2,24 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.9-dev - Switch to Argon2 Password Hashing
+
+### Changed
+
+- Replaced BCrypt with Argon2id for password hashing (more secure and modern).
+- Added Bouncy Castle dependency (bcprov-jdk18on) for Argon2 implementation.
+- Updated PasswordHashingService to use Argon2id with 64MB memory, 3 iterations, parallelism=1.
+- Hash format: $argon2id$v=19$m=65536,t=3,p=1$[salt]$[hash] (PHC string format).
+- Constant-time comparison for hash verification to prevent timing attacks.
+
+### Notes
+
+- `v1.0.9-dev` continues the v1.2.0-dev milestone (Auth and Users).
+- Argon2id chosen for resistance to both GPU cracking and side-channel attacks.
+- 64MB memory requirement makes brute-force attacks computationally expensive.
+- Existing BCrypt hashes from v1.0.7-dev incompatible (users must reset passwords).
+- Salt is 16 bytes, hash output is 32 bytes.
+
 ## v1.0.8-dev - JWT Infrastructure
 
 ### Added
