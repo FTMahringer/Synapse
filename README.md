@@ -24,7 +24,7 @@
 
 ### Prerequisites
 
-- Docker & Docker Compose (recommended) **or** a local JDK 25+, Node 22+, Go 1.24+, PostgreSQL 18+, and Redis
+- Docker & Docker Compose (recommended) **or** a local JDK 25+, Maven 3.9+, Node 22+, Go 1.24+, PostgreSQL 18+, and Redis
 - A supported OS: Linux, macOS, or Windows (WSL2 recommended for CLI)
 
 ### One-Line Installer
@@ -58,13 +58,13 @@ docker compose up -d
 
 # Or start each service individually for development:
 # Backend
-cd backend && ./mvnw spring-boot:run
+cd packages/core && mvn spring-boot:run
 
 # Frontend
-cd frontend && npm install && npm run dev
+cd packages/dashboard/frontend && npm install && npm run dev
 
 # CLI
-cd cli && go run . connect --host localhost:8080
+cd packages/cli && go run . connect --host localhost:8080
 ```
 
 The web dashboard is available at `http://localhost:3000` by default.
@@ -125,9 +125,10 @@ Plugins extend {SYSTEM_NAME} in four categories:
 
 ```
 synapse/
-├── backend/          # Spring Boot 4.x application (Java 25+)
-├── frontend/         # Vue 3 + Vite web dashboard
-├── cli/              # Go CLI with Bubble Tea TUI
+├── packages/core/    # Spring Boot 4.x application (Java 25+)
+├── packages/dashboard/frontend/ # Vue 3 + Vite web dashboard
+├── packages/cli/     # Go CLI with Bubble Tea TUI
+├── backend/          # SQL schema, seed, migrations, vault spec
 ├── plugins/          # First-party plugin implementations
 ├── store/            # Store metadata and community bundle index
 ├── installer/        # install.sh and setup scripts

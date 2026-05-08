@@ -237,3 +237,25 @@ Exit criteria:
 
 This order prioritizes a working backend contract before dashboard polish.
 
+---
+
+## 6. Current Progress
+
+Completed in `v1.0.0-dev`:
+
+- Spring Boot backend skeleton under `packages/core`.
+- Backend health API at `/api/health`.
+- Backend file-defined agents API at `/api/agents`.
+- Flyway migration files copied from the existing schema and seed SQL.
+- Vue/Vite dashboard skeleton under `packages/dashboard/frontend`.
+- Dashboard health and agents API client.
+- Compose backend and dashboard services for quick/dev and production configs.
+
+Remaining before `v1.0.0`:
+
+- Install Maven or add a Maven wrapper so backend builds can run locally.
+- Install frontend dependencies and verify the dashboard build.
+- Add persistent log APIs and SSE streaming.
+- Add full domain APIs for plugins, store, settings, teams, and AI-Firm.
+- Add model provider runtime with Ollama status and request path.
+- Add CI checks for backend, frontend, Docker, and migrations.

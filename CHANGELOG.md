@@ -7,6 +7,8 @@ All notable project changes are tracked here once they become part of a roadmap 
 ### Added
 
 - Added the v1 implementation roadmap for the runnable Spring Boot backend, Vue dashboard, database migrations, APIs, model provider shell, Compose runtime, and first release hardening.
+- Added the first Spring Boot backend skeleton with health API, configuration properties, Maven project file, and Dockerfile.
+- Added the first Vue/Vite dashboard skeleton with health API client, operator console shell, and Dockerfile.
 
 ### Notes
 

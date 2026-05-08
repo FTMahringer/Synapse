@@ -32,6 +32,38 @@ services:
     networks:
       - synapse
 
+  backend:
+    build:
+      context: ../../packages/core
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8080
+      SYSTEM_NAME: ${SYSTEM_NAME:-SYNAPSE}
+      SYNAPSE_VERSION: ${SYNAPSE_VERSION:-v1.0.0-dev}
+      SYNAPSE_AGENTS_PATH: /app/agents
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-synapse}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-synapse}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      ECHO_ENABLED: ${ECHO_ENABLED:-true}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ../../agents:/app/agents:ro
+    networks:
+      - synapse
+
+  dashboard:
+    build:
+      context: ../../packages/dashboard/frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - synapse
+
   ollama:
     image: ollama/ollama:latest
     restart: unless-stopped

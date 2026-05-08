@@ -1,0 +1,177 @@
+:root {
+  color: #e8edf2;
+  background: #101418;
+  font-family: "Aptos", "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(123, 159, 224, 0.12), transparent 34%),
+    linear-gradient(45deg, rgba(76, 175, 135, 0.1), transparent 40%),
+    #101418;
+}
+
+.sidebar {
+  border-right: 1px solid rgba(232, 237, 242, 0.12);
+  padding: 28px 20px;
+  background: rgba(16, 20, 24, 0.82);
+}
+
+.brand {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-bottom: 32px;
+}
+
+nav {
+  display: grid;
+  gap: 8px;
+}
+
+nav a {
+  border-radius: 8px;
+  padding: 11px 12px;
+  color: #aab4bf;
+}
+
+nav a.active {
+  background: #243143;
+  color: #f7fafc;
+}
+
+.content {
+  padding: 42px;
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+
+header p {
+  margin: 0 0 8px;
+  color: #8fbca7;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4.4rem);
+  letter-spacing: 0;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+article,
+.panel {
+  border: 1px solid rgba(232, 237, 242, 0.12);
+  border-radius: 8px;
+  background: rgba(24, 29, 34, 0.78);
+}
+
+article {
+  padding: 18px;
+}
+
+article span {
+  display: block;
+  color: #aab4bf;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+article strong {
+  font-size: 1.35rem;
+}
+
+.panel {
+  padding: 24px;
+  max-width: 860px;
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+}
+
+.panel p {
+  color: #c7d0d9;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.error {
+  color: #ffb4a8;
+}
+
+.agent-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.agent-list li {
+  border-bottom: 1px solid rgba(232, 237, 242, 0.1);
+  display: grid;
+  gap: 4px;
+  padding: 0 0 12px;
+}
+
+.agent-list span {
+  font-weight: 700;
+}
+
+.agent-list small {
+  color: #aab4bf;
+}
+
+@media (max-width: 760px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-bottom: 1px solid rgba(232, 237, 242, 0.12);
+  }
+
+  nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    overflow-x: auto;
+  }
+
+  nav a {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .content {
+    padding: 24px;
+  }
+
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
+}
