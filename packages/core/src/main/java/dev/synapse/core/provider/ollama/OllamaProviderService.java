@@ -101,6 +101,65 @@ public class OllamaProviderService {
         }
     }
 
+    public OllamaChat.ChatResponse chatCompletion(ModelProvider provider, OllamaChat.ChatRequest request) {
+        String baseUrl = getBaseUrl(provider);
+        long startTime = System.currentTimeMillis();
+        
+        try {
+            OllamaChat.ChatResponse response = restClient.post()
+                .uri(baseUrl + "/api/chat")
+                .header("Content-Type", "application/json")
+                .body(request)
+                .retrieve()
+                .body(OllamaChat.ChatResponse.class);
+            
+            long duration = System.currentTimeMillis() - startTime;
+            
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.MODEL,
+                Map.of(
+                    "component", "OllamaProviderService",
+                    "providerId", provider.getId().toString(),
+                    "model", request.model()
+                ),
+                "CHAT_COMPLETION",
+                Map.of(
+                    "provider", provider.getName(),
+                    "duration_ms", duration,
+                    "prompt_tokens", response.promptEvalCount() != null ? response.promptEvalCount() : 0,
+                    "completion_tokens", response.evalCount() != null ? response.evalCount() : 0
+                ),
+                null,
+                null
+            );
+            
+            return response;
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            
+            logService.log(
+                LogLevel.ERROR,
+                LogCategory.MODEL,
+                Map.of(
+                    "component", "OllamaProviderService",
+                    "providerId", provider.getId().toString(),
+                    "model", request.model()
+                ),
+                "CHAT_COMPLETION_FAILED",
+                Map.of(
+                    "provider", provider.getName(),
+                    "error", e.getMessage(),
+                    "duration_ms", duration
+                ),
+                null,
+                null
+            );
+            
+            throw new RuntimeException("Failed to complete Ollama chat", e);
+        }
+    }
+
     private String getBaseUrl(ModelProvider provider) {
         Map<String, Object> config = provider.getConfig();
         if (config == null || !config.containsKey("baseUrl")) {

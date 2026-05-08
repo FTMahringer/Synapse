@@ -2,6 +2,28 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.3-dev - Ollama Chat Completion
+
+### Added
+
+- Added OllamaChat DTOs for chat completion requests and responses.
+- Added chatCompletion() method to OllamaProviderService.
+- Added POST /api/providers/ollama/{id}/chat endpoint for chat completions.
+- Support for temperature, top_p, top_k, num_predict options in chat requests.
+- Token counting in responses (prompt_eval_count, eval_count).
+- Duration tracking for chat completions (total_duration, load_duration, eval_duration).
+- Structured logging for chat completions with token counts and latency.
+- Failed chat attempts logged with error details and duration.
+
+### Notes
+
+- `v1.2.3-dev` continues the v1.3.0-dev milestone (Model Providers).
+- Ollama chat endpoint: /api/chat (POST).
+- Streaming disabled (stream: false) for synchronous responses.
+- Request includes model, messages (role + content), and optional options.
+- Response includes assistant message, token counts, and timing information.
+- Errors logged without exposing sensitive prompt content.
+
 ## v1.2.2-dev - Ollama Provider Health and Model Listing
 
 ### Added

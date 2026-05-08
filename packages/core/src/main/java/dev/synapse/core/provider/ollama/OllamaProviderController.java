@@ -2,6 +2,7 @@ package dev.synapse.core.provider.ollama;
 
 import dev.synapse.core.domain.ModelProvider;
 import dev.synapse.core.service.ModelProviderService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,5 +58,19 @@ public class OllamaProviderController {
             "models", models,
             "count", models.size()
         );
+    }
+
+    @PostMapping("/{id}/chat")
+    public OllamaChat.ChatResponse chat(
+        @PathVariable UUID id,
+        @Valid @RequestBody OllamaChat.ChatRequest request
+    ) {
+        ModelProvider provider = providerService.findById(id);
+        
+        if (provider.getType() != ModelProvider.ProviderType.OLLAMA) {
+            throw new IllegalArgumentException("Provider is not an Ollama provider");
+        }
+        
+        return ollamaService.chatCompletion(provider, request);
     }
 }
