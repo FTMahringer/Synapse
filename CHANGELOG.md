@@ -2,6 +2,31 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.7-dev - Provider Test Endpoint
+
+### Added
+
+- Added TestProviderRequest DTO for provider testing.
+- Added TestProviderResponse DTO with success, latency, tokens, preview.
+- Added ProviderTestService for unified provider testing.
+- Added ProviderTestController with POST /api/providers/test endpoint.
+- Support for testing Ollama, OpenAI, and Anthropic providers.
+- storePrompt flag (default: false) to control prompt logging.
+- Response preview (first 200 characters of completion).
+- Metadata field with provider-specific details (response ID, finish reason, durations).
+- Test requests logged only when storePrompt=true.
+- Failed tests logged with error message and latency.
+
+### Notes
+
+- `v1.2.7-dev` completes the v1.3.0-dev milestone (Model Providers).
+- POST /api/providers/test accepts providerId, model, messages, temperature, maxTokens, storePrompt.
+- By default, storePrompt=false prevents logging prompt content (privacy/security).
+- Response includes success boolean, latency, token counts, and 200-char preview.
+- Errors return success=false with errorMessage field populated.
+- Test endpoint uses actual provider services (logs usage via ProviderUsageLogService).
+- Metadata varies by provider: Ollama (totalDuration, loadDuration), OpenAI (responseId, finishReason), Anthropic (responseId, stopReason).
+
 ## v1.2.6-dev - Provider Cost and Latency Logging
 
 ### Added
