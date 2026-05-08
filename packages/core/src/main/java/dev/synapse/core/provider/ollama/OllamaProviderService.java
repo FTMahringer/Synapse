@@ -1,0 +1,111 @@
+package dev.synapse.core.provider.ollama;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.synapse.core.domain.ModelProvider;
+import dev.synapse.core.logging.LogCategory;
+import dev.synapse.core.logging.LogLevel;
+import dev.synapse.core.logging.SystemLogService;
+import dev.synapse.core.service.ModelProviderService;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class OllamaProviderService {
+
+    private final ModelProviderService providerService;
+    private final SystemLogService logService;
+    private final ObjectMapper objectMapper;
+    private final RestClient restClient;
+
+    public OllamaProviderService(
+        ModelProviderService providerService,
+        SystemLogService logService,
+        ObjectMapper objectMapper
+    ) {
+        this.providerService = providerService;
+        this.logService = logService;
+        this.objectMapper = objectMapper;
+        this.restClient = RestClient.builder().build();
+    }
+
+    public boolean checkHealth(ModelProvider provider) {
+        String baseUrl = getBaseUrl(provider);
+        
+        try {
+            String response = restClient.get()
+                .uri(baseUrl + "/api/tags")
+                .retrieve()
+                .body(String.class);
+            
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.MODEL,
+                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                "PROVIDER_HEALTH_CHECK",
+                Map.of("provider", provider.getName(), "status", "healthy"),
+                null,
+                null
+            );
+            
+            return response != null;
+        } catch (Exception e) {
+            logService.log(
+                LogLevel.WARN,
+                LogCategory.MODEL,
+                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                "PROVIDER_HEALTH_CHECK_FAILED",
+                Map.of("provider", provider.getName(), "error", e.getMessage()),
+                null,
+                null
+            );
+            
+            return false;
+        }
+    }
+
+    public List<OllamaModels.ModelInfo> listModels(ModelProvider provider) {
+        String baseUrl = getBaseUrl(provider);
+        
+        try {
+            OllamaModels.ModelsResponse response = restClient.get()
+                .uri(baseUrl + "/api/tags")
+                .retrieve()
+                .body(OllamaModels.ModelsResponse.class);
+            
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.MODEL,
+                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                "PROVIDER_MODELS_LISTED",
+                Map.of("provider", provider.getName(), "count", response.models().size()),
+                null,
+                null
+            );
+            
+            return response.models();
+        } catch (Exception e) {
+            logService.log(
+                LogLevel.ERROR,
+                LogCategory.MODEL,
+                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                "PROVIDER_MODELS_LIST_FAILED",
+                Map.of("provider", provider.getName(), "error", e.getMessage()),
+                null,
+                null
+            );
+            
+            throw new RuntimeException("Failed to list Ollama models", e);
+        }
+    }
+
+    private String getBaseUrl(ModelProvider provider) {
+        Map<String, Object> config = provider.getConfig();
+        if (config == null || !config.containsKey("baseUrl")) {
+            return "http://localhost:11434";
+        }
+        return config.get("baseUrl").toString();
+    }
+}
