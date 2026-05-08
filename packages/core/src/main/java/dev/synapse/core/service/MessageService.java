@@ -78,6 +78,7 @@ public class MessageService {
             : "llama3.2";
 
         // Call Ollama
+        long startTime = System.currentTimeMillis();
         OllamaChat.ChatRequest request = new OllamaChat.ChatRequest(
             model,
             chatMessages,
@@ -86,15 +87,20 @@ public class MessageService {
         );
 
         OllamaChat.ChatResponse response = ollamaProviderService.chatCompletion(provider, request);
+        long latency = System.currentTimeMillis() - startTime;
 
-        // Save assistant message
+        // Save assistant message with metadata
         Message assistantMessage = new Message();
         assistantMessage.setConversationId(conversationId);
         assistantMessage.setRole(Message.MessageRole.ASSISTANT);
         assistantMessage.setContent(response.message().content());
+        assistantMessage.setProviderId(provider.getId());
+        assistantMessage.setModelName(model);
+        assistantMessage.setLatencyMs(latency);
+        assistantMessage.setPromptTokens(response.promptEvalCount() != null ? response.promptEvalCount() : 0);
+        assistantMessage.setCompletionTokens(response.evalCount() != null ? response.evalCount() : 0);
         assistantMessage.setTokens(
-            (response.promptEvalCount() != null ? response.promptEvalCount() : 0) +
-            (response.evalCount() != null ? response.evalCount() : 0)
+            assistantMessage.getPromptTokens() + assistantMessage.getCompletionTokens()
         );
         messageRepository.save(assistantMessage);
 

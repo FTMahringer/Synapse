@@ -25,6 +25,21 @@ public class Message {
     @Column
     private Integer tokens;
 
+    @Column(name = "provider_id")
+    private UUID providerId;
+
+    @Column(name = "model_name")
+    private String modelName;
+
+    @Column(name = "latency_ms")
+    private Long latencyMs;
+
+    @Column(name = "prompt_tokens")
+    private Integer promptTokens;
+
+    @Column(name = "completion_tokens")
+    private Integer completionTokens;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
@@ -75,6 +90,46 @@ public class Message {
 
     public void setTokens(Integer tokens) {
         this.tokens = tokens;
+    }
+
+    public UUID getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(UUID providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public Long getLatencyMs() {
+        return latencyMs;
+    }
+
+    public void setLatencyMs(Long latencyMs) {
+        this.latencyMs = latencyMs;
+    }
+
+    public Integer getPromptTokens() {
+        return promptTokens;
+    }
+
+    public void setPromptTokens(Integer promptTokens) {
+        this.promptTokens = promptTokens;
+    }
+
+    public Integer getCompletionTokens() {
+        return completionTokens;
+    }
+
+    public void setCompletionTokens(Integer completionTokens) {
+        this.completionTokens = completionTokens;
     }
 
     public Instant getCreatedAt() {
