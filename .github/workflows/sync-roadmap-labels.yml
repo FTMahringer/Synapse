@@ -1,0 +1,116 @@
+name: Sync roadmap labels
+
+on:
+  push:
+    paths:
+      - SYNAPSE_IMPLEMENTATION_ROADMAP.md
+      - .github/workflows/sync-roadmap-labels.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync labels from roadmap
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const startToken = '<!-- ROADMAP_LABELS:BEGIN -->';
+            const endToken = '<!-- ROADMAP_LABELS:END -->';
+            const repoPath = 'SYNAPSE_IMPLEMENTATION_ROADMAP.md';
+
+            const file = await github.rest.repos.getContent({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path: repoPath,
+            });
+
+            if (!file.data || !file.data.content) {
+              throw new Error(`Unable to read ${repoPath}`);
+            }
+
+            const content = Buffer.from(file.data.content, file.data.encoding || 'base64').toString('utf8');
+            const start = content.indexOf(startToken);
+            const end = content.indexOf(endToken);
+
+            if (start === -1 || end === -1 || end <= start) {
+              throw new Error('Roadmap label block not found or malformed.');
+            }
+
+            const labelBlock = content.slice(start + startToken.length, end);
+            const jsonMatch = labelBlock.match(/```json\s*([\s\S]*?)```/i);
+
+            if (!jsonMatch) {
+              throw new Error('Roadmap label block must contain a JSON code fence.');
+            }
+
+            const parsed = JSON.parse(jsonMatch[1]);
+            const labels = Array.isArray(parsed.labels) ? parsed.labels : [];
+
+            if (labels.length === 0) {
+              throw new Error('No labels were defined in the roadmap label block.');
+            }
+
+            const existingLabels = await github.paginate(github.rest.issues.listLabelsForRepo, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+
+            const existingByName = new Map(existingLabels.map((label) => [label.name, label]));
+            const summary = { created: 0, updated: 0, unchanged: 0 };
+
+            for (const label of labels) {
+              if (!label || typeof label.name !== 'string' || typeof label.color !== 'string') {
+                throw new Error('Each label must include a string name and color.');
+              }
+
+              const name = label.name.trim();
+              const color = label.color.replace(/^#/, '').trim().toUpperCase();
+              const description = typeof label.description === 'string' ? label.description.trim() : '';
+              const current = existingByName.get(name);
+
+              if (!current) {
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  color,
+                  description,
+                });
+                summary.created += 1;
+                continue;
+              }
+
+              const needsUpdate =
+                current.color.toUpperCase() !== color ||
+                (current.description || '') !== description;
+
+              if (needsUpdate) {
+                await github.rest.issues.updateLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name,
+                  new_name: name,
+                  color,
+                  description,
+                });
+                summary.updated += 1;
+              } else {
+                summary.unchanged += 1;
+              }
+            }
+
+            core.summary
+              .addHeading('Roadmap label sync')
+              .addTable([
+                [{ data: 'Created', header: true }, { data: String(summary.created), header: false }],
+                [{ data: 'Updated', header: true }, { data: String(summary.updated), header: false }],
+                [{ data: 'Unchanged', header: true }, { data: String(summary.unchanged), header: false }],
+              ])
+              .addRaw(`\nSource file: \`${repoPath}\``)
+              .write();
