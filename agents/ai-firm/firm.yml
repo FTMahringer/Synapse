@@ -1,0 +1,45 @@
+# Example AI-Firm Configuration
+# The AI-Firm is optional and limited to one active firm per {SYSTEM_NAME} instance.
+
+id: my-firm
+name: "{SYSTEM_NAME} AI-Firm"
+ceo: firm-ceo
+
+mode: paperclip
+
+agents:
+  - firm-ceo
+
+teams:
+  - dev-team
+
+workflow:
+  board_integration: gitlab
+  project_intake: main-agent
+  reporting_target: main-agent
+  user_direct_access: false
+  max_parallel_projects: 3
+
+routing:
+  receives_from:
+    - main-agent
+  delegates_to:
+    - dev-team
+  reports_to:
+    - main-agent
+
+logging:
+  category: AI_FIRM
+  events:
+    - firm.created
+    - firm.project.accepted
+    - firm.project.delegated
+    - firm.project.blocked
+    - firm.project.completed
+    - firm.report.submitted
+
+constraints:
+  singleton: true
+  requires_user_confirmation_for_project_creation: true
+  cannot_bypass_main_agent: true
+  cannot_publish_or_install_without_confirmation: true

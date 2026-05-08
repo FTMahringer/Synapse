@@ -2,6 +2,19 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.3.0 - Agent Identity Layer
+
+### Added
+
+- Added the AI-Firm example configuration with Paperclip mode routing, singleton constraints, and AI_FIRM logging events.
+- Added Firm CEO identity, soul, and system prompt files.
+- Completed the missing Step 10 agent files from the original build steps.
+
+### Notes
+
+- `v0.3.0` closes the agent identity milestone.
+- The next milestone is `v0.4.0`, focused on plugin templates and provider integration.
+
 ## v0.2.0 - Backend Foundation
 
 ### Added

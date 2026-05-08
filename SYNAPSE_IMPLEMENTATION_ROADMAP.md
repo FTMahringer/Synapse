@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.2.0`
+**Current version:** `v0.3.0`
 
 ---
 
@@ -203,7 +203,7 @@
 
 **Target version:** `v0.3.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Build the identity layer that makes the platform feel like a multi-agent system instead of a single chat app.
@@ -228,15 +228,17 @@
 - `v0.3.3` ECHO and AI-firm prompt tightening
 
 **Exit criteria**
-- A new agent can be described from the template set without inventing new file formats.
-- Main Agent, team leader, and ECHO behavior are explicit and non-overlapping.
-- AI-firm remains optional and limited to one instance.
+- A new agent can be described from the template set without inventing new file formats. Complete.
+- Main Agent, team leader, and ECHO behavior are explicit and non-overlapping. Complete.
+- AI-firm remains optional and limited to one instance. Complete.
 
 ---
 
 ## 7. Phase 4 - Plugins
 
 **Target version:** `v0.4.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Provide the extension runtime that lets the platform connect to channels, models, skills, and external protocols.
