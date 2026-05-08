@@ -12,7 +12,7 @@
 - `v1.0.1-dev` marks the active implementation track after `v1.0.0`.
 - Each implementation slice should be committed as a small versioned step.
 - Patch-sized commits use `v1.0.x-dev` in notes and tags only when they represent a validated slice.
-- Milestone-sized commits use `v1.x.0-dev` while the milestone is still open.
+- `v1.x.0` is tagged only after chat, model provider execution, persistence, realtime logs, auth, plugin registry, and dashboard management flows work locally.
 - `v2.0.0` is tagged only after chat, model provider execution, persistence, realtime logs, auth, plugin registry, and dashboard management flows work locally.
 - Release notes for `v2.0.0` must include the changelog from all V2 dev slices.
 
@@ -109,22 +109,22 @@ V2 turns SYNAPSE from a visible runtime shell into an operational AI platform:
 
 | Version | Name | Outcome |
 |---|---|---|
-| `v1.1.0-dev` | Persistence API Layer | Real CRUD and query APIs over the v1 database foundation |
-| `v1.2.0-dev` | Auth and Users | Sign-in, JWT sessions, roles, and role-scoped access |
-| `v1.3.0-dev` | Model Providers | Provider registry plus Ollama and external-provider execution |
-| `v1.4.0-dev` | Chat Runtime | Conversation creation, message send, model response, persistence |
-| `v1.5.0-dev` | Agent Orchestration | Main Agent routing, teams, task dispatch, AI-Firm entry points |
-| `v1.6.0-dev` | Realtime Runtime | SSE/WebSocket event bus for logs and conversation events |
-| `v1.7.0-dev` | Plugin and Store Runtime | Install, enable, disable, validate, and list plugins/bundles |
-| `v1.8.0-dev` | Dashboard Management | Full operator UI over V2 APIs |
-| `v1.9.0-dev` | CLI Runtime | Go CLI/TUI connected to backend APIs |
-| `v1.10.0-dev` | Release Hardening | Tests, CI, docs, migrations, and `v2.0.0` release readiness |
+| `v1.1.0` | Persistence API Layer | Real CRUD and query APIs over the v1 database foundation |
+| `v1.2.0` | Auth and Users | Sign-in, JWT sessions, roles, and role-scoped access |
+| `v1.3.0` | Model Providers | Provider registry plus Ollama and external-provider execution |
+| `v1.4.0` | Chat Runtime | Conversation creation, message send, model response, persistence |
+| `v1.5.0` | Agent Orchestration | Main Agent routing, teams, task dispatch, AI-Firm entry points |
+| `v1.6.0` | Realtime Runtime | SSE/WebSocket event bus for logs and conversation events |
+| `v1.7.0` | Plugin and Store Runtime | Install, enable, disable, validate, and list plugins/bundles |
+| `v1.8.0` | Dashboard Management | Full operator UI over V2 APIs |
+| `v1.9.0` | CLI Runtime | Go CLI/TUI connected to backend APIs |
+| `v1.10.0` | Release Hardening | Tests, CI, docs, migrations, and `v2.0.0` release readiness |
 
 ---
 
 ## 6. Detailed Milestones
 
-### v1.1.0-dev - Persistence API Layer
+### v1.1.0 - Persistence API Layer
 
 Goal: replace runtime-only DTOs with database-backed services where the schema already exists.
 
@@ -144,7 +144,7 @@ Exit criteria:
 - All mutating APIs write structured logs.
 - Compose runtime still starts cleanly from an empty PostgreSQL volume.
 
-### v1.2.0-dev - Auth and Users
+### v1.2.0 - Auth and Users
 
 Goal: make SYNAPSE multi-user instead of an unauthenticated local console.
 
@@ -163,7 +163,7 @@ Exit criteria:
 - Owner bootstrap works in Docker Compose.
 - Role behavior matches `docs/multi-user.md`.
 
-### v1.3.0-dev - Model Providers
+### v1.3.0 - Model Providers
 
 Goal: implement real model calls behind a provider-neutral interface.
 
@@ -184,7 +184,7 @@ Exit criteria:
 - Failed provider calls are logged without secrets.
 - ECHO is not used automatically when providers fail.
 
-### v1.4.0-dev - Chat Runtime
+### v1.4.0 - Chat Runtime
 
 Goal: make conversations functional end to end.
 
@@ -204,7 +204,7 @@ Exit criteria:
 - User can send a message and receive a model response.
 - Conversation history survives backend restart.
 
-### v1.5.0-dev - Agent Orchestration
+### v1.5.0 - Agent Orchestration
 
 Goal: implement the SYNAPSE agent model beyond static file listing.
 
@@ -224,7 +224,7 @@ Exit criteria:
 - Routing decisions are logged.
 - Agent state is visible in dashboard.
 
-### v1.6.0-dev - Realtime Runtime
+### v1.6.0 - Realtime Runtime
 
 Goal: stream platform events instead of relying only on polling.
 
@@ -244,7 +244,7 @@ Exit criteria:
 - Conversation responses stream or update without manual refresh.
 - Transport failures do not activate ECHO.
 
-### v1.7.0-dev - Plugin and Store Runtime
+### v1.7.0 - Plugin and Store Runtime
 
 Goal: make plugins and store entries installable resources.
 
@@ -264,7 +264,7 @@ Exit criteria:
 - Operator can enable or disable installed plugins.
 - Store entries are queryable through backend APIs.
 
-### v1.8.0-dev - Dashboard Management
+### v1.8.0 - Dashboard Management
 
 Goal: turn the dashboard from status panels into the primary operator interface.
 
@@ -285,7 +285,7 @@ Exit criteria:
 - Dashboard handles loading, empty, error, and unauthorized states.
 - Dashboard remains usable on desktop and mobile widths.
 
-### v1.9.0-dev - CLI Runtime
+### v1.9.0 - CLI Runtime
 
 Goal: implement the Go CLI described in the v0 docs.
 
@@ -304,7 +304,7 @@ Exit criteria:
 - CLI can inspect health, logs, agents, providers, and conversations.
 - CLI can send a message through the chat runtime.
 
-### v1.10.0-dev - Release Hardening
+### v1.10.0 - Release Hardening
 
 Goal: make `v2.0.0` safe to tag as the first operational platform release.
 
