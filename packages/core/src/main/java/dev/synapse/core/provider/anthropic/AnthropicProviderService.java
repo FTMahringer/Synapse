@@ -6,6 +6,7 @@ import dev.synapse.core.logging.LogCategory;
 import dev.synapse.core.logging.LogLevel;
 import dev.synapse.core.logging.SystemLogService;
 import dev.synapse.core.service.ModelProviderService;
+import dev.synapse.core.service.ProviderUsageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -16,16 +17,19 @@ public class AnthropicProviderService {
 
     private final ModelProviderService providerService;
     private final SystemLogService logService;
+    private final ProviderUsageLogService usageLogService;
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
 
     public AnthropicProviderService(
         ModelProviderService providerService,
         SystemLogService logService,
+        ProviderUsageLogService usageLogService,
         ObjectMapper objectMapper
     ) {
         this.providerService = providerService;
         this.logService = logService;
+        this.usageLogService = usageLogService;
         this.objectMapper = objectMapper;
         this.restClient = RestClient.builder().build();
     }
@@ -82,9 +86,12 @@ public class AnthropicProviderService {
     public AnthropicModels.ChatResponse chatCompletion(ModelProvider provider, AnthropicModels.ChatRequest request) {
         String apiKey = getApiKey(provider);
         long startTime = System.currentTimeMillis();
+        boolean success = false;
+        String errorMessage = null;
+        AnthropicModels.ChatResponse response = null;
         
         try {
-            AnthropicModels.ChatResponse response = restClient.post()
+            response = restClient.post()
                 .uri("https://api.anthropic.com/v1/messages")
                 .header("x-api-key", apiKey)
                 .header("anthropic-version", "2023-06-01")
@@ -93,6 +100,7 @@ public class AnthropicProviderService {
                 .retrieve()
                 .body(AnthropicModels.ChatResponse.class);
             
+            success = true;
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -116,6 +124,8 @@ public class AnthropicProviderService {
             
             return response;
         } catch (Exception e) {
+            success = false;
+            errorMessage = e.getMessage();
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -137,6 +147,17 @@ public class AnthropicProviderService {
             );
             
             throw new RuntimeException("Failed to complete Anthropic chat", e);
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            usageLogService.logUsage(
+                provider,
+                request.model(),
+                response != null && response.usage() != null ? response.usage().inputTokens() : null,
+                response != null && response.usage() != null ? response.usage().outputTokens() : null,
+                duration,
+                success,
+                errorMessage
+            );
         }
     }
 

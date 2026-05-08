@@ -6,6 +6,7 @@ import dev.synapse.core.logging.LogCategory;
 import dev.synapse.core.logging.LogLevel;
 import dev.synapse.core.logging.SystemLogService;
 import dev.synapse.core.service.ModelProviderService;
+import dev.synapse.core.service.ProviderUsageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -17,16 +18,19 @@ public class OpenAIProviderService {
 
     private final ModelProviderService providerService;
     private final SystemLogService logService;
+    private final ProviderUsageLogService usageLogService;
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
 
     public OpenAIProviderService(
         ModelProviderService providerService,
         SystemLogService logService,
+        ProviderUsageLogService usageLogService,
         ObjectMapper objectMapper
     ) {
         this.providerService = providerService;
         this.logService = logService;
+        this.usageLogService = usageLogService;
         this.objectMapper = objectMapper;
         this.restClient = RestClient.builder().build();
     }
@@ -109,9 +113,12 @@ public class OpenAIProviderService {
         String baseUrl = getBaseUrl(provider);
         String apiKey = getApiKey(provider);
         long startTime = System.currentTimeMillis();
+        boolean success = false;
+        String errorMessage = null;
+        OpenAIModels.ChatResponse response = null;
         
         try {
-            OpenAIModels.ChatResponse response = restClient.post()
+            response = restClient.post()
                 .uri(baseUrl + "/v1/chat/completions")
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
@@ -119,6 +126,7 @@ public class OpenAIProviderService {
                 .retrieve()
                 .body(OpenAIModels.ChatResponse.class);
             
+            success = true;
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -143,6 +151,8 @@ public class OpenAIProviderService {
             
             return response;
         } catch (Exception e) {
+            success = false;
+            errorMessage = e.getMessage();
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -164,6 +174,17 @@ public class OpenAIProviderService {
             );
             
             throw new RuntimeException("Failed to complete OpenAI chat", e);
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            usageLogService.logUsage(
+                provider,
+                request.model(),
+                response != null && response.usage() != null ? response.usage().promptTokens() : null,
+                response != null && response.usage() != null ? response.usage().completionTokens() : null,
+                duration,
+                success,
+                errorMessage
+            );
         }
     }
 

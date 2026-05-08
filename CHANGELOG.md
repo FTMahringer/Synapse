@@ -2,6 +2,40 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.6-dev - Provider Cost and Latency Logging
+
+### Added
+
+- Added ProviderUsageLog entity for tracking provider API calls.
+- Added ProviderUsageLogRepository with aggregation queries.
+- Added ProviderUsageLogService for logging and analytics.
+- Integrated usage logging into all provider services (Ollama, OpenAI, Anthropic).
+- Track prompt tokens, completion tokens, total tokens per request.
+- Track latency (milliseconds) for each provider call.
+- Track success/failure status with error messages.
+- GET queries for provider history and statistics.
+- Average latency calculation per provider.
+- Total token consumption tracking per provider.
+- Failure count and success rate calculations.
+- Usage logs persisted in provider_usage_logs table.
+
+### Changed
+
+- Updated OllamaProviderService to log usage in finally block.
+- Updated OpenAIProviderService to log usage in finally block.
+- Updated AnthropicProviderService to log usage in finally block.
+- All provider services inject ProviderUsageLogService.
+
+### Notes
+
+- `v1.2.6-dev` continues the v1.3.0-dev milestone (Model Providers).
+- Usage logs created for both successful and failed requests.
+- Error messages logged without exposing secrets or prompt content.
+- Latency tracked from request start to response/error.
+- Token counts sourced from provider responses (may be null for failures).
+- Analytics queries: averageLatencyForProvider, totalTokensForProvider, failureCountForProvider.
+- Future: cost estimation can be calculated from token counts + provider pricing.
+
 ## v1.2.5-dev - Anthropic Provider
 
 ### Added

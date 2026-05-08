@@ -6,6 +6,7 @@ import dev.synapse.core.logging.LogCategory;
 import dev.synapse.core.logging.LogLevel;
 import dev.synapse.core.logging.SystemLogService;
 import dev.synapse.core.service.ModelProviderService;
+import dev.synapse.core.service.ProviderUsageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -17,16 +18,19 @@ public class OllamaProviderService {
 
     private final ModelProviderService providerService;
     private final SystemLogService logService;
+    private final ProviderUsageLogService usageLogService;
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
 
     public OllamaProviderService(
         ModelProviderService providerService,
         SystemLogService logService,
+        ProviderUsageLogService usageLogService,
         ObjectMapper objectMapper
     ) {
         this.providerService = providerService;
         this.logService = logService;
+        this.usageLogService = usageLogService;
         this.objectMapper = objectMapper;
         this.restClient = RestClient.builder().build();
     }
@@ -104,15 +108,19 @@ public class OllamaProviderService {
     public OllamaChat.ChatResponse chatCompletion(ModelProvider provider, OllamaChat.ChatRequest request) {
         String baseUrl = getBaseUrl(provider);
         long startTime = System.currentTimeMillis();
+        boolean success = false;
+        String errorMessage = null;
+        OllamaChat.ChatResponse response = null;
         
         try {
-            OllamaChat.ChatResponse response = restClient.post()
+            response = restClient.post()
                 .uri(baseUrl + "/api/chat")
                 .header("Content-Type", "application/json")
                 .body(request)
                 .retrieve()
                 .body(OllamaChat.ChatResponse.class);
             
+            success = true;
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -136,6 +144,8 @@ public class OllamaProviderService {
             
             return response;
         } catch (Exception e) {
+            success = false;
+            errorMessage = e.getMessage();
             long duration = System.currentTimeMillis() - startTime;
             
             logService.log(
@@ -157,6 +167,17 @@ public class OllamaProviderService {
             );
             
             throw new RuntimeException("Failed to complete Ollama chat", e);
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            usageLogService.logUsage(
+                provider,
+                request.model(),
+                response != null ? response.promptEvalCount() : null,
+                response != null ? response.evalCount() : null,
+                duration,
+                success,
+                errorMessage
+            );
         }
     }
 
