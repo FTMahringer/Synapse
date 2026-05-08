@@ -135,13 +135,13 @@ synapse/
 ├── agents/           # Agent definitions and default configurations
 ├── docs/             # Full documentation
 │   ├── architecture.md
-│   ├── plugins.md
-│   ├── agent-teams.md
-│   ├── ai-firm.md
-│   ├── echo.md
-│   ├── store.md
-│   └── api.md
-└── docker-compose.yml
+│   ├── plugin-system.md
+│   ├── agent-teams-system.md
+│   ├── ai-firm-system.md
+│   ├── echo-debug-agent.md
+│   ├── store-concept.md
+│   └── api-reference.md
+└── installer/compose/
 ```
 
 ---
@@ -153,12 +153,13 @@ Full documentation lives in the [`docs/`](./docs/) folder:
 - [Implementation Roadmap](./SYNAPSE_IMPLEMENTATION_ROADMAP.md) - Versioned implementation sequence and fixed roadmap labels
 - [Release Process](./docs/release-process.md) - Milestone, patch, changelog, and label workflow
 - [Architecture](./docs/architecture.md) — Deep dive into all four layers and how they communicate
-- [Plugins](./docs/plugins.md) — How to build and install channels, model providers, skills, and MCP servers
-- [Agent Teams](./docs/agent-teams.md) — Creating, configuring, and managing agent teams
-- [AI-Firm](./docs/ai-firm.md) — Project management orchestration layer
-- [ECHO](./docs/echo.md) — Debug fallback agent and when to use it
-- [Store](./docs/store.md) — Community and official store, bundle submission
-- [API Reference](./docs/api.md) — REST and WebSocket API documentation
+- [Plugin System](./docs/plugin-system.md) - How to build and install channels, model providers, skills, and MCP servers
+- [Agent Identity](./docs/agent-identity-system.md) - Agent identity, soul, connections, and config files
+- [Agent Teams](./docs/agent-teams-system.md) - Creating, configuring, and managing agent teams
+- [AI-Firm](./docs/ai-firm-system.md) - Project management orchestration layer
+- [ECHO](./docs/echo-debug-agent.md) - Manual-only debug agent and when to use it
+- [Store](./docs/store-concept.md) - Community and official store, bundle submission
+- [API Reference](./docs/api-reference.md) - REST, WebSocket, SSE, and CLI reference
 
 ---
 

@@ -2,6 +2,21 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.10.0 - Hardening
+
+### Added
+
+- Added the hardening report with file-count verification, critical-file status, validation notes, and quality-rule notes.
+
+### Fixed
+
+- Corrected README documentation links to match the actual documentation file names.
+- Corrected the README project structure to point at `installer/compose/` instead of a root Compose file.
+
+### Notes
+
+- `v0.10.0` closes the initial implementation-roadmap pass.
+
 ## v0.9.0 - Runtime Delivery
 
 ### Added

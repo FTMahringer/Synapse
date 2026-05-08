@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.9.0`
+**Current version:** `v0.10.0`
 
 ---
 
@@ -446,7 +446,7 @@
 
 **Target version:** `v0.10.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Validate the whole system against the quality rules before release candidate work is considered done.
@@ -467,9 +467,9 @@
 - `v0.10.3` final consistency pass
 
 **Exit criteria**
-- No placeholder text remains in roadmap-critical files.
-- Main Agent, backend schema, logging docs, and team docs are complete enough to support implementation.
-- The release candidate checklist is explicit and reviewable.
+- No placeholder text remains in roadmap-critical files. Complete.
+- Main Agent, backend schema, logging docs, and team docs are complete enough to support implementation. Complete.
+- The release candidate checklist is explicit and reviewable. Complete.
 
 ---
 
