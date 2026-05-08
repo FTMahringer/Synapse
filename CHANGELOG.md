@@ -2,6 +2,114 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.3.0 - Model Providers (2026-05-08)
+
+**Milestone Release**: Integrated model provider infrastructure with support for Ollama, OpenAI, and Anthropic. Includes provider configuration, secret encryption, chat completions, cost tracking, and testing endpoints.
+
+### Added
+
+**Provider Configuration (v1.2.1-dev)**
+- ModelProvider entity with support for OLLAMA, OPENAI, ANTHROPIC, OPENAI_COMPATIBLE types
+- ModelProviderRepository for provider persistence
+- SecretEncryptionService using AES-256-GCM for API key encryption
+- ModelProviderService for CRUD operations with automatic secret encryption/decryption
+- ModelProviderController with full REST API (GET, POST, PUT, PATCH, DELETE)
+- ModelProviderDTO, CreateModelProviderRequest, UpdateModelProviderRequest
+- Encrypted secrets stored in database, never exposed in API responses
+- Provider-specific configuration stored in JSONB for flexibility
+
+**Ollama Provider (v1.2.2-dev, v1.2.3-dev)**
+- OllamaModels DTOs for Ollama API requests and responses
+- OllamaProviderService for local Ollama integration
+- OllamaProviderController with health, models, and chat endpoints
+- GET /api/providers/ollama/{id}/health for connectivity checks
+- GET /api/providers/ollama/{id}/models for available model listing
+- POST /api/providers/ollama/{id}/chat for chat completions
+- Support for temperature, top_p, top_k, num_predict parameters
+- Token counting (prompt_eval_count, eval_count)
+- Duration tracking (total_duration, load_duration, eval_duration)
+- Default baseUrl: http://localhost:11434 (configurable via provider config)
+
+**OpenAI-Compatible Provider (v1.2.4-dev)**
+- OpenAIModels DTOs for OpenAI API format
+- OpenAIProviderService for OpenAI and compatible providers (OpenRouter, Azure OpenAI, etc.)
+- OpenAIProviderController with health, models, and chat endpoints
+- GET /api/providers/openai/{id}/health for API connectivity checks
+- GET /api/providers/openai/{id}/models for model listing
+- POST /api/providers/openai/{id}/chat for chat completions
+- Support for temperature, max_tokens, top_p, frequency_penalty, presence_penalty
+- API key authentication via Authorization: Bearer header
+- Default baseUrl: https://api.openai.com (configurable for compatible providers)
+- Token usage tracking (prompt_tokens, completion_tokens, total_tokens)
+
+**Anthropic Provider (v1.2.5-dev)**
+- AnthropicModels DTOs for Anthropic Messages API
+- AnthropicProviderService for Claude model integration
+- AnthropicProviderController with health and chat endpoints
+- GET /api/providers/anthropic/{id}/health for API connectivity checks
+- POST /api/providers/anthropic/{id}/chat for chat completions
+- Support for temperature, top_p, top_k, max_tokens parameters
+- API key authentication via x-api-key header
+- Anthropic API version: 2023-06-01
+- Content blocks in responses with type and text fields
+- Stop reason tracking (end_turn, max_tokens, stop_sequence)
+
+**Cost and Latency Logging (v1.2.6-dev)**
+- ProviderUsageLog entity for tracking all provider API calls
+- ProviderUsageLogRepository with aggregation queries
+- ProviderUsageLogService for usage logging and analytics
+- Track prompt tokens, completion tokens, total tokens per request
+- Track latency (milliseconds) for each provider call
+- Track success/failure status with error messages (secrets excluded)
+- Analytics queries: average latency, total tokens, failure count, success rate
+- Usage logs persisted for both successful and failed requests
+- Integrated into all provider services (Ollama, OpenAI, Anthropic)
+
+**Provider Testing (v1.2.7-dev)**
+- TestProviderRequest DTO for unified provider testing
+- TestProviderResponse DTO with success, latency, tokens, preview
+- ProviderTestService for testing any configured provider
+- ProviderTestController with POST /api/providers/test
+- Support for testing Ollama, OpenAI, and Anthropic providers
+- storePrompt flag (default: false) to control prompt content logging
+- Response preview (first 200 characters of completion)
+- Metadata field with provider-specific details (response IDs, finish reasons, durations)
+- Failed tests return success=false with error details
+
+### Security
+
+- AES-256-GCM encryption for API keys and secrets
+- Encrypted secrets never exposed in API responses
+- Constant-time decryption operations
+- API keys transmitted only over HTTPS in production
+- Error logs sanitized to exclude secrets and sensitive prompt content
+- Test endpoint respects storePrompt flag for privacy
+
+### Configuration
+
+- secrets.encryption-key: AES-256 key for provider secrets (MUST change in production)
+- Provider-specific baseUrl configurable via provider config JSONB
+- Ollama default: http://localhost:11434
+- OpenAI default: https://api.openai.com
+- Anthropic: https://api.anthropic.com (fixed)
+
+### Exit Criteria (v1.3.0 Milestone)
+
+✅ Ollama can produce responses locally  
+✅ External API-key providers (OpenAI, Anthropic) can be configured  
+✅ Failed provider calls logged without exposing secrets  
+✅ ECHO not used automatically when providers fail (explicit error handling)
+
+### Notes
+
+- Milestone release consolidates patches v1.2.1-dev through v1.2.7-dev
+- All provider integrations use Spring RestClient for HTTP calls
+- Streaming disabled (stream: false) for synchronous responses
+- Token usage and latency tracked for cost estimation and monitoring
+- Future: cost calculation from token counts + provider pricing tables
+- Future: retry logic and fallback providers
+- Future: caching and rate limiting
+
 ## v1.2.7-dev - Provider Test Endpoint
 
 ### Added
