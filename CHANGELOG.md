@@ -2,6 +2,24 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.1-dev - Persistence API Layer
+
+### Added
+
+- Added JPA domain entities for users, agents, teams, plugins, conversations, messages, projects, tasks, and task logs with PostgreSQL schema mappings.
+- Added Spring Data repositories for all domain entities with query methods for common access patterns.
+- Added service layer with @Transactional boundaries for users, agents, conversations, messages, tasks, and plugins.
+- Added global exception handling with ApiException base class, ResourceNotFoundException, ValidationException, and ErrorResponse DTO.
+- Added correlation ID and trace ID support in exception handling for request tracing.
+- Added structured logging for API errors through SystemLogService integration.
+- Created repository/service/exception package structure in backend core module.
+
+### Notes
+
+- `v1.0.1-dev` completes the first patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- Database-backed CRUD services are now available but not yet exposed through REST controllers.
+- File-defined agent bootstrap integration still pending.
+
 ## v1.0.0 - Initial Runnable Platform Release
 
 ### Added
