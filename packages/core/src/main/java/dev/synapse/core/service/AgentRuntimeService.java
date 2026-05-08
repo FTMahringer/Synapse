@@ -18,9 +18,14 @@ import java.util.Optional;
 public class AgentRuntimeService {
 
     private final AgentRuntimeRegistryRepository repository;
+    private final AgentHeartbeatService heartbeatService;
 
-    public AgentRuntimeService(AgentRuntimeRegistryRepository repository) {
+    public AgentRuntimeService(
+        AgentRuntimeRegistryRepository repository,
+        AgentHeartbeatService heartbeatService
+    ) {
         this.repository = repository;
+        this.heartbeatService = heartbeatService;
     }
 
     /**
@@ -39,14 +44,16 @@ public class AgentRuntimeService {
     }
 
     /**
-     * Activate an agent.
+     * Activate an agent and record an initial heartbeat.
      */
     @Transactional
     public AgentRuntimeRegistry activate(String agentId) {
         AgentRuntimeRegistry runtime = getOrCreateRuntime(agentId);
         runtime.setState(AgentActivationState.ACTIVE);
         runtime.setLastActivatedAt(Instant.now());
-        return repository.save(runtime);
+        AgentRuntimeRegistry saved = repository.save(runtime);
+        heartbeatService.pulse(agentId, "activated");
+        return saved;
     }
 
     /**
