@@ -2,6 +2,19 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.6.0 - Documentation Set
+
+### Added
+
+- Added the missing subsystem docs for agents, teams, AI-Firm, heartbeat, skills, MCP, ACP, bundles, multi-user, logging, theming, ECHO, git providers, custom commands, and API reference.
+- Documented Main Agent and manual paths for creatable and configurable subsystems.
+- Added logging categories, API endpoints, and operator guidance required by the build-step checklist.
+
+### Notes
+
+- `v0.6.0` closes the documentation milestone.
+- The next milestone is `v0.7.0`, focused on installers and Compose bootstrap files.
+
 ## v0.5.0 - Store and Bundle System
 
 ### Added

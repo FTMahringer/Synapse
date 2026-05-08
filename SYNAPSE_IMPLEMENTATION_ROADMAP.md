@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.5.0`
+**Current version:** `v0.6.0`
 
 ---
 
@@ -303,7 +303,7 @@
 
 **Target version:** `v0.6.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Turn the platform design into a usable reference set for builders and operators.
@@ -342,15 +342,17 @@
 - `v0.6.3` store, installer, CLI, and API docs cleanup
 
 **Exit criteria**
-- Every major subsystem has a dedicated doc.
-- The docs match the file tree and the system rules.
-- Both guided and manual creation paths are described where relevant.
+- Every major subsystem has a dedicated doc. Complete.
+- The docs match the file tree and the system rules. Complete.
+- Both guided and manual creation paths are described where relevant. Complete.
 
 ---
 
 ## 10. Phase 7 - Installer
 
 **Target version:** `v0.7.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Make the platform installable in a repeatable way on Unix, macOS, and Windows.
