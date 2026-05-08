@@ -2,6 +2,30 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.8-dev - JWT Infrastructure
+
+### Added
+
+- Added JJWT dependencies (jjwt-api, jjwt-impl, jjwt-jackson) version 0.12.6 for JWT support.
+- Added JwtService for generating and validating JWT access and refresh tokens.
+- Added AuthenticationService with login() and refreshToken() methods.
+- Added AuthenticationController with POST /api/auth/login and POST /api/auth/refresh endpoints.
+- Added LoginRequest and RefreshTokenRequest DTOs.
+- Added structured logging for login attempts (success and failure) and token refreshes.
+- JWT access tokens valid for 15 minutes (900000ms) by default.
+- JWT refresh tokens valid for 7 days (604800000ms) by default.
+- Tokens include userId, username, role, and token type claims.
+
+### Notes
+
+- `v1.0.8-dev` continues the v1.2.0-dev milestone (Auth and Users).
+- JWT secret configurable via jwt.secret property (default included for dev, MUST change in production).
+- Token validity periods configurable via jwt.access-token-validity-ms and jwt.refresh-token-validity-ms.
+- Access tokens contain username and role claims for authorization.
+- Refresh tokens are minimal (only userId and type) for security.
+- Failed login attempts logged with reason for security monitoring.
+- Tokens signed with HS256 (HMAC-SHA256) algorithm.
+
 ## v1.0.7-dev - User CRUD with Password Hashing
 
 ### Added
