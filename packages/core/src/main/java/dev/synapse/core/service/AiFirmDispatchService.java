@@ -73,7 +73,7 @@ public class AiFirmDispatchService {
                 "title", title,
                 "dispatchedBy", dispatchedByAgentId
             ),
-            conversationId != null ? conversationId.toString() : null,
+            conversationId,
             null
         );
 
