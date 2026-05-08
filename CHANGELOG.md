@@ -2,6 +2,33 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.4-dev - OpenAI-Compatible Provider
+
+### Added
+
+- Added OpenAIModels DTOs for OpenAI API requests and responses.
+- Added OpenAIProviderService for OpenAI and OpenAI-compatible providers.
+- Added OpenAIProviderController with health, models, and chat endpoints.
+- Support for OPENAI and OPENAI_COMPATIBLE provider types.
+- GET /api/providers/openai/{id}/health for health checks.
+- GET /api/providers/openai/{id}/models for listing available models.
+- POST /api/providers/openai/{id}/chat for chat completions.
+- Support for temperature, max_tokens, top_p, frequency_penalty, presence_penalty.
+- API key authentication via Authorization: Bearer header.
+- Default baseUrl: https://api.openai.com (configurable for compatible providers).
+- Token usage tracking (prompt_tokens, completion_tokens, total_tokens).
+- Structured logging with token usage and latency.
+
+### Notes
+
+- `v1.2.4-dev` continues the v1.3.0-dev milestone (Model Providers).
+- Supports both OpenAI and compatible providers (OpenRouter, Azure OpenAI, etc.).
+- API key stored encrypted in provider secrets.
+- Compatible providers configure custom baseUrl in provider config.
+- Standard OpenAI API format: /v1/models, /v1/chat/completions.
+- Streaming disabled (stream: false) for synchronous responses.
+- Failed API calls logged without exposing API keys.
+
 ## v1.2.3-dev - Ollama Chat Completion
 
 ### Added
