@@ -145,6 +145,18 @@ public class DtoMapper {
         return team;
     }
 
+    public static AgentMemoryEntryDTO toDTO(AgentMemoryEntry entry) {
+        return new AgentMemoryEntryDTO(
+            entry.getId(),
+            entry.getAgentId(),
+            entry.getKey(),
+            entry.getValue(),
+            entry.getNamespace(),
+            entry.getCreatedAt(),
+            entry.getUpdatedAt()
+        );
+    }
+
     public static FirmProjectDTO toDTO(FirmProject project) {
         return new FirmProjectDTO(
             project.getId(),
