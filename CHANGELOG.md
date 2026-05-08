@@ -2,6 +2,70 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.0 - Auth and Users (Milestone Release)
+
+**Release Date:** 2026-05-08
+
+This milestone delivers a complete authentication and user management system with modern password hashing and JWT-based stateless authentication.
+
+### Added
+
+- **User Management with Argon2id Password Hashing**
+  - Spring Security dependency for authentication infrastructure
+  - PasswordHashingService using Argon2id algorithm (64MB memory, 3 iterations, parallelism=1)
+  - Argon2id chosen for resistance to GPU cracking and side-channel attacks
+  - Bouncy Castle provider for Argon2 implementation
+  - Constant-time hash comparison to prevent timing attacks
+  - PHC string format: `$argon2id$v=19$m=65536,t=3,p=1$[salt]$[hash]`
+
+- **User CRUD APIs**
+  - UserController with REST endpoints (GET, POST, PATCH, DELETE)
+  - Enhanced UserService with create(), update(), and updatePassword() methods
+  - UpdatePasswordRequest and UpdateUserRequest DTOs
+  - Username and email uniqueness validation
+  - Structured logging for user operations (create, update, password change, delete)
+  - Change tracking for user updates (before/after values)
+
+- **JWT Infrastructure**
+  - JJWT library version 0.12.6 for JWT token generation and validation
+  - JwtService for access and refresh token management
+  - Access tokens valid for 15 minutes (configurable via jwt.access-token-validity-ms)
+  - Refresh tokens valid for 7 days (configurable via jwt.refresh-token-validity-ms)
+  - Tokens signed with HS256 (HMAC-SHA256) algorithm
+  - Token claims: userId, username, role, token type (access/refresh)
+  - JWT secret configurable via jwt.secret property
+
+- **Authentication Endpoints**
+  - AuthenticationService with login() and refreshToken() methods
+  - AuthenticationController with POST /api/auth/login and POST /api/auth/refresh
+  - LoginRequest and RefreshTokenRequest DTOs
+  - Structured logging for login attempts (success and failure) and token refreshes
+  - BadCredentialsException for invalid credentials
+
+- **JWT Authentication and Authorization**
+  - JwtAuthenticationFilter extracting and validating JWT from Authorization header
+  - SecurityContextHelper utility for accessing current user context
+  - Method-level security enabled with @EnableMethodSecurity
+  - All /api/** endpoints require authentication except /api/auth/** and /api/health
+  - Bearer token format: `Authorization: Bearer <access_token>`
+  - Spring Security context populated with userId, username, and role
+  - GrantedAuthority with ROLE_ prefix for role-based authorization
+  - JwtAuthenticationDetails attached to authentication for user metadata access
+
+- **Security Configuration**
+  - SecurityConfig with CSRF disabled and stateless session management
+  - Public endpoints: /api/auth/**, /api/health, /actuator/**
+  - All other endpoints require valid JWT access token
+  - Method security annotations (@PreAuthorize, @Secured) functional
+
+### Notes
+
+- This milestone includes patches v1.0.7-dev through v1.0.10-dev
+- BREAKING CHANGE: All API endpoints now require authentication (except auth and health)
+- JWT secret MUST be changed in production (default is for development only)
+- Argon2id 64MB memory requirement makes brute-force attacks computationally expensive
+- Only access tokens accepted for authentication (refresh tokens only for token refresh endpoint)
+
 ## v1.0.10-dev - JWT Authentication and Authorization
 
 ### Added
