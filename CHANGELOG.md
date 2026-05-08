@@ -2,6 +2,17 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.0-dev - Active Implementation Track
+
+### Added
+
+- Added the v1 implementation roadmap for the runnable Spring Boot backend, Vue dashboard, database migrations, APIs, model provider shell, Compose runtime, and first release hardening.
+
+### Notes
+
+- `v1.0.0-dev` is not a release tag.
+- `v1.0.0` is reserved for the first runnable platform release.
+
 ## v0.10.0 - Hardening
 
 ### Added
