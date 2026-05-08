@@ -48,16 +48,39 @@ public class MainAgentRouterService {
         log.setConversationId(conversationId);
         log.setMessageId(messageId);
         log.setDecision(RoutingDecision.HANDLE_DIRECTLY);
-        log.setReasoning("Main Agent handles all requests in v1.4.2");
-        
+        log.setReasoning("Main Agent handles all requests directly");
+
         routingLogRepository.save(log);
-        
+
         return new RoutingResult(
             RoutingDecision.HANDLE_DIRECTLY,
             "main-agent",
             null,
             null,
-            "Main Agent handles all requests in v1.4.2"
+            "Main Agent handles all requests directly"
+        );
+    }
+
+    /**
+     * Route a message to the AI-Firm project dispatch entry point.
+     */
+    @Transactional
+    public RoutingResult routeToFirm(UUID conversationId, UUID messageId, UUID projectId, String reasoning) {
+        RoutingLog log = new RoutingLog();
+        log.setConversationId(conversationId);
+        log.setMessageId(messageId);
+        log.setDecision(RoutingDecision.ROUTE_TO_FIRM_PROJECT);
+        log.setTargetProjectId(projectId);
+        log.setReasoning(reasoning);
+
+        routingLogRepository.save(log);
+
+        return new RoutingResult(
+            RoutingDecision.ROUTE_TO_FIRM_PROJECT,
+            null,
+            null,
+            projectId,
+            reasoning
         );
     }
 
@@ -66,6 +89,16 @@ public class MainAgentRouterService {
      */
     public List<RoutingLog> getRoutingHistory(UUID conversationId) {
         return routingLogRepository.findByConversationIdOrderByCreatedAtDesc(conversationId);
+    }
+
+    /**
+     * Get all routing logs, most recent first.
+     */
+    public List<RoutingLog> getAllRoutingLogs() {
+        return routingLogRepository.findAll()
+            .stream()
+            .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+            .toList();
     }
 
     /**

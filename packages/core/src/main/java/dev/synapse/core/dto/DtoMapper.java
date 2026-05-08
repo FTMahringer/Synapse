@@ -144,4 +144,20 @@ public class DtoMapper {
         }
         return team;
     }
+
+    public static FirmProjectDTO toDTO(FirmProject project) {
+        return new FirmProjectDTO(
+            project.getId(),
+            project.getFirmId(),
+            project.getTitle(),
+            project.getDescription(),
+            project.getStatus().name(),
+            project.getDispatchedByAgentId(),
+            project.getAssignedTeamId(),
+            project.getConversationId(),
+            project.getTaskId(),
+            project.getCreatedAt(),
+            project.getUpdatedAt()
+        );
+    }
 }
