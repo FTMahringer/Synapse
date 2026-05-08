@@ -45,7 +45,7 @@ onMounted(async () => {
         </article>
         <article>
           <span>Version</span>
-          <strong>{{ health?.version ?? 'v1.0.0-dev' }}</strong>
+          <strong>{{ health?.version ?? 'v1.0.0' }}</strong>
         </article>
         <article>
           <span>ECHO</span>

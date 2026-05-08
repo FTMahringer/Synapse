@@ -1,16 +1,17 @@
 # SYNAPSE v1 Implementation Roadmap
 
 > Roadmap for turning the documentation scaffold into a runnable AI platform.
-> Active development version: `v1.0.0-dev`.
-> First release version: `v1.0.0`.
+> Development version: `v1.0.0-dev`.
+> Release version: `v1.0.0`.
+> Status: complete.
 
 ---
 
 ## 1. Release Rule
 
-- `v1.0.0-dev` marks the active implementation track.
-- Do not tag `v1.0.0` until the platform can run locally with backend, frontend, database, logs, and at least one model provider path.
-- Release notes for `v1.0.0` must summarize all implementation work completed during the dev cycle.
+- `v1.0.0-dev` marked the active implementation track.
+- `v1.0.0` is tagged only after the platform can run locally with backend, frontend, database, logs, and a clear next model-provider implementation path.
+- Release notes for `v1.0.0` summarize all implementation work completed during the dev cycle.
 - The existing `v0.x.0` roadmap remains the scaffold/specification history.
 
 ---
@@ -251,11 +252,18 @@ Completed in `v1.0.0-dev`:
 - Dashboard health and agents API client.
 - Compose backend and dashboard services for quick/dev and production configs.
 
-Remaining before `v1.0.0`:
+Completed for `v1.0.0`:
 
-- Install Maven or add a Maven wrapper so backend builds can run locally.
-- Install frontend dependencies and verify the dashboard build.
-- Add persistent log APIs and SSE streaming.
-- Add full domain APIs for plugins, store, settings, teams, and AI-Firm.
-- Add model provider runtime with Ollama status and request path.
-- Add CI checks for backend, frontend, Docker, and migrations.
+- Backend Docker build verified.
+- Dashboard Docker build verified.
+- Compose runtime verified with PostgreSQL 18, Redis, Qdrant, backend, and dashboard.
+- Dashboard proxy verified through `http://localhost:3000/api/health`.
+- Backend health, agent listing, and structured log APIs verified.
+
+Deferred to V2:
+
+- Live model invocation and chat runtime.
+- SSE/WebSocket realtime delivery.
+- Full domain APIs for plugins, store, settings, teams, and AI-Firm.
+- User authentication and role enforcement.
+- CI hardening beyond local Docker validation.

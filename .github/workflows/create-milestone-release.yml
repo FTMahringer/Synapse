@@ -5,14 +5,14 @@ on:
     branches:
       - main
     tags:
-      - v0.*.0
+      - v*.*.0
     paths:
       - docs/release-notes/**
       - .github/workflows/create-milestone-release.yml
   workflow_dispatch:
     inputs:
       tag:
-        description: Milestone tag to release, such as v0.1.0
+        description: Milestone tag to release, such as v1.0.0
         required: true
         type: string
 
@@ -51,7 +51,7 @@ jobs:
 
               return directory.data
                 .filter((entry) => entry.type === 'file')
-                .map((entry) => entry.name.match(/^(v0\.\d+\.0)\.md$/))
+                .map((entry) => entry.name.match(/^(v\d+\.\d+\.0)\.md$/))
                 .filter(Boolean)
                 .map((match) => match[1]);
             }
@@ -73,7 +73,7 @@ jobs:
             }
 
             async function syncRelease(tag) {
-              if (!/^v0\.\d+\.0$/.test(tag)) {
+              if (!/^v\d+\.\d+\.0$/.test(tag)) {
                 core.info(`Skipping non-milestone tag: ${tag}`);
                 return { tag, status: 'skipped' };
               }
@@ -115,6 +115,8 @@ jobs:
                 }
               }
 
+              const prerelease = /^v0\./.test(tag);
+
               if (existingRelease) {
                 await github.rest.repos.updateRelease({
                   owner: context.repo.owner,
@@ -123,7 +125,7 @@ jobs:
                   name: releaseName,
                   body,
                   draft: false,
-                  prerelease: true,
+                  prerelease,
                 });
                 core.info(`Updated release ${tag}`);
                 return { tag, status: 'updated' };
@@ -136,7 +138,7 @@ jobs:
                 name: releaseName,
                 body,
                 draft: false,
-                prerelease: true,
+                prerelease,
                 generate_release_notes: false,
               });
               core.info(`Created release ${tag}`);

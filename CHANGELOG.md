@@ -2,7 +2,46 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
-## v1.0.0-dev - Active Implementation Track
+## v1.0.0 - Initial Runnable Platform Release
+
+### Added
+
+- Added the complete documentation scaffold for the platform architecture, agent identity model, teams, AI-Firm, plugin system, store, bundles, logging, dashboard theming, installer, CLI contract, ACP registry, MCP, skills, heartbeat, self-learning, multi-user support, Git providers, custom commands, ECHO, and API reference.
+- Added root project documentation, contribution guidance, MIT license, build-step checklist, implementation roadmap, and release tracking.
+- Added PostgreSQL schema and seed data covering agents, teams, AI-Firm, plugins, channels, model providers, skills, MCP, conversations, messages, projects, tasks, logs, costs, heartbeat, sessions, store cache, users, auth sessions, and Git integrations.
+- Added agent identity files for the Main Agent, ECHO debug agent, AI-Firm CEO, and reusable agent/team templates.
+- Added plugin templates for channels, model providers, skills, MCP, and a Telegram channel skeleton.
+- Added store registry, bundle specification, store specification, and plugin submission guide.
+- Added Unix/macOS and Windows installer scripts plus Docker Compose quick/dev and production stacks.
+- Added the first Spring Boot backend runtime under `packages/core` with health API, configuration properties, Dockerfile, Flyway migration files, explicit migration execution, file-defined agent listing, and structured logging APIs.
+- Added the first Vue/Vite dashboard runtime under `packages/dashboard/frontend` with health, agents, and recent-log panels.
+- Added Nginx API proxying for the packaged dashboard container.
+- Added release automation support through roadmap-label and milestone-release workflows.
+
+### Fixed
+
+- Corrected README documentation links and project structure references.
+- Normalized text file line endings for backend, dashboard, SQL, XML, Vue, TypeScript, and Nginx config files.
+- Made the backend health API independent of Actuator internals.
+- Updated Docker Compose PostgreSQL 18 volume handling and added service health checks for deterministic startup.
+- Filtered runtime agent listing so scaffold templates are not exposed as concrete agents.
+
+### Validation
+
+- Backend Docker image builds successfully.
+- Dashboard Docker image builds successfully.
+- Docker Compose config validates for quick/dev and production files.
+- The local runtime starts PostgreSQL, Redis, Qdrant, backend, and dashboard.
+- `GET /api/health` responds through both backend port `8080` and dashboard proxy port `3000`.
+- `GET /api/agents` returns concrete runtime agents.
+- `GET /api/logs` returns persisted structured startup logs.
+
+### Notes
+
+- `v1.0.0` is the first runnable MVP baseline.
+- The release does not yet include live chat execution, model invocation, realtime log streaming, user authentication, plugin installation, or full dashboard management workflows. Those move to the V2 roadmap.
+
+## v1.0.0-dev - Development Baseline
 
 ### Added
 
@@ -20,8 +59,7 @@ All notable project changes are tracked here once they become part of a roadmap 
 
 ### Notes
 
-- `v1.0.0-dev` is not a release tag.
-- `v1.0.0` is reserved for the first runnable platform release.
+- `v1.0.0-dev` marked the active implementation track before the `v1.0.0` release.
 
 ## v0.10.0 - Hardening
 

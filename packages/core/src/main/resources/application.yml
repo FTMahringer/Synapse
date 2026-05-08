@@ -24,7 +24,7 @@ management:
 
 synapse:
   system-name: ${SYSTEM_NAME:SYNAPSE}
-  version: ${SYNAPSE_VERSION:v1.0.0-dev}
+  version: ${SYNAPSE_VERSION:v1.0.0}
   agents-path: ${SYNAPSE_AGENTS_PATH:agents}
   echo:
     enabled: ${ECHO_ENABLED:true}

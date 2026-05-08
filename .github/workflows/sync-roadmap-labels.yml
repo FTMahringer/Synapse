@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - SYNAPSE_IMPLEMENTATION_ROADMAP.md
+      - SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md
       - .github/workflows/sync-roadmap-labels.yml
   workflow_dispatch:
 
@@ -21,35 +22,43 @@ jobs:
           script: |
             const startToken = '<!-- ROADMAP_LABELS:BEGIN -->';
             const endToken = '<!-- ROADMAP_LABELS:END -->';
-            const repoPath = 'SYNAPSE_IMPLEMENTATION_ROADMAP.md';
+            const repoPaths = [
+              'SYNAPSE_IMPLEMENTATION_ROADMAP.md',
+              'SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md',
+            ];
 
-            const file = await github.rest.repos.getContent({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              path: repoPath,
-            });
+            const labels = [];
 
-            if (!file.data || !file.data.content) {
-              throw new Error(`Unable to read ${repoPath}`);
+            for (const repoPath of repoPaths) {
+              const file = await github.rest.repos.getContent({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                path: repoPath,
+              });
+
+              if (!file.data || !file.data.content) {
+                throw new Error(`Unable to read ${repoPath}`);
+              }
+
+              const content = Buffer.from(file.data.content, file.data.encoding || 'base64').toString('utf8');
+              const start = content.indexOf(startToken);
+              const end = content.indexOf(endToken);
+
+              if (start === -1 || end === -1 || end <= start) {
+                core.info(`No roadmap label block in ${repoPath}; skipping.`);
+                continue;
+              }
+
+              const labelBlock = content.slice(start + startToken.length, end);
+              const jsonMatch = labelBlock.match(/```json\s*([\s\S]*?)```/i);
+
+              if (!jsonMatch) {
+                throw new Error(`Roadmap label block in ${repoPath} must contain a JSON code fence.`);
+              }
+
+              const parsed = JSON.parse(jsonMatch[1]);
+              labels.push(...(Array.isArray(parsed.labels) ? parsed.labels : []));
             }
-
-            const content = Buffer.from(file.data.content, file.data.encoding || 'base64').toString('utf8');
-            const start = content.indexOf(startToken);
-            const end = content.indexOf(endToken);
-
-            if (start === -1 || end === -1 || end <= start) {
-              throw new Error('Roadmap label block not found or malformed.');
-            }
-
-            const labelBlock = content.slice(start + startToken.length, end);
-            const jsonMatch = labelBlock.match(/```json\s*([\s\S]*?)```/i);
-
-            if (!jsonMatch) {
-              throw new Error('Roadmap label block must contain a JSON code fence.');
-            }
-
-            const parsed = JSON.parse(jsonMatch[1]);
-            const labels = Array.isArray(parsed.labels) ? parsed.labels : [];
 
             if (labels.length === 0) {
               throw new Error('No labels were defined in the roadmap label block.');
@@ -112,5 +121,5 @@ jobs:
                 [{ data: 'Updated', header: true }, { data: String(summary.updated), header: false }],
                 [{ data: 'Unchanged', header: true }, { data: String(summary.unchanged), header: false }],
               ])
-              .addRaw(`\nSource file: \`${repoPath}\``)
+              .addRaw(`\nSource files: ${repoPaths.map((path) => `\`${path}\``).join(', ')}`)
               .write();
