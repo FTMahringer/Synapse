@@ -1,0 +1,96 @@
+version: 1
+generated_at: 2026-05-08T00:00:00Z
+
+sources:
+  official:
+    name: Official Store
+    type: curated
+    trust_level: verified
+    url: https://store.synapse.dev/official
+    refresh_interval_hours: 24
+    submission_policy: invite-only
+  community:
+    name: Community Store
+    type: github
+    trust_level: community
+    repository: https://github.com/synapse-community/bundles
+    refresh_interval_hours: 6
+    submission_policy: pull-request
+  skills_sh:
+    name: skills.sh
+    type: api
+    trust_level: community
+    api_url: https://skills.sh/api/v1
+    refresh_interval_hours: 12
+    submission_policy: skills-publish-command
+  acp:
+    name: ACP Registry
+    type: api
+    trust_level: verified
+    api_url: https://registry.acp.dev/api/v1
+    refresh_interval_hours: 24
+    submission_policy: external-registry
+
+plugins:
+  - id: telegram-channel
+    name: Telegram Channel
+    type: channel
+    source: official
+    version: 1.0.0
+    min_synapse: ">=0.4.0"
+    author: synapse-core
+    license: MIT
+    tags: [telegram, messaging, channel]
+    description: "Connects {SYSTEM_NAME} to Telegram through a bot token."
+  - id: anthropic
+    name: Anthropic
+    type: model
+    source: official
+    version: 1.0.0
+    min_synapse: ">=0.4.0"
+    author: synapse-core
+    license: MIT
+    tags: [llm, model, cloud]
+    description: "Adds Anthropic model provider support."
+  - id: ollama
+    name: Ollama
+    type: model
+    source: official
+    version: 1.0.0
+    min_synapse: ">=0.4.0"
+    author: synapse-core
+    license: MIT
+    tags: [llm, model, local, self-hosted]
+    description: "Adds local Ollama model provider support."
+
+bundles:
+  - id: developer-workspace
+    name: Developer Workspace
+    source: community
+    version: 1.0.0
+    min_synapse: ">=0.5.0"
+    author: community-example
+    license: MIT
+    tags: [development, coding, notifications]
+    plugins:
+      - id: telegram-channel
+        version: ">=1.0.0"
+      - id: anthropic
+        version: ">=1.0.0"
+      - id: ollama
+        version: ">=1.0.0"
+    description: "Example community bundle for developer task coordination."
+
+stats:
+  telegram-channel:
+    downloads: 0
+    stars: 0
+    bundle_count: 1
+  anthropic:
+    downloads: 0
+    stars: 0
+    bundle_count: 1
+  ollama:
+    downloads: 0
+    stars: 0
+    bundle_count: 1

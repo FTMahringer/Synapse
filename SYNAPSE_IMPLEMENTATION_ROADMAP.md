@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.4.0`
+**Current version:** `v0.5.0`
 
 ---
 
@@ -273,7 +273,7 @@
 
 **Target version:** `v0.5.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Make community distribution, bundle publishing, and store browsing explicit before full public docs are finalized.
@@ -293,15 +293,17 @@
 - `v0.5.3` registry examples and store taxonomy cleanup
 
 **Exit criteria**
-- Store types are defined clearly.
-- Bundle validation rules are documented.
-- Community publishing can be reasoned about without reading the implementation.
+- Store types are defined clearly. Complete.
+- Bundle validation rules are documented. Complete.
+- Community publishing can be reasoned about without reading the implementation. Complete.
 
 ---
 
 ## 9. Phase 6 - Documentation
 
 **Target version:** `v0.6.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Turn the platform design into a usable reference set for builders and operators.

@@ -2,6 +2,20 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.5.0 - Store and Bundle System
+
+### Added
+
+- Added an example store registry with official, community, skills.sh, and ACP sources.
+- Added example plugin, bundle, and statistics entries for store cache structure.
+- Added the plugin and bundle submission guide covering Official Store, Community Store, skills publishing, manual installs, and logging.
+- Completed the store file count required by the original build steps.
+
+### Notes
+
+- `v0.5.0` closes the store milestone.
+- The next milestone is `v0.6.0`, focused on completing the documentation set.
+
 ## v0.4.0 - Plugin Templates
 
 ### Added
