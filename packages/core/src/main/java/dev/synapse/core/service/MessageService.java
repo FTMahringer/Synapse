@@ -56,7 +56,7 @@ public class MessageService {
 
         // Get default provider (first enabled Ollama provider for now)
         ModelProvider provider = providerService.findAll().stream()
-            .filter(p -> "ollama".equals(p.getProviderType()) && p.isEnabled())
+            .filter(p -> p.getType() == ModelProvider.ProviderType.OLLAMA && p.getEnabled())
             .findFirst()
             .orElseThrow(() -> new IllegalStateException("No enabled Ollama provider found"));
 
@@ -73,8 +73,8 @@ public class MessageService {
         }
 
         // Get model from provider config
-        String model = provider.getConfiguration() != null 
-            ? provider.getConfiguration().path("model").asText("llama3.2") 
+        String model = provider.getConfig() != null && provider.getConfig().containsKey("model")
+            ? provider.getConfig().get("model").toString()
             : "llama3.2";
 
         // Call Ollama with timeout handling

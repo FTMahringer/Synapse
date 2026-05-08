@@ -59,11 +59,10 @@ public class DtoMapper {
         );
     }
 
-    public static Conversation fromCreateRequest(CreateConversationRequest request) {
+    public static Conversation fromCreateRequest(CreateConversationRequest request, UUID userId) {
         Conversation conversation = new Conversation();
         conversation.setAgentId(request.agentId());
-        conversation.setUserId(request.userId());
-        conversation.setChannelId(request.channelId());
+        conversation.setUserId(userId);
         return conversation;
     }
 

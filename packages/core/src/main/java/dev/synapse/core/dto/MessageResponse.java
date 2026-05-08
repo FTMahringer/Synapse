@@ -2,7 +2,7 @@ package dev.synapse.core.dto;
 
 import dev.synapse.core.domain.Message;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public record MessageResponse(
@@ -11,12 +11,12 @@ public record MessageResponse(
     String role,
     String content,
     Integer tokens,
-    OffsetDateTime createdAt
+    Instant createdAt
 ) {
     public static MessageResponse from(Message message) {
         return new MessageResponse(
             message.getId(),
-            message.getConversation().getId(),
+            message.getConversationId(),
             message.getRole().name(),
             message.getContent(),
             message.getTokens(),
