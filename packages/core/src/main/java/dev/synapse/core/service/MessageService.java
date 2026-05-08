@@ -77,7 +77,7 @@ public class MessageService {
             ? provider.getConfiguration().path("model").asText("llama3.2") 
             : "llama3.2";
 
-        // Call Ollama
+        // Call Ollama with timeout handling
         long startTime = System.currentTimeMillis();
         OllamaChat.ChatRequest request = new OllamaChat.ChatRequest(
             model,
@@ -86,7 +86,23 @@ public class MessageService {
             null
         );
 
-        OllamaChat.ChatResponse response = ollamaProviderService.chatCompletion(provider, request);
+        OllamaChat.ChatResponse response;
+        try {
+            response = ollamaProviderService.chatCompletion(provider, request);
+        } catch (Exception e) {
+            // Log error and create error message
+            Message errorMessage = new Message();
+            errorMessage.setConversationId(conversationId);
+            errorMessage.setRole(Message.MessageRole.ASSISTANT);
+            errorMessage.setContent("⚠️ Model provider error: " + e.getMessage());
+            errorMessage.setProviderId(provider.getId());
+            errorMessage.setModelName(model);
+            errorMessage.setLatencyMs(System.currentTimeMillis() - startTime);
+            messageRepository.save(errorMessage);
+            
+            throw new RuntimeException("Failed to get model response", e);
+        }
+        
         long latency = System.currentTimeMillis() - startTime;
 
         // Save assistant message with metadata
