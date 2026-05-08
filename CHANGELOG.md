@@ -2,6 +2,27 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.5-dev - Task and Task Log APIs
+
+### Added
+
+- Added TaskController with REST endpoints (GET, POST, PATCH, DELETE tasks, GET task logs).
+- Added TaskLogDTO and UpdateTaskRequest DTOs for task API contracts.
+- Enhanced TaskService with structured logging and automatic task log creation.
+- Added task log tracking for all task mutations (create, update, delete).
+- Added change tracking in task updates to log only modified fields.
+- Added GET /api/tasks endpoint with optional projectId query parameter filter.
+- Added GET /api/tasks/{id}/logs endpoint to retrieve task event history.
+- Task logs automatically created on task creation and updates with change details.
+
+### Notes
+
+- `v1.0.5-dev` completes the fifth patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- PATCH /api/tasks/{id} supports partial updates (only provided fields updated).
+- Task updates track before/after values for title, status, assignedAgentId, and size.
+- Task logs provide audit trail of all task lifecycle events.
+- GET /api/tasks?projectId={uuid} filters tasks by project.
+
 ## v1.0.4-dev - Settings and System Metadata APIs
 
 ### Added
