@@ -3,8 +3,9 @@ package dev.synapse.core.conversation;
 import dev.synapse.core.domain.Conversation;
 import dev.synapse.core.domain.Message;
 import dev.synapse.core.dto.CreateConversationRequest;
-import dev.synapse.core.repository.MessageRepository;
+import dev.synapse.core.dto.SendMessageRequest;
 import dev.synapse.core.service.ConversationService;
+import dev.synapse.core.service.MessageService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,14 @@ import java.util.UUID;
 public class ConversationController {
 
     private final ConversationService conversationService;
-    private final MessageRepository messageRepository;
+    private final MessageService messageService;
 
     public ConversationController(
         ConversationService conversationService,
-        MessageRepository messageRepository
+        MessageService messageService
     ) {
         this.conversationService = conversationService;
-        this.messageRepository = messageRepository;
+        this.messageService = messageService;
     }
 
     @PostMapping
@@ -56,6 +57,15 @@ public class ConversationController {
 
     @GetMapping("/{id}/messages")
     public List<Message> getMessages(@PathVariable UUID id) {
-        return messageRepository.findByConversationIdOrderByCreatedAtAsc(id);
+        return messageService.findByConversationId(id);
+    }
+
+    @PostMapping("/{id}/messages")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Message sendMessage(
+        @PathVariable UUID id,
+        @Valid @RequestBody SendMessageRequest request
+    ) {
+        return messageService.sendMessage(id, request.content());
     }
 }

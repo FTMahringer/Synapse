@@ -2,6 +2,7 @@ package dev.synapse.core.service;
 
 import dev.synapse.core.domain.Message;
 import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.repository.ConversationRepository;
 import dev.synapse.core.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,28 @@ import java.util.UUID;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final ConversationRepository conversationRepository;
 
-    public MessageService(MessageRepository messageRepository) {
+    public MessageService(
+        MessageRepository messageRepository,
+        ConversationRepository conversationRepository
+    ) {
         this.messageRepository = messageRepository;
+        this.conversationRepository = conversationRepository;
+    }
+
+    @Transactional
+    public Message sendMessage(UUID conversationId, String content) {
+        if (!conversationRepository.existsById(conversationId)) {
+            throw new ResourceNotFoundException("Conversation", conversationId.toString());
+        }
+
+        Message message = new Message();
+        message.setConversationId(conversationId);
+        message.setRole(Message.MessageRole.USER);
+        message.setContent(content);
+
+        return messageRepository.save(message);
     }
 
     @Transactional(readOnly = true)
