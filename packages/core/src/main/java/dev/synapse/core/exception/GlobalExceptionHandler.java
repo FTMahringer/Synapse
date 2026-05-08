@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,5 +40,36 @@ public class GlobalExceptionHandler {
 
         ErrorResponse response = ErrorResponse.from(ex, traceId);
         return ResponseEntity.status(ex.getHttpStatus()).body(response);
+    }
+
+    @ExceptionHandler(org.springframework.web.bind.MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(
+        org.springframework.web.bind.MethodArgumentNotValidException ex) {
+        
+        UUID traceId = UUID.randomUUID();
+        String message = ex.getBindingResult().getFieldErrors().stream()
+            .map(error -> error.getField() + ": " + error.getDefaultMessage())
+            .findFirst()
+            .orElse("Validation failed");
+
+        logService.log(
+            LogLevel.WARN,
+            LogCategory.API,
+            Map.of("component", "GlobalExceptionHandler"),
+            "VALIDATION_ERROR",
+            Map.of("message", message),
+            null,
+            traceId
+        );
+
+        ErrorResponse response = new ErrorResponse(
+            "VALIDATION_ERROR",
+            message,
+            400,
+            Instant.now(),
+            null,
+            traceId
+        );
+        return ResponseEntity.status(400).body(response);
     }
 }

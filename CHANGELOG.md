@@ -2,6 +2,25 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.2-dev - DTOs and Validation
+
+### Added
+
+- Added stable DTO records for all domain entities (UserDTO, AgentDTO, ConversationDTO, MessageDTO, TaskDTO, PluginDTO).
+- Added validated request DTOs with Jakarta Bean Validation constraints (CreateUserRequest, CreateAgentRequest, CreateConversationRequest, CreateMessageRequest, CreateTaskRequest).
+- Added DtoMapper utility class for bidirectional entity-DTO conversion.
+- Added JacksonConfig for ObjectMapper bean with JavaTimeModule support.
+- Added Map-based logging method to SystemLogService for structured logging integration.
+- Added validation error handler in GlobalExceptionHandler for MethodArgumentNotValidException.
+- Added jackson-datatype-jsr310 dependency to pom.xml for Instant/LocalDateTime serialization.
+
+### Notes
+
+- `v1.0.2-dev` completes the second patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- DTOs use Jakarta validation annotations for input validation.
+- All DTOs use JsonInclude.NON_NULL to omit null fields in responses.
+- DtoMapper provides clean separation between domain model and API contracts.
+
 ## v1.0.1-dev - Persistence API Layer
 
 ### Added

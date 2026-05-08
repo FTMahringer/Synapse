@@ -1,5 +1,7 @@
 package dev.synapse.core.logging;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
@@ -7,19 +9,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
 public class SystemLogService {
 
     private final JdbcClient jdbcClient;
+    private final ObjectMapper objectMapper;
 
-    public SystemLogService(JdbcClient jdbcClient) {
+    public SystemLogService(JdbcClient jdbcClient, ObjectMapper objectMapper) {
         this.jdbcClient = jdbcClient;
+        this.objectMapper = objectMapper;
     }
 
     public void info(LogCategory category, String event, String source, String payload) {
         write(LogLevel.INFO, category, event, source, payload, null, null);
+    }
+
+    public void log(LogLevel level, LogCategory category, Map<String, Object> source, String event, Map<String, Object> payload, UUID correlationId, UUID traceId) {
+        write(level, category, event, toJson(source), toJson(payload), correlationId, traceId);
     }
 
     public void write(LogLevel level, LogCategory category, String event, String source, String payload, UUID correlationId, UUID traceId) {
@@ -35,6 +44,17 @@ public class SystemLogService {
                 .param("correlationId", correlationId)
                 .param("traceId", traceId)
                 .update();
+    }
+
+    private String toJson(Map<String, Object> map) {
+        if (map == null || map.isEmpty()) {
+            return "{}";
+        }
+        try {
+            return objectMapper.writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            return "{}";
+        }
     }
 
     public List<SystemLog> latest(int limit) {
