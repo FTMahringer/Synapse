@@ -2,6 +2,26 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.4-dev - Settings and System Metadata APIs
+
+### Added
+
+- Added SystemMetadata domain entity with singleton pattern (id constrained to TRUE).
+- Added SystemMetadataRepository for system_metadata table access.
+- Added SystemMetadataService with metadata CRUD and settings merge operations.
+- Added SystemMetadataController with REST endpoints (GET /api/system/metadata, PUT /api/system/metadata, GET /api/system/settings, PATCH /api/system/settings).
+- Added SystemMetadataDTO and UpdateSystemMetadataRequest DTOs.
+- Added structured logging for metadata and settings updates.
+- Settings PATCH endpoint merges incoming settings with existing settings rather than replacing.
+
+### Notes
+
+- `v1.0.4-dev` completes the fourth patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- System metadata is a singleton table with id=true constraint.
+- GET /api/system/metadata returns platform name, version, and full settings.
+- PATCH /api/system/settings merges partial updates into existing settings.
+- Default metadata created on first access with name="SYNAPSE", version="1.0.0".
+
 ## v1.0.3-dev - Agent and Team CRUD with File Bootstrap
 
 ### Added
