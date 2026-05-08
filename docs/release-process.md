@@ -16,6 +16,10 @@ This document defines how SYNAPSE moves through the implementation roadmap.
 - Patch-sized work inside a step uses patch versions, such as `v0.2.1`, `v0.2.2`, and `v0.2.3`.
 - Patch versions may appear in commit messages, PR titles, or issue titles.
 - `VERSION` should only be advanced when a milestone is complete.
+- Annotated milestone tags must include the matching changelog section in the tag message.
+- Every pushed `v0.x.0` milestone tag must have a GitHub release.
+- A milestone release should include all patch changelog notes accumulated during that step.
+- GitHub releases are created or updated by `.github/workflows/create-milestone-release.yml`.
 
 ## Commit Rules
 
@@ -47,8 +51,19 @@ Before a milestone is complete:
 Optional tag command:
 
 ```bash
-git tag -a v0.2.0 -m "v0.2.0 backend foundation"
+git tag -a v0.2.0 -F docs/release-notes/v0.2.0.md
+git push origin v0.2.0
 ```
+
+If a milestone tag was created without the changelog body, recreate it before public release:
+
+```bash
+git tag -d v0.2.0
+git tag -a v0.2.0 -F docs/release-notes/v0.2.0.md
+git push origin v0.2.0 --force
+```
+
+For an older milestone whose tag already exists, use the workflow's manual dispatch mode and pass the tag name. The workflow reads the matching file from `docs/release-notes/` on the default branch and creates or updates the GitHub release.
 
 ## GitHub Label Sync
 

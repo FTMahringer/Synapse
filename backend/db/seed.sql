@@ -8,28 +8,42 @@
 -- ---------------------------------------------------------------------------
 -- System metadata (singleton row)
 -- ---------------------------------------------------------------------------
-INSERT INTO system_metadata (name, version, created_at, settings)
+INSERT INTO system_metadata (id, name, version, created_at, updated_at, settings)
 VALUES (
+    TRUE,
     'SYNAPSE',
-    '0.1.0',
+    '0.2.0',
     NOW(),
-    '{}'
-);
-
--- If schema is re-applied, the table is truncated by schema.sql not existing
--- yet; if this seed is run a second time, a unique violation would occur.
--- Wrap in a DO block so it is safe to run idempotently.
--- (system_metadata has no PK; we guard with a NOT EXISTS check.)
--- NOTE: The plain INSERT above is intentional for a first-time run.
---       Comment it out and use the block below for re-entrant execution:
---
--- DO $$
--- BEGIN
---     IF NOT EXISTS (SELECT 1 FROM system_metadata WHERE name = 'SYNAPSE') THEN
---         INSERT INTO system_metadata (name, version, created_at, settings)
---         VALUES ('SYNAPSE', '0.1.0', NOW(), '{}');
---     END IF;
--- END $$;
+    NOW(),
+    '{
+        "system_name": "{SYSTEM_NAME}",
+        "default_locale": "en",
+        "logging": {
+            "storage": "postgresql",
+            "delivery": ["websocket", "sse"],
+            "stream": "redis"
+        },
+        "memory": {
+            "vault_enabled": true,
+            "compression_provider": "ollama",
+            "compression_model": "llama3.2",
+            "compression_threshold_tokens": 40000
+        },
+        "echo": {
+            "enabled": true,
+            "activation": "manual",
+            "debug_only": true
+        },
+        "store": {
+            "official_enabled": true,
+            "community_enabled": true
+        }
+    }'
+)
+ON CONFLICT (id) DO UPDATE SET
+    version = EXCLUDED.version,
+    updated_at = NOW(),
+    settings = system_metadata.settings || EXCLUDED.settings;
 
 
 -- ---------------------------------------------------------------------------
@@ -88,7 +102,7 @@ VALUES (
 ON CONFLICT (id) DO NOTHING;
 
 
--- ECHO Agent: a lightweight local agent used for offline/fallback scenarios.
+-- ECHO Agent: a lightweight local debug agent invoked manually by the user.
 -- Backed by Ollama running phi3-mini; no external API calls required.
 INSERT INTO agents (id, name, type, status, config, created_at)
 VALUES (
@@ -100,16 +114,19 @@ VALUES (
         "provider": "ollama",
         "model": "phi3-mini",
         "base_url": "http://localhost:11434",
-        "system_prompt": "You are ECHO, a lightweight local agent. You operate entirely on-device with no external API calls. You handle simple queries, echoing and summarising information when the primary agent is unavailable.",
+        "system_prompt": "You are ECHO, a lightweight local debug agent. You operate entirely on-device with no external API calls. You only run when the user explicitly invokes the /echo command. You diagnose local platform state, summarise visible context, and avoid acting as an automatic fallback assistant.",
         "temperature": 0.5,
         "max_tokens": 2048,
         "tools_enabled": false,
+        "activation": "manual",
+        "debug_only": true,
         "memory": {
             "vault_enabled": false
         },
         "capabilities": [
-            "conversation",
-            "echo"
+            "diagnostics",
+            "summarisation",
+            "local_context_echo"
         ],
         "notes": "Requires Ollama running locally with the phi3-mini model pulled."
     }',

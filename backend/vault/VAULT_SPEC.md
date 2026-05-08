@@ -2,7 +2,7 @@
 
 **Component:** Per-Agent Knowledge Vault  
 **Format:** Obsidian-compatible Markdown  
-**Version:** 0.1.0  
+**Version:** 0.2.0
 **Status:** Authoritative design document
 
 ---
@@ -18,6 +18,7 @@ Key design goals:
 - **Append-friendly.** New information is appended or merged into existing files, not overwritten wholesale.
 - **Selectively compressed.** High-churn memory sections are periodically summarised by an LLM; identity and relationship files are never touched by the compressor.
 - **Backend-synced.** Every significant vault write is reflected in the `system_logs` table under the `MEMORY` category so that events are queryable without opening files.
+- **Path-safe.** Every logical vault path is resolved inside the configured vault root before any read or write occurs.
 
 ---
 
@@ -50,6 +51,8 @@ vault/
 `[agent-id]` is the text primary key from the `agents` table (e.g. `main-agent`).  
 `[session-id]` is the UUID from the `sessions` table.  
 `[project-id]` is the UUID from the `projects` table.
+
+The backend rejects any resolved path that escapes the configured vault root after normalization. This applies to all user-provided agent IDs, session IDs, project IDs, filenames, archive paths, and search result paths.
 
 ### 2.1 File Descriptions
 
@@ -216,6 +219,16 @@ To prevent compression storms (e.g. many agents closing sessions simultaneously)
 - A single agent may not have more than **1 active compression job** at a time. If a second trigger fires while compression is in progress, it is queued and deduplicated (the queued job picks up the latest file state when it eventually runs).
 - There is a **minimum interval of 60 seconds** between consecutive compression jobs for the same agent.
 - If the compressor model is unavailable (e.g. Ollama is down), the job is retried with exponential backoff: 30 s, 2 min, 10 min, 1 h. After 4 failed attempts, a `WARN` event is logged and the job is dropped from the queue.
+
+### 5.5 Failure Handling
+
+Compression is never allowed to destroy source memory when the target write fails. The backend follows these rules:
+
+- If compressor invocation fails, the working file remains unchanged and a retry is scheduled.
+- If target episodic write fails, the working file remains in place with `status: closed` and the job is marked retryable.
+- If archive creation fails after a successful target write, the working file remains in place and `session.compression_archive_failed` is logged at `WARN`.
+- If frontmatter parsing fails, compression is skipped and `session.compression_failed` is logged with the parse error.
+- Operators may manually requeue compression after correcting the file.
 
 ---
 

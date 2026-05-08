@@ -19,15 +19,17 @@ CREATE EXTENSION IF NOT EXISTS "pg_trgm";    -- trigram indexes for text search
 -- Singleton-style table; application enforces a single row via upsert.
 -- Stores platform-wide metadata and global settings blob.
 CREATE TABLE IF NOT EXISTS system_metadata (
+    id          BOOL        PRIMARY KEY DEFAULT TRUE CHECK (id),
     name        TEXT        NOT NULL,
     version     TEXT        NOT NULL,
     created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     settings    JSONB       NOT NULL DEFAULT '{}'
 );
 
 COMMENT ON TABLE system_metadata IS
     'Singleton row holding platform identity, version, and global settings. '
-    'Application logic must enforce at most one row.';
+    'The id CHECK constraint allows only one TRUE row.';
 
 
 -- Append-only audit / event log for the entire platform.
@@ -191,6 +193,7 @@ CREATE TABLE IF NOT EXISTS installed_channels (
 
 CREATE INDEX IF NOT EXISTS idx_installed_channels_plugin ON installed_channels (plugin_id);
 CREATE INDEX IF NOT EXISTS idx_installed_channels_user   ON installed_channels (user_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_installed_channels_plugin_user ON installed_channels (plugin_id, user_id);
 
 
 CREATE TABLE IF NOT EXISTS installed_models (
@@ -209,6 +212,7 @@ COMMENT ON TABLE installed_models IS
 CREATE INDEX IF NOT EXISTS idx_installed_models_plugin        ON installed_models (plugin_id);
 CREATE INDEX IF NOT EXISTS idx_installed_models_user          ON installed_models (user_id);
 CREATE INDEX IF NOT EXISTS idx_installed_models_self_hosted   ON installed_models (is_self_hosted) WHERE is_self_hosted = TRUE;
+CREATE UNIQUE INDEX IF NOT EXISTS ux_installed_models_plugin_user ON installed_models (plugin_id, user_id);
 
 
 CREATE TABLE IF NOT EXISTS installed_skills (
@@ -221,6 +225,7 @@ CREATE TABLE IF NOT EXISTS installed_skills (
 
 CREATE INDEX IF NOT EXISTS idx_installed_skills_plugin ON installed_skills (plugin_id);
 CREATE INDEX IF NOT EXISTS idx_installed_skills_agent  ON installed_skills (agent_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_installed_skills_plugin_agent ON installed_skills (plugin_id, agent_id);
 
 
 CREATE TABLE IF NOT EXISTS installed_mcp (
@@ -236,6 +241,7 @@ COMMENT ON TABLE installed_mcp IS
 
 CREATE INDEX IF NOT EXISTS idx_installed_mcp_plugin ON installed_mcp (plugin_id);
 CREATE INDEX IF NOT EXISTS idx_installed_mcp_agent  ON installed_mcp (agent_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_installed_mcp_plugin_agent ON installed_mcp (plugin_id, agent_id);
 
 
 -- =============================================================================
@@ -267,7 +273,7 @@ CREATE TABLE IF NOT EXISTS conversations (
     id          UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
     agent_id    TEXT    NOT NULL REFERENCES agents (id) ON DELETE RESTRICT,
     user_id     UUID    NOT NULL REFERENCES users  (id) ON DELETE CASCADE,
-    channel_id  UUID,
+    channel_id  UUID    REFERENCES installed_channels (id) ON DELETE SET NULL,
     started_at  TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     status      TEXT    NOT NULL DEFAULT 'active' CHECK (status IN ('active','closed'))
 );
@@ -363,24 +369,6 @@ CREATE INDEX IF NOT EXISTS idx_agent_costs_agent_id    ON agent_costs (agent_id)
 CREATE INDEX IF NOT EXISTS idx_agent_costs_provider_id ON agent_costs (provider_id);
 CREATE INDEX IF NOT EXISTS idx_agent_costs_created_at  ON agent_costs (created_at DESC);
 
-
-CREATE TABLE IF NOT EXISTS heartbeat_log (
-    id              UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
-    agent_id        TEXT    NOT NULL REFERENCES agents (id) ON DELETE CASCADE,
-    session_id      UUID    NOT NULL,
-    sent_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    cache_saved     BOOL    NOT NULL DEFAULT FALSE
-);
-
-COMMENT ON TABLE heartbeat_log IS
-    'Periodic keep-alive signals from running agents. '
-    'cache_saved=true indicates the agent persisted its context cache during this heartbeat.';
-
-CREATE INDEX IF NOT EXISTS idx_heartbeat_log_agent_id   ON heartbeat_log (agent_id);
-CREATE INDEX IF NOT EXISTS idx_heartbeat_log_session_id ON heartbeat_log (session_id);
-CREATE INDEX IF NOT EXISTS idx_heartbeat_log_sent_at    ON heartbeat_log (sent_at DESC);
-
-
 CREATE TABLE IF NOT EXISTS sessions (
     id              UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
     agent_id        TEXT    NOT NULL REFERENCES agents (id) ON DELETE CASCADE,
@@ -394,6 +382,22 @@ CREATE INDEX IF NOT EXISTS idx_sessions_agent_id      ON sessions (agent_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_id       ON sessions (user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_status        ON sessions (status);
 CREATE INDEX IF NOT EXISTS idx_sessions_last_activity ON sessions (last_activity DESC);
+
+CREATE TABLE IF NOT EXISTS heartbeat_log (
+    id              UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
+    agent_id        TEXT    NOT NULL REFERENCES agents (id) ON DELETE CASCADE,
+    session_id      UUID    NOT NULL REFERENCES sessions (id) ON DELETE CASCADE,
+    sent_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    cache_saved     BOOL    NOT NULL DEFAULT FALSE
+);
+
+COMMENT ON TABLE heartbeat_log IS
+    'Periodic keep-alive signals from running agents. '
+    'cache_saved=true indicates the agent persisted its context cache during this heartbeat.';
+
+CREATE INDEX IF NOT EXISTS idx_heartbeat_log_agent_id   ON heartbeat_log (agent_id);
+CREATE INDEX IF NOT EXISTS idx_heartbeat_log_session_id ON heartbeat_log (session_id);
+CREATE INDEX IF NOT EXISTS idx_heartbeat_log_sent_at    ON heartbeat_log (sent_at DESC);
 
 
 -- =============================================================================
@@ -414,6 +418,7 @@ COMMENT ON TABLE store_cache IS
 
 CREATE INDEX IF NOT EXISTS idx_store_cache_source       ON store_cache (source);
 CREATE INDEX IF NOT EXISTS idx_store_cache_last_updated ON store_cache (last_updated DESC);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_store_cache_source ON store_cache (source);
 
 
 CREATE TABLE IF NOT EXISTS plugin_stats (
@@ -445,7 +450,7 @@ CREATE INDEX IF NOT EXISTS idx_user_agents_agent_id ON user_agents (agent_id);
 
 CREATE TABLE IF NOT EXISTS user_channels (
     user_id     UUID    NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    channel_id  UUID    NOT NULL,
+    channel_id  UUID    NOT NULL REFERENCES installed_channels (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, channel_id)
 );
 

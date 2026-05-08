@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.1.0`
+**Current version:** `v0.2.0`
 
 ---
 
@@ -171,7 +171,7 @@
 
 **Target version:** `v0.2.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Lock down the server-side persistence model before runtime behavior expands.
@@ -193,15 +193,17 @@
 - `v0.2.3` vault structure and compression notes
 
 **Exit criteria**
-- Database schema is complete enough to support the planned core entities.
-- Seed data initializes the system cleanly.
-- Vault storage and compression rules are documented clearly enough to implement without guesswork.
+- Database schema is complete enough to support the planned core entities. Complete.
+- Seed data initializes the system cleanly. Complete.
+- Vault storage and compression rules are documented clearly enough to implement without guesswork. Complete.
 
 ---
 
 ## 6. Phase 3 - Agents
 
 **Target version:** `v0.3.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Build the identity layer that makes the platform feel like a multi-agent system instead of a single chat app.
