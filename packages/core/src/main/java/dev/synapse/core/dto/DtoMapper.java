@@ -2,6 +2,8 @@ package dev.synapse.core.dto;
 
 import dev.synapse.core.domain.*;
 
+import java.util.UUID;
+
 public class DtoMapper {
 
     public static UserDTO toDTO(User user) {
