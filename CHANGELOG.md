@@ -2,6 +2,28 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.3-dev - Agent and Team CRUD with File Bootstrap
+
+### Added
+
+- Added AgentManagementService with hybrid file+database agent loading strategy.
+- Added AgentManagementController with REST endpoints for agents CRUD (GET, POST, PUT, DELETE).
+- Added POST /api/agents/_sync endpoint to import file-based agents into database.
+- Added AgentTeamService with CRUD operations for teams.
+- Added AgentTeamController with REST endpoints for teams (GET, POST, PUT, DELETE).
+- Added AgentTeamDTO and CreateAgentTeamRequest DTOs for team API contracts.
+- Added API log category to LogCategory enum for request/response logging.
+- Added structured logging for all agent and team mutating operations.
+- Added DtoMapper methods for AgentTeam entity-DTO conversion.
+
+### Notes
+
+- `v1.0.3-dev` completes the third patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- File-based agents (from `agents/` directory) are merged with database agents in listAllAgents().
+- File agents are marked with `"source": "file"` in their config field.
+- Agents can be synced from file definitions into database via POST /_sync endpoint.
+- Database agents take precedence over file-based agents with same ID.
+
 ## v1.0.2-dev - DTOs and Validation
 
 ### Added

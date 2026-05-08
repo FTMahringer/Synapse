@@ -2,6 +2,7 @@ package dev.synapse.core.logging;
 
 public enum LogCategory {
     SYSTEM,
+    API,
     AUTH,
     AGENT,
     AGENT_MESSAGE,

@@ -122,4 +122,25 @@ public class DtoMapper {
             plugin.getCreatedAt()
         );
     }
+
+    public static AgentTeamDTO toDTO(AgentTeam team) {
+        return new AgentTeamDTO(
+            team.getId(),
+            team.getName(),
+            team.getLeaderAgentId(),
+            team.getConfig(),
+            team.getCreatedAt()
+        );
+    }
+
+    public static AgentTeam fromCreateRequest(CreateAgentTeamRequest request) {
+        AgentTeam team = new AgentTeam();
+        team.setId(request.id());
+        team.setName(request.name());
+        team.setLeaderAgentId(request.leaderAgentId());
+        if (request.config() != null) {
+            team.setConfig(request.config());
+        }
+        return team;
+    }
 }
