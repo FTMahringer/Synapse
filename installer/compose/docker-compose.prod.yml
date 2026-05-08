@@ -9,9 +9,12 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-synapse}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ../../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-      - ../../backend/db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - postgres18-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-synapse} -d $${POSTGRES_DB:-synapse}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     networks:
       - synapse
 
@@ -21,6 +24,11 @@ services:
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
     networks:
       - synapse
 
@@ -46,8 +54,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       ECHO_ENABLED: ${ECHO_ENABLED:-true}
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - ../../agents:/app/agents:ro
     networks:
@@ -78,7 +88,7 @@ networks:
   synapse:
 
 volumes:
-  postgres-data:
+  postgres18-data:
   redis-data:
   qdrant-data:
   ollama-data:

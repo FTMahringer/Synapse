@@ -40,7 +40,11 @@ public class AgentDefinitionLoader {
     }
 
     private boolean looksLikeAgentDirectory(Path path) {
-        return KNOWN_FILES.stream().anyMatch(file -> Files.isRegularFile(path.resolve(file)));
+        Path relativePath = agentsRoot.relativize(path);
+        if (relativePath.getNameCount() > 0 && relativePath.getName(0).toString().startsWith("_")) {
+            return false;
+        }
+        return Files.isRegularFile(path.resolve("identity.md"));
     }
 
     private AgentDefinition load(Path path) {

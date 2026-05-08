@@ -10,6 +10,13 @@ All notable project changes are tracked here once they become part of a roadmap 
 - Added the first Spring Boot backend skeleton with health API, configuration properties, Maven project file, and Dockerfile.
 - Added the first Vue/Vite dashboard skeleton with health API client, operator console shell, and Dockerfile.
 - Added structured log categories, log write/query service, `/api/logs`, startup logging, and dashboard recent-log display.
+- Added explicit Flyway migration execution during backend startup so the first runnable stack creates its schema before writing runtime logs.
+- Added Nginx API proxying for the packaged dashboard container.
+
+### Fixed
+
+- Updated Docker Compose PostgreSQL 18 volume handling and service health checks.
+- Filtered runtime agent listing so scaffold templates are not exposed as concrete agents.
 
 ### Notes
 

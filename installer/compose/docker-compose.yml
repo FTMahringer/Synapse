@@ -10,9 +10,12 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ../../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
-      - ../../backend/db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - postgres18-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-synapse} -d $${POSTGRES_DB:-synapse}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
 
   redis:
     image: redis:8
@@ -20,6 +23,11 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
   qdrant:
     image: qdrant/qdrant:v1.14.1
@@ -43,8 +51,10 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - postgres
-      - redis
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - ../../agents:/app/agents:ro
 
@@ -66,7 +76,7 @@ services:
       - ollama-data:/root/.ollama
 
 volumes:
-  postgres-data:
+  postgres18-data:
   redis-data:
   qdrant-data:
   ollama-data:
