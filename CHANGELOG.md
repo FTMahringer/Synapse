@@ -2,6 +2,28 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.6-dev - API Error Model and Request Correlation
+
+### Added
+
+- Added CorrelationIdFilter to generate and track correlation IDs across requests.
+- Added RequestLoggingFilter for structured HTTP request/response logging.
+- Added HTTP log category to LogCategory enum.
+- Enhanced GlobalExceptionHandler to extract correlation IDs from MDC (SLF4J Mapped Diagnostic Context).
+- Added generic Exception handler for unhandled exceptions with structured logging.
+- Added X-Correlation-ID header to all HTTP responses.
+- Request correlation IDs automatically propagated to system logs and error responses.
+- HTTP request logging includes method, path, status, duration, and correlation ID.
+
+### Notes
+
+- `v1.0.6-dev` completes the sixth and final patch step of the v1.1.0-dev milestone (Persistence API Layer).
+- Correlation IDs provided in X-Correlation-ID request header are preserved; otherwise auto-generated.
+- CorrelationIdFilter uses SLF4J MDC to make correlation ID available throughout request lifecycle.
+- RequestLoggingFilter excludes health check and actuator endpoints from logging.
+- Error responses now include both correlationId and traceId for debugging.
+- Generic exception handler catches all unhandled exceptions with stack trace logging.
+
 ## v1.0.5-dev - Task and Task Log APIs
 
 ### Added

@@ -18,5 +18,6 @@ public enum LogCategory {
     MODEL,
     MCP,
     GIT,
-    CUSTOM_COMMAND
+    CUSTOM_COMMAND,
+    HTTP
 }
