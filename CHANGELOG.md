@@ -2,6 +2,34 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.5-dev - Anthropic Provider
+
+### Added
+
+- Added AnthropicModels DTOs for Anthropic API requests and responses.
+- Added AnthropicProviderService for Anthropic Claude models.
+- Added AnthropicProviderController with health and chat endpoints.
+- Support for ANTHROPIC provider type.
+- GET /api/providers/anthropic/{id}/health for health checks.
+- POST /api/providers/anthropic/{id}/chat for chat completions.
+- Support for temperature, top_p, top_k, max_tokens parameters.
+- API key authentication via x-api-key header.
+- Anthropic API version: 2023-06-01.
+- Token usage tracking (input_tokens, output_tokens).
+- Support for content blocks in responses (text type).
+- Structured logging with token usage and latency.
+
+### Notes
+
+- `v1.2.5-dev` continues the v1.3.0-dev milestone (Model Providers).
+- Anthropic endpoint: https://api.anthropic.com/v1/messages.
+- Messages API format (different from OpenAI).
+- Max tokens required parameter for Anthropic API.
+- Response includes content blocks with type and text.
+- Stop reasons tracked: end_turn, max_tokens, stop_sequence.
+- Failed API calls logged without exposing API keys.
+- Health check uses minimal test request (10 tokens) with claude-3-5-haiku model.
+
 ## v1.2.4-dev - OpenAI-Compatible Provider
 
 ### Added
