@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { fetchAgents, fetchHealth, type AgentDefinition, type HealthResponse } from './api'
+import { fetchAgents, fetchHealth, fetchLogs, type AgentDefinition, type HealthResponse, type SystemLog } from './api'
 
 const health = ref<HealthResponse | null>(null)
 const agents = ref<AgentDefinition[]>([])
+const logs = ref<SystemLog[]>([])
 const error = ref<string | null>(null)
 
 onMounted(async () => {
   try {
-    const [healthResponse, agentResponse] = await Promise.all([fetchHealth(), fetchAgents()])
+    const [healthResponse, agentResponse, logResponse] = await Promise.all([fetchHealth(), fetchAgents(), fetchLogs()])
     health.value = healthResponse
     agents.value = agentResponse
+    logs.value = logResponse
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Unable to reach backend'
   }
@@ -74,6 +76,18 @@ onMounted(async () => {
           </li>
         </ul>
         <p v-else>No agents loaded yet.</p>
+      </section>
+
+      <section class="panel">
+        <h2>Recent Logs</h2>
+        <ul v-if="logs.length" class="log-list">
+          <li v-for="log in logs" :key="log.id">
+            <strong>{{ log.category }}</strong>
+            <span>{{ log.event }}</span>
+            <small>{{ log.level }} · {{ new Date(log.timestamp).toLocaleTimeString() }}</small>
+          </li>
+        </ul>
+        <p v-else>No logs available yet.</p>
       </section>
     </section>
   </main>

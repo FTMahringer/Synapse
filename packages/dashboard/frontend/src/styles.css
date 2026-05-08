@@ -124,7 +124,8 @@ article strong {
   color: #ffb4a8;
 }
 
-.agent-list {
+.agent-list,
+.log-list {
   display: grid;
   gap: 12px;
   list-style: none;
@@ -132,18 +133,22 @@ article strong {
   padding: 0;
 }
 
-.agent-list li {
+.agent-list li,
+.log-list li {
   border-bottom: 1px solid rgba(232, 237, 242, 0.1);
   display: grid;
   gap: 4px;
   padding: 0 0 12px;
 }
 
-.agent-list span {
+.agent-list span,
+.log-list strong {
   font-weight: 700;
 }
 
-.agent-list small {
+.agent-list small,
+.log-list small,
+.log-list span {
   color: #aab4bf;
 }
 
