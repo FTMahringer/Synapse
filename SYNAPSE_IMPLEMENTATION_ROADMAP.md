@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.3.0`
+**Current version:** `v0.4.0`
 
 ---
 
@@ -238,7 +238,7 @@
 
 **Target version:** `v0.4.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Provide the extension runtime that lets the platform connect to channels, models, skills, and external protocols.
@@ -263,15 +263,17 @@
 - `v0.4.3` skills, MCP, ACP, and git-provider integration polishing
 
 **Exit criteria**
-- Extension types have stable manifest formats.
-- Providers and channels can be described without extra ad hoc metadata.
-- Optional integrations remain optional and clearly isolated.
+- Extension types have stable manifest formats. Complete.
+- Providers and channels can be described without extra ad hoc metadata. Complete.
+- Optional integrations remain optional and clearly isolated. Complete.
 
 ---
 
 ## 8. Phase 5 - Store
 
 **Target version:** `v0.5.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Make community distribution, bundle publishing, and store browsing explicit before full public docs are finalized.

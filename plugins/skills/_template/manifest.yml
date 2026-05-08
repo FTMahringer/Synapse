@@ -1,0 +1,45 @@
+id: example-skill
+name: Example Skill
+version: 1.0.0
+type: skill
+author: skill-author
+license: MIT
+description: "Reusable agent capability packaged in the Claude Code Skills format."
+
+requires:
+  synapse_version: ">=0.4.0"
+  skill_format: claude-code-skills
+
+entrypoint:
+  file: skill.md
+  format: markdown
+
+permissions:
+  filesystem:
+    read: false
+    write: false
+  network:
+    enabled: false
+  secrets:
+    required: []
+
+config_schema:
+  enabled:
+    type: boolean
+    required: false
+    default: true
+    description: "Enable or disable this skill for assigned agents."
+  allowed_agents:
+    type: list
+    required: false
+    default: []
+    description: "Optional list of agent IDs allowed to use this skill. Empty means admin-assigned only."
+
+hooks:
+  on_install: "validateSkill"
+  on_uninstall: "removeSkill"
+  on_invoke: "invokeSkill"
+
+store:
+  tags: [skill, template]
+  icon: "skill"

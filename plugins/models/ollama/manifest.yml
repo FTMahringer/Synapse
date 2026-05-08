@@ -1,0 +1,49 @@
+id: ollama
+name: Ollama
+version: 1.0.0
+type: model
+author: synapse-core
+license: MIT
+description: "Connects {SYSTEM_NAME} to a local Ollama server for self-hosted model inference."
+
+requires:
+  synapse_version: ">=0.4.0"
+  java: ">=25"
+  local_service: ollama
+
+config_schema:
+  base_url:
+    type: string
+    required: true
+    default: "http://localhost:11434"
+    description: "Base URL for the local Ollama server."
+  supported_models:
+    type: list
+    required: true
+    default:
+      - llama3.2
+      - phi3-mini
+      - nomic-embed-text
+    description: "Ollama model names available on the local machine."
+  request_timeout_seconds:
+    type: integer
+    required: false
+    default: 120
+    description: "Maximum request duration for a model call."
+
+capabilities:
+  streaming: true
+  function_calling: false
+  vision: false
+  embeddings: true
+  self_hosted: true
+
+hooks:
+  on_install: "configure"
+  on_uninstall: "onUninstall"
+  on_request: "complete"
+  on_response: "onResponse"
+
+store:
+  tags: [llm, model, local, self-hosted, ollama]
+  icon: "ollama"

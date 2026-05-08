@@ -1,0 +1,66 @@
+id: example-mcp-server
+name: Example MCP Server
+version: 1.0.0
+type: mcp
+author: mcp-author
+license: MIT
+description: "Registers an MCP-compatible tool server with {SYSTEM_NAME}."
+
+requires:
+  synapse_version: ">=0.4.0"
+  mcp_protocol: json-rpc
+
+transport:
+  type: stdio
+  command: "example-mcp-server"
+  args: []
+  env: {}
+
+http:
+  enabled: false
+  base_url: ""
+  headers: {}
+
+config_schema:
+  enabled:
+    type: boolean
+    required: false
+    default: true
+    description: "Enable or disable this MCP server."
+  allowed_agents:
+    type: list
+    required: false
+    default: []
+    description: "Agent IDs allowed to call tools from this MCP server."
+  startup_timeout_seconds:
+    type: integer
+    required: false
+    default: 30
+    description: "Maximum time to wait for the MCP server to become ready."
+
+tool_policy:
+  default: deny
+  allow:
+    - example.tool
+  require_confirmation:
+    - destructive.tool
+
+hooks:
+  on_install: "validateServer"
+  on_uninstall: "stopServer"
+  on_start: "startServer"
+  on_stop: "stopServer"
+  on_tool_call: "proxyToolCall"
+
+logging:
+  category: MCP
+  events:
+    - mcp.server.installed
+    - mcp.server.started
+    - mcp.server.stopped
+    - mcp.tool.called
+    - mcp.tool.failed
+
+store:
+  tags: [mcp, tools, template]
+  icon: "mcp"
