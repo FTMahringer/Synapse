@@ -130,11 +130,15 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
+**Current version:** `v0.1.0`
+
 ---
 
 ## 4. Phase 1 - Foundation
 
 **Target version:** `v0.1.0`
+
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Establish the implementation workflow before more code lands.
@@ -157,15 +161,17 @@
 - `v0.1.3` roadmap wording and milestone cleanup
 
 **Exit criteria**
-- The roadmap file is the single place where roadmap labels are defined.
-- GitHub labels can be created or updated from the roadmap without manual editing.
-- Repository contributors can follow the versioning rules without ambiguity.
+- The roadmap file is the single place where roadmap labels are defined. Complete.
+- GitHub labels can be created or updated from the roadmap without manual editing. Complete.
+- Repository contributors can follow the versioning rules without ambiguity. Complete.
 
 ---
 
 ## 5. Phase 2 - Backend Foundation
 
 **Target version:** `v0.2.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Lock down the server-side persistence model before runtime behavior expands.
