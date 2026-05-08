@@ -23,7 +23,7 @@ public class SecretEncryptionService {
     private final SecureRandom secureRandom;
 
     public SecretEncryptionService(
-        @Value("${secrets.encryption-key:CHANGE_ME_32_BYTE_KEY_FOR_PRODUCTION__}") String keyString
+        @Value("${secrets.encryption-key:dev_key_32bytes_changeinprod__}") String keyString
     ) {
         byte[] keyBytes = keyString.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length != 32) {

@@ -63,12 +63,13 @@ CREATE INDEX IF NOT EXISTS idx_system_logs_trace_id        ON system_logs (trace
 -- =============================================================================
 
 CREATE TABLE IF NOT EXISTS users (
-    id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-    username    TEXT        NOT NULL UNIQUE,
-    email       TEXT        NOT NULL UNIQUE,
-    role        TEXT        NOT NULL CHECK (role IN ('OWNER','ADMIN','USER','VIEWER')),
-    settings    JSONB       NOT NULL DEFAULT '{}',
-    created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    id            UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    username      TEXT        NOT NULL UNIQUE,
+    email         TEXT        NOT NULL UNIQUE,
+    password_hash TEXT        NOT NULL,
+    role          TEXT        NOT NULL CHECK (role IN ('OWNER','ADMIN','USER','VIEWER')),
+    settings      JSONB       NOT NULL DEFAULT '{}',
+    created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 COMMENT ON TABLE users IS
@@ -489,6 +490,54 @@ CREATE TABLE IF NOT EXISTS git_repos (
 
 CREATE INDEX IF NOT EXISTS idx_git_repos_provider_id ON git_repos (provider_id);
 CREATE INDEX IF NOT EXISTS idx_git_repos_project_id  ON git_repos (project_id) WHERE project_id IS NOT NULL;
+
+
+-- =============================================================================
+-- MODEL PROVIDERS
+-- =============================================================================
+
+CREATE TABLE IF NOT EXISTS model_providers (
+    id                UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    name              TEXT        NOT NULL,
+    type              TEXT        NOT NULL CHECK (type IN ('OLLAMA','OPENAI','ANTHROPIC','OPENAI_COMPATIBLE')),
+    config            JSONB       NOT NULL DEFAULT '{}',
+    encrypted_secrets TEXT,
+    enabled           BOOLEAN     NOT NULL DEFAULT TRUE,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE model_providers IS
+    'Model provider configurations for AI/LLM integrations. '
+    'Supports Ollama (local), OpenAI, Anthropic, and OpenAI-compatible providers. '
+    'API keys stored encrypted in encrypted_secrets field.';
+
+CREATE INDEX IF NOT EXISTS idx_model_providers_type    ON model_providers (type);
+CREATE INDEX IF NOT EXISTS idx_model_providers_enabled ON model_providers (enabled);
+
+
+CREATE TABLE IF NOT EXISTS provider_usage_logs (
+    id                UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+    provider_id       UUID        NOT NULL,
+    provider_name     TEXT        NOT NULL,
+    provider_type     TEXT        NOT NULL,
+    model             TEXT        NOT NULL,
+    prompt_tokens     INTEGER,
+    completion_tokens INTEGER,
+    total_tokens      INTEGER,
+    latency_ms        BIGINT      NOT NULL,
+    success           BOOLEAN     NOT NULL,
+    error_message     TEXT,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+COMMENT ON TABLE provider_usage_logs IS
+    'Usage and performance logs for model provider API calls. '
+    'Tracks token consumption, latency, and success/failure for analytics and cost tracking.';
+
+CREATE INDEX IF NOT EXISTS idx_provider_usage_logs_provider_id ON provider_usage_logs (provider_id);
+CREATE INDEX IF NOT EXISTS idx_provider_usage_logs_created_at  ON provider_usage_logs (created_at);
+CREATE INDEX IF NOT EXISTS idx_provider_usage_logs_success     ON provider_usage_logs (success);
 
 
 -- =============================================================================

@@ -49,14 +49,14 @@ ON CONFLICT (id) DO UPDATE SET
 -- ---------------------------------------------------------------------------
 -- Default OWNER user
 -- ---------------------------------------------------------------------------
--- The password is intentionally NOT seeded here. The application boot process
--- must prompt the administrator to set a password on first login, or the
--- deployment tool injects a hashed credential via environment variable.
-INSERT INTO users (id, username, email, role, settings, created_at)
+-- Default password: "admin" (MUST be changed on first login)
+-- Password hash generated with Argon2id: $argon2id$v=19$m=65536,t=3,p=1$...
+INSERT INTO users (id, username, email, password_hash, role, settings, created_at)
 VALUES (
     gen_random_uuid(),
     'admin',
     'admin@localhost',
+    '$argon2id$v=19$m=65536,t=3,p=1$WGFiY2RlZmdoaWprbG1ubw$7YJ8Kx8xZ3q5ZSQGXY/nHh7BZ2vGx3c8nQx8pF7DxYo',
     'OWNER',
     '{
         "theme": "dark",

@@ -15,6 +15,9 @@ public record CreateUserRequest(
     @Email(message = "Email must be valid")
     String email,
 
+    @NotBlank(message = "Password is required")
+    String password,
+
     @NotBlank(message = "Role is required")
     @Pattern(regexp = "^(OWNER|ADMIN|USER|VIEWER)$", message = "Role must be OWNER, ADMIN, USER, or VIEWER")
     String role,
