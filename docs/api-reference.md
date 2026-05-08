@@ -36,6 +36,8 @@ This reference defines the initial REST, WebSocket, SSE, and CLI surface for {SY
 
 ## CLI
 
+The full CLI contract is documented in `docs/cli-reference.md`.
+
 | Command | Purpose |
 |---|---|
 | `synapse chat` | Chat with Main Agent |

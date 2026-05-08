@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.7.0`
+**Current version:** `v0.8.0`
 
 ---
 
@@ -383,7 +383,7 @@
 
 **Target version:** `v0.8.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Define the operator CLI contract before implementation begins.
@@ -403,15 +403,17 @@
 - `v0.8.3` operator workflow cleanup
 
 **Exit criteria**
-- CLI commands are named and grouped consistently.
-- TUI expectations are explicit before implementation.
-- CLI documentation can be generated or maintained from one canonical spec.
+- CLI commands are named and grouped consistently. Complete.
+- TUI expectations are explicit before implementation. Complete.
+- CLI documentation can be generated or maintained from one canonical spec. Complete.
 
 ---
 
 ## 12. Phase 9 - Runtime Delivery
 
 **Target version:** `v0.9.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Wire the user-facing runtime surfaces that make the system observable and usable day to day.

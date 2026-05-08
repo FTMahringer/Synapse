@@ -2,6 +2,18 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.8.0 - CLI Contract
+
+### Added
+
+- Added the CLI reference with global flags, command tree, TUI views, Main Agent path, manual path, and logging behavior.
+- Linked the API reference to the dedicated CLI contract.
+
+### Notes
+
+- `v0.8.0` closes the CLI specification milestone.
+- The next milestone is `v0.9.0`, focused on runtime delivery and observability.
+
 ## v0.7.0 - Installer
 
 ### Added
