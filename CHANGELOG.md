@@ -2,6 +2,28 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.0.10-dev - JWT Authentication and Authorization
+
+### Added
+
+- Added JwtAuthenticationFilter to extract and validate JWT tokens from Authorization header.
+- Added SecurityContextHelper utility for accessing current user context.
+- Enhanced SecurityConfig to enforce authentication on all endpoints except auth and health.
+- Enabled method-level security with @EnableMethodSecurity annotation.
+- JWT filter extracts userId, username, and role from access tokens into Spring Security context.
+- Access tokens populate GrantedAuthority with ROLE_ prefix for role-based authorization.
+- JwtAuthenticationDetails attached to authentication for accessing user metadata.
+
+### Notes
+
+- `v1.0.10-dev` completes the v1.2.0-dev milestone (Auth and Users).
+- All /api/** endpoints now require authentication except /api/auth/** and /api/health.
+- Bearer token format: `Authorization: Bearer <access_token>`.
+- Invalid or expired tokens silently skip authentication (401 returned by framework).
+- SecurityContextHelper provides getCurrentUserId(), getCurrentUsername(), getCurrentUserRole().
+- Method security annotations (@PreAuthorize, @Secured) now functional.
+- Only access tokens accepted (refresh tokens rejected in filter).
+
 ## v1.0.9-dev - Switch to Argon2 Password Hashing
 
 ### Changed
