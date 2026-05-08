@@ -16,6 +16,25 @@ export interface AgentDefinition {
   files: string[]
 }
 
+export interface AgentRuntime {
+  agentId: string
+  state: 'ACTIVE' | 'PAUSED' | 'DISABLED'
+  lastActivatedAt: string | null
+  lastDeactivatedAt: string | null
+}
+
+export interface RoutingLog {
+  id: string
+  conversationId: string
+  messageId: string
+  decision: string
+  targetAgentId: string | null
+  targetTeamId: string | null
+  targetProjectId: string | null
+  reasoning: string
+  createdAt: string
+}
+
 export interface SystemLog {
   id: string
   timestamp: string
@@ -30,24 +49,48 @@ const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 
 export async function fetchHealth(): Promise<HealthResponse> {
   const response = await fetch(`${API_BASE}/api/health`)
-  if (!response.ok) {
-    throw new Error(`Health request failed: ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`Health request failed: ${response.status}`)
   return response.json()
 }
 
 export async function fetchAgents(): Promise<AgentDefinition[]> {
   const response = await fetch(`${API_BASE}/api/agents`)
-  if (!response.ok) {
-    throw new Error(`Agents request failed: ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`Agents request failed: ${response.status}`)
+  return response.json()
+}
+
+export async function fetchAgentRuntimes(): Promise<AgentRuntime[]> {
+  const response = await fetch(`${API_BASE}/api/agents/runtime`)
+  if (!response.ok) throw new Error(`Agent runtimes request failed: ${response.status}`)
+  return response.json()
+}
+
+export async function activateAgent(agentId: string): Promise<AgentRuntime> {
+  const response = await fetch(`${API_BASE}/api/agents/${agentId}/activate`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Activate failed: ${response.status}`)
+  return response.json()
+}
+
+export async function pauseAgent(agentId: string): Promise<AgentRuntime> {
+  const response = await fetch(`${API_BASE}/api/agents/${agentId}/pause`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Pause failed: ${response.status}`)
+  return response.json()
+}
+
+export async function disableAgent(agentId: string): Promise<AgentRuntime> {
+  const response = await fetch(`${API_BASE}/api/agents/${agentId}/disable`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Disable failed: ${response.status}`)
+  return response.json()
+}
+
+export async function fetchRoutingLogs(): Promise<RoutingLog[]> {
+  const response = await fetch(`${API_BASE}/api/agents/routing`)
+  if (!response.ok) throw new Error(`Routing logs request failed: ${response.status}`)
   return response.json()
 }
 
 export async function fetchLogs(limit = 25): Promise<SystemLog[]> {
   const response = await fetch(`${API_BASE}/api/logs?limit=${limit}`)
-  if (!response.ok) {
-    throw new Error(`Logs request failed: ${response.status}`)
-  }
+  if (!response.ok) throw new Error(`Logs request failed: ${response.status}`)
   return response.json()
 }
