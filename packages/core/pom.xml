@@ -13,7 +13,7 @@
 
     <groupId>dev.synapse</groupId>
     <artifactId>synapse-core</artifactId>
-    <version>1.2.1-dev</version>
+    <version>1.2.2-dev</version>
     <name>synapse-core</name>
     <description>SYNAPSE Spring Boot backend</description>
 

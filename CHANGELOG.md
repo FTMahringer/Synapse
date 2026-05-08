@@ -2,6 +2,29 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.2-dev - Ollama Provider Health and Model Listing
+
+### Added
+
+- Added OllamaProviderService for Ollama provider integration.
+- Added OllamaProviderController with health check and model listing endpoints.
+- Added OllamaModels DTOs for Ollama API response parsing.
+- GET /api/providers/ollama/{id}/health endpoint for provider health checks.
+- GET /api/providers/ollama/{id}/models endpoint for listing available Ollama models.
+- RestClient integration for HTTP calls to Ollama API.
+- Default Ollama baseUrl: http://localhost:11434 (configurable via provider config).
+- Structured logging for health checks and model listing operations.
+- Model info includes name, size, digest, format, family, and quantization details.
+
+### Notes
+
+- `v1.2.2-dev` continues the v1.3.0-dev milestone (Model Providers).
+- Ollama API endpoint: /api/tags for both health check and model listing.
+- Health check returns true if Ollama responds, false on error.
+- Failed health checks logged as warnings (not errors).
+- Provider baseUrl configurable in provider config JSONB field.
+- Model listing includes all models available in Ollama instance.
+
 ## v1.2.1-dev - Model Provider Configuration with Encrypted Secrets
 
 ### Added
