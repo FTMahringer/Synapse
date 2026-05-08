@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\projects\\\\Agents-Umgeung-planning\\\\Synapse\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(xargs grep -l \"team\\\\|Team\\\\|dispatch\\\\|Dispatch\")",
+      "Bash(git commit *)",
+      "Bash(git tag *)",
+      "Bash(git push *)",
+      "Bash(gh release *)"
     ]
   }
 }
