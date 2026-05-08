@@ -18,6 +18,15 @@ public class ConversationService {
         this.conversationRepository = conversationRepository;
     }
 
+    @Transactional
+    public Conversation create(String agentId, UUID userId) {
+        Conversation conversation = new Conversation();
+        conversation.setAgentId(agentId);
+        conversation.setUserId(userId);
+        conversation.setStatus(Conversation.ConversationStatus.ACTIVE);
+        return conversationRepository.save(conversation);
+    }
+
     @Transactional(readOnly = true)
     public List<Conversation> findAll() {
         return conversationRepository.findAll();
