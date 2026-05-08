@@ -1,0 +1,57 @@
+id: openai
+name: OpenAI (GPT)
+version: 1.0.0
+type: model
+author: synapse-core
+license: MIT
+description: "Provides access to OpenAI GPT models via the OpenAI Chat Completions API, with optional organization scoping."
+
+requires:
+  synapse_version: ">=0.1.0"
+  java: ">=25"
+
+config_schema:
+  # OpenAI API key.
+  # Obtain from https://platform.openai.com/api-keys
+  # Format: sk-...
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: "OpenAI API key (sk-...). Required for all API calls."
+
+  # Optional: OpenAI organization ID for users who belong to multiple organizations.
+  # When set, all API requests will be attributed to this organization.
+  # Obtain from https://platform.openai.com/account/org-settings
+  organization_id:
+    type: string
+    required: false
+    secret: false
+    description: "OpenAI organization ID (org-...). Required only if your API key belongs to multiple organizations and you need to scope requests to a specific one."
+
+  # Optional: override the default model list
+  supported_models:
+    type: list
+    required: false
+    description: "Override the default model list. Leave empty to use plugin defaults."
+
+capabilities:
+  streaming: true
+  function_calling: true
+  vision: true
+
+# Default models exposed by this plugin.
+supported_models:
+  - gpt-4o
+  - gpt-4o-mini
+  - gpt-4-turbo
+
+hooks:
+  on_install: "configure"
+  on_uninstall: "onUninstall"
+  on_request: "complete"
+  on_response: "onResponse"
+
+store:
+  tags: [openai, gpt, llm]
+  icon: "⚡"

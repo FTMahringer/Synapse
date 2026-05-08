@@ -1,0 +1,121 @@
+# ============================================================
+# SYNAPSE Channel Plugin Manifest Template
+# ============================================================
+# Copy this file to your channel plugin directory and fill in
+# all fields. Lines beginning with '#' are comments and will
+# be ignored by the SYNAPSE plugin loader.
+# ============================================================
+
+# Unique identifier for this plugin. Must be lowercase, hyphen-
+# separated, and globally unique within the SYNAPSE plugin store.
+# Convention: <name>-channel  (e.g. "telegram-channel")
+id: my-channel
+
+# Human-readable display name shown in the UI and store.
+name: My Channel
+
+# Semantic version of this plugin release.
+version: 1.0.0
+
+# Plugin type. For channel plugins this must always be "channel".
+type: channel
+
+# Author name, GitHub handle, or organization name.
+author: your-name
+
+# SPDX license identifier. MIT is recommended for community plugins.
+license: MIT
+
+# Short description (one sentence) shown in the plugin store listing.
+description: "A brief description of what messaging platform this channel connects to."
+
+# ============================================================
+# Compatibility Requirements
+# ============================================================
+requires:
+  # Minimum SYNAPSE core version required to run this plugin.
+  synapse_version: ">=0.1.0"
+  # Minimum Java runtime version required.
+  java: ">=25"
+
+# ============================================================
+# Configuration Schema
+# ============================================================
+# Describes every configuration key the plugin requires or accepts.
+# SYNAPSE uses this schema to render the admin configuration UI
+# and to validate user-supplied values before calling onInstall.
+#
+# Field attributes:
+#   type     : string | list | boolean | integer
+#   required : true | false
+#   secret   : true  → value is stored encrypted and masked in the UI
+#   default  : optional default value (shown as hint in the UI)
+#   description: shown as tooltip in the configuration form
+config_schema:
+  # Example: primary API credential — always mark secrets with secret: true
+  api_token:
+    type: string
+    required: true
+    secret: true
+    description: "The API token or bot token issued by the messaging platform."
+
+  # Example: allowlist — leave required: false for optional fields
+  allowed_users:
+    type: list
+    required: false
+    description: "Optional list of user IDs or usernames allowed to interact with this channel. Leave empty to allow all users."
+
+  # Example: webhook endpoint for receiving messages
+  webhook_url:
+    type: string
+    required: false
+    description: "Public HTTPS URL where the messaging platform will POST incoming updates. Leave empty to use long-polling instead."
+
+  # Example: polling interval when webhook is not configured
+  polling_interval_ms:
+    type: integer
+    required: false
+    default: 2000
+    description: "How often (in milliseconds) to poll for new messages when webhook mode is not used. Default: 2000 ms."
+
+  # Example: boolean feature flag
+  enable_markdown:
+    type: boolean
+    required: false
+    default: true
+    description: "Whether to render outgoing message content as Markdown. Disable if the platform does not support formatting."
+
+# ============================================================
+# Lifecycle Hooks
+# ============================================================
+# Maps SYNAPSE lifecycle events to method names on your plugin
+# class. The method signatures must match the Channel interface.
+hooks:
+  # Called once when an admin installs or re-configures the plugin.
+  # Use this hook to validate config, create API clients, and register
+  # webhooks with the remote platform.
+  on_install: "onInstall"
+
+  # Called once when an admin uninstalls the plugin or SYNAPSE shuts down.
+  # Use this hook to deregister webhooks, close connections, and free
+  # resources cleanly.
+  on_uninstall: "onUninstall"
+
+  # Called by SYNAPSE whenever an inbound message arrives on this channel.
+  # Implement this hook to parse the raw platform payload into a
+  # ChannelMessage and route it to the appropriate agent.
+  on_message: "onMessage"
+
+  # Called by SYNAPSE when an agent wants to send a reply back to a user
+  # on this channel. Implement this hook to deliver the message via the
+  # platform's send API.
+  on_send: "sendMessage"
+
+# ============================================================
+# Plugin Store Metadata
+# ============================================================
+store:
+  # Tags used for search and filtering in the SYNAPSE plugin store.
+  tags: [messaging, channel, template]
+  # Emoji icon displayed next to the plugin name in the store UI.
+  icon: "💬"

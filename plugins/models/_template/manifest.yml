@@ -1,0 +1,134 @@
+# ============================================================
+# SYNAPSE Model Provider Plugin Manifest Template
+# ============================================================
+# Copy this file to your model provider plugin directory and
+# fill in all fields. Lines beginning with '#' are comments.
+# ============================================================
+
+# Unique plugin identifier. Convention: <provider-name>
+# (e.g. "anthropic", "openai", "my-custom-provider")
+id: my-model-provider
+
+# Human-readable display name shown in the UI and store.
+name: My Model Provider
+
+# Semantic version of this plugin release.
+version: 1.0.0
+
+# Plugin type. For model providers this must always be "model".
+type: model
+
+# Author name, GitHub handle, or organization name.
+author: your-name
+
+# SPDX license identifier.
+license: MIT
+
+# Short description (one sentence) for the plugin store listing.
+description: "Provides access to [Provider Name] language models via the [API Name] API."
+
+# ============================================================
+# Compatibility Requirements
+# ============================================================
+requires:
+  synapse_version: ">=0.1.0"
+  java: ">=25"
+
+# ============================================================
+# Configuration Schema
+# ============================================================
+config_schema:
+  # ---- Authentication ----------------------------------------
+  # Most cloud providers use an API key for authentication.
+  # Mark it secret: true so SYNAPSE encrypts the stored value.
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: "API key issued by the model provider. Required unless subscription_id is provided."
+
+  # Alternative authentication for providers that support
+  # subscription-based access (e.g. Anthropic's ACP subscriptions).
+  # When using subscription_id, api_key may be left blank.
+  # Uncomment the block below if your provider supports this mode:
+  #
+  # subscription_id:
+  #   type: string
+  #   required: false
+  #   secret: true
+  #   description: "ACP / subscription ID for providers that support subscription-based billing instead of per-key access."
+
+  # ---- Endpoint Configuration --------------------------------
+  # Optional custom base URL. Use this for Azure OpenAI, local proxies,
+  # or provider-compatible third-party endpoints.
+  base_url:
+    type: string
+    required: false
+    description: "Custom API base URL. Leave empty to use the provider's default endpoint."
+
+  # ---- Model Selection ---------------------------------------
+  # List of model identifiers this plugin should expose to SYNAPSE.
+  # Add or remove entries to match what your API key has access to.
+  supported_models:
+    type: list
+    required: true
+    description: "List of model identifiers available through this provider (e.g. [\"model-v1\", \"model-v2\"])."
+
+  # ---- Capability Flags (optional overrides) -----------------
+  # These flags are normally derived from getCapabilities() at runtime.
+  # You can expose them as user-configurable if your provider allows
+  # mixed capability tiers per API key.
+  #
+  # streaming:
+  #   type: boolean
+  #   required: false
+  #   default: true
+  #   description: "Enable streaming (server-sent events) for token-by-token responses."
+  #
+  # function_calling:
+  #   type: boolean
+  #   required: false
+  #   default: true
+  #   description: "Enable tool/function calling support."
+  #
+  # vision:
+  #   type: boolean
+  #   required: false
+  #   default: false
+  #   description: "Enable vision/image input support."
+
+# ============================================================
+# Capabilities Declaration
+# ============================================================
+# Static capability declaration read by SYNAPSE at load time.
+# These values are also returned by ModelProvider.getCapabilities().
+capabilities:
+  streaming: true          # Provider supports streaming (SSE / chunked responses)
+  function_calling: true   # Provider supports tool / function calling
+  vision: false            # Provider supports image inputs
+
+# ============================================================
+# Lifecycle Hooks
+# ============================================================
+hooks:
+  # Called once when the plugin is installed or reconfigured.
+  # Use this to validate the API key and initialise the HTTP client.
+  on_install: "configure"
+
+  # Called once when the plugin is uninstalled or SYNAPSE shuts down.
+  # Use this to close HTTP clients and release resources.
+  on_uninstall: "onUninstall"
+
+  # Called by SYNAPSE to route a completion request to the provider.
+  on_request: "complete"
+
+  # Called by SYNAPSE after the provider returns a response, allowing
+  # post-processing (logging, cost tracking, caching).
+  on_response: "onResponse"
+
+# ============================================================
+# Plugin Store Metadata
+# ============================================================
+store:
+  tags: [llm, model, template]
+  icon: "🤖"

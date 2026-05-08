@@ -1,0 +1,46 @@
+# Main Agent Configuration
+# This is the configuration for the primary system controller agent.
+# The main agent uses a full-context model with a generous token budget.
+# Fallback is a cost-efficient model for when the primary is unavailable.
+
+model:
+  provider: anthropic
+  model_id: claude-sonnet-4-6
+  fallback_provider: openai
+  fallback_model_id: gpt-4o-mini
+
+memory:
+  max_working_tokens: 100000         # Main agent holds full session context
+  compression_threshold: 80000       # Compress before hitting hard limit
+  compression_provider: ollama       # Local model handles compression (free)
+  compression_model: llama3.2        # Must be available in your Ollama instance
+  semantic_search: true              # Enable semantic retrieval from memory store
+
+heartbeat:
+  enabled: true
+  interval_minutes: 45
+  only_when_active: true             # No pings during idle system state
+
+skills:
+  # Installed skills are listed here after setup.
+  # Managed via /skills and /install commands.
+  # Example entry:
+  #   - id: web-search
+  #     version: 2.1.0
+  #     enabled: true
+  []
+
+mcp_servers:
+  # Registered MCP servers are listed here after configuration.
+  # Managed via /mcp command.
+  # Example entry:
+  #   - id: filesystem-mcp
+  #     transport: stdio
+  #     command: npx
+  #     args: ["-y", "@modelcontextprotocol/server-filesystem", "/vault"]
+  []
+
+learning:
+  enabled: true
+  reflect_after_tasks: true          # Generate reflection notes after each task
+  update_soul: false                 # Soul.md edits require explicit user consent

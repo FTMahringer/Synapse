@@ -1,0 +1,48 @@
+id: deepseek
+name: DeepSeek
+version: 1.0.0
+type: model
+author: synapse-core
+license: MIT
+description: "Provides access to DeepSeek language and reasoning models via the DeepSeek API, offering strong performance at cost-efficient pricing."
+
+requires:
+  synapse_version: ">=0.1.0"
+  java: ">=25"
+
+config_schema:
+  # DeepSeek API key.
+  # Obtain from https://platform.deepseek.com/api_keys
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: "DeepSeek API key. Obtain from https://platform.deepseek.com/api_keys."
+
+  # Optional: override the default model list.
+  supported_models:
+    type: list
+    required: false
+    description: "Override the default model list. Leave empty to use plugin defaults."
+
+capabilities:
+  streaming: true
+  function_calling: true
+  # DeepSeek models do not currently support image/vision inputs.
+  vision: false
+
+# Default models exposed by this plugin.
+supported_models:
+  - deepseek-chat       # General-purpose chat model
+  - deepseek-coder      # Code-specialized model optimized for programming tasks
+  - deepseek-reasoner   # Extended chain-of-thought reasoning model (R1)
+
+hooks:
+  on_install: "configure"
+  on_uninstall: "onUninstall"
+  on_request: "complete"
+  on_response: "onResponse"
+
+store:
+  tags: [deepseek, llm, cost-efficient]
+  icon: "🐋"

@@ -1,0 +1,44 @@
+# Agent Configuration Template
+# Replace all [placeholder] values before deployment.
+# This file controls model selection, memory, heartbeat, skills, and learning.
+# Do not commit API keys here — use environment variables or a secrets manager.
+
+model:
+  provider: [anthropic | openai | ollama | mistral]   # Primary model provider
+  model_id: [e.g. claude-sonnet-4-6 | gpt-4o | llama3.2]
+  fallback_provider: [provider or null]               # Used if primary is unavailable
+  fallback_model_id: [model_id or null]
+
+memory:
+  max_working_tokens: 50000          # Max tokens held in active context window
+  compression_threshold: 40000       # Trigger compression when context exceeds this
+  compression_provider: ollama       # Local model used to summarize/compress context
+  compression_model: llama3.2        # Must be available in your Ollama instance
+  semantic_search: true              # Enable semantic retrieval from long-term memory
+
+heartbeat:
+  enabled: true                      # Send keep-alive pings when agent is idle
+  interval_minutes: 45               # How often to ping (ignored if only_when_active)
+  only_when_active: true             # Only heartbeat during active sessions, not 24/7
+
+skills:
+  # List installed skill IDs. Add entries after installing via /skills or /install.
+  # Example:
+  #   - id: web-search
+  #     version: 2.1.0
+  #     enabled: true
+  []
+
+mcp_servers:
+  # List connected MCP server configurations.
+  # Example:
+  #   - id: filesystem-mcp
+  #     transport: stdio
+  #     command: npx
+  #     args: ["-y", "@modelcontextprotocol/server-filesystem", "/vault"]
+  []
+
+learning:
+  enabled: true                      # Allow self-reflection after task completion
+  reflect_after_tasks: true          # Generate a brief reflection note after each task
+  update_soul: false                 # NEVER auto-update soul.md — requires user consent

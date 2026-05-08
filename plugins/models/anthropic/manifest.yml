@@ -1,0 +1,60 @@
+id: anthropic
+name: Anthropic (Claude)
+version: 1.0.0
+type: model
+author: synapse-core
+license: MIT
+description: "Provides access to Anthropic Claude models via the Anthropic Messages API, with optional ACP subscription-based authentication."
+
+requires:
+  synapse_version: ">=0.1.0"
+  java: ">=25"
+
+config_schema:
+  # Primary authentication method: Anthropic API key.
+  # Obtain from https://console.anthropic.com/settings/keys
+  # Required unless subscription_id is provided instead.
+  api_key:
+    type: string
+    required: true
+    secret: true
+    description: "Anthropic API key (sk-ant-...). Required for direct API access. Leave blank if using subscription_id instead."
+
+  # Alternative authentication via Anthropic Claude Protocol (ACP) subscription.
+  # Used when SYNAPSE is deployed as a managed ACP client and billing is handled
+  # through a subscription rather than per-key usage.
+  # When subscription_id is provided, api_key may be omitted.
+  subscription_id:
+    type: string
+    required: false
+    secret: true
+    description: "ACP subscription ID for subscription-based access to Claude. When set, this takes precedence over api_key for authentication."
+
+  # Optional: list of Claude model identifiers to expose in SYNAPSE.
+  # Defaults to the list in supported_models below if not overridden.
+  supported_models:
+    type: list
+    required: false
+    description: "Override the default model list. Leave empty to use the plugin defaults."
+
+capabilities:
+  streaming: true
+  function_calling: true
+  vision: true
+
+# Default models exposed by this plugin.
+# These can be overridden by the user via config_schema.supported_models above.
+supported_models:
+  - claude-opus-4-7
+  - claude-sonnet-4-6
+  - claude-haiku-4-5
+
+hooks:
+  on_install: "configure"
+  on_uninstall: "onUninstall"
+  on_request: "complete"
+  on_response: "onResponse"
+
+store:
+  tags: [claude, anthropic, llm]
+  icon: "🧠"

@@ -1,0 +1,57 @@
+id: telegram-channel
+name: Telegram Channel
+version: 1.0.0
+type: channel
+author: synapse-core
+license: MIT
+description: "Connects SYNAPSE agents to Telegram via the Bot API, supporting both webhook and long-polling modes."
+
+requires:
+  synapse_version: ">=0.1.0"
+  java: ">=25"
+
+config_schema:
+  # Bot token issued by @BotFather on Telegram.
+  # Format: <bot_id>:<random_string>  (e.g. "123456:ABC-DEF1234...")
+  # Required. Keep secret — anyone with this token can control your bot.
+  bot_token:
+    type: string
+    required: true
+    secret: true
+    description: "Telegram Bot API token obtained from @BotFather. Never share this value."
+
+  # Optional allowlist of Telegram user IDs (integers) permitted to send messages
+  # to the bot. When left empty, the bot will accept messages from any user.
+  # Example: [123456789, 987654321]
+  allowed_users:
+    type: list
+    required: false
+    description: "List of Telegram user IDs allowed to interact with the bot. Leave empty to allow all users."
+
+  # Public HTTPS URL that Telegram will call with incoming updates.
+  # Must be reachable from Telegram's servers (port 443, 80, 88, or 8443).
+  # When provided, the plugin registers the webhook with Telegram automatically.
+  # When left empty, the plugin falls back to long-polling mode.
+  webhook_url:
+    type: string
+    required: false
+    description: "Public HTTPS URL for Telegram webhook delivery. If omitted, long-polling is used instead."
+
+  # Long-polling interval in milliseconds. Only used when webhook_url is not set.
+  # Telegram getUpdates timeout is derived from this value.
+  # Default: 2000 ms. Minimum recommended: 500 ms.
+  polling_interval_ms:
+    type: integer
+    required: false
+    default: 2000
+    description: "Polling interval in milliseconds when webhook mode is disabled. Default: 2000."
+
+hooks:
+  on_install: "onInstall"
+  on_uninstall: "onUninstall"
+  on_message: "onMessage"
+  on_send: "sendMessage"
+
+store:
+  tags: [messaging, telegram, bot]
+  icon: "✈️"

@@ -1,0 +1,33 @@
+# Team Configuration Template
+# A team groups agents under a leader for coordinated task handling.
+# Replace all [placeholder] values before deployment.
+# The leader agent must have type: team-leader in its identity.md.
+
+id: [team-id]               # Unique kebab-case identifier (e.g. "design-team")
+name: [Team Display Name]   # Human-readable name shown in UI and logs
+description: >
+  [One to two sentences describing what this team does, what domain it covers,
+  and what kind of tasks should be routed to it.]
+
+leader: [agent-id]          # ID of the team-leader agent (must exist in agents/)
+
+members:
+  # List all agent IDs that are part of this team (excluding the leader).
+  # Each member must have a valid identity.md and config.yml.
+  - [agent-id-1]
+  - [agent-id-2]
+  # Add more as needed
+
+routing:
+  receives_from:
+    # Who is allowed to send tasks directly to this team's leader.
+    # Use agent IDs. "main-agent" is the most common entry.
+    - main-agent
+    - [other-agent-id-if-applicable]
+  user-direct: false         # If true, users can address this team directly in chat.
+                             # Recommended: false — route through main-agent.
+  reports_to:
+    # Who receives this team's completed results and status reports.
+    # Usually just main-agent.
+    - main-agent
+    - [firm-ceo-if-applicable]
