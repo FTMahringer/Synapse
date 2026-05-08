@@ -2,6 +2,30 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v1.2.1-dev - Model Provider Configuration with Encrypted Secrets
+
+### Added
+
+- Added ModelProvider domain entity with support for OLLAMA, OPENAI, ANTHROPIC, OPENAI_COMPATIBLE types.
+- Added ModelProviderRepository with query methods for enabled providers and by type.
+- Added SecretEncryptionService using AES-256-GCM for encrypting API keys and secrets.
+- Added ModelProviderService with CRUD operations and secret encryption/decryption.
+- Added ModelProviderController with REST endpoints (GET, POST, PATCH, DELETE).
+- Added ModelProviderDTO, CreateModelProviderRequest, UpdateModelProviderRequest DTOs.
+- Provider configuration stored in JSONB config field for flexibility.
+- Secrets encrypted at rest using AES-256-GCM with random IV per encryption.
+- Structured logging for provider creation, updates, and deletion.
+- GET /api/providers?enabled=true to filter only enabled providers.
+
+### Notes
+
+- `v1.2.1-dev` starts the v1.3.0-dev milestone (Model Providers).
+- Encryption key configurable via secrets.encryption-key property (MUST change in production).
+- Encryption key must be exactly 32 bytes for AES-256.
+- Secrets never exposed in API responses (encrypted_secrets field excluded from DTOs).
+- GCM mode provides both confidentiality and authenticity of encrypted secrets.
+- Provider config supports flexible JSON structure for provider-specific settings.
+
 ## v1.2.0 - Auth and Users (Milestone Release)
 
 **Release Date:** 2026-05-08
