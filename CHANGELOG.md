@@ -2,6 +2,20 @@
 
 All notable project changes are tracked here once they become part of a roadmap milestone.
 
+## v0.7.0 - Installer
+
+### Added
+
+- Added Unix/macOS shell installer with interactive prompts and Docker Compose startup.
+- Added Windows PowerShell installer with equivalent prompt and Compose behavior.
+- Added quick/dev Docker Compose file for PostgreSQL, Redis, Qdrant, and optional Ollama.
+- Added production Docker Compose file with restart policies and internal networking.
+
+### Notes
+
+- `v0.7.0` closes the installer milestone.
+- The next milestone is `v0.8.0`, focused on the CLI command contract.
+
 ## v0.6.0 - Documentation Set
 
 ### Added

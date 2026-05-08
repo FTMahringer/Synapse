@@ -130,7 +130,7 @@
 | Step 9 | `v0.9.0` | Runtime Delivery | Dashboard theming, realtime transport, logging flow, and learning loop wiring |
 | Step 10 | `v0.10.0` | Hardening | Quality checks, integration validation, release candidate, and final launch review |
 
-**Current version:** `v0.6.0`
+**Current version:** `v0.7.0`
 
 ---
 
@@ -352,7 +352,7 @@
 
 **Target version:** `v0.7.0`
 
-**Status:** `roadmap:status-planned`
+**Status:** `roadmap:status-done`
 
 **Goal**
 - Make the platform installable in a repeatable way on Unix, macOS, and Windows.
@@ -373,15 +373,17 @@
 - `v0.7.3` compose and environment bootstrap refinement
 
 **Exit criteria**
-- Installers can bootstrap the platform without manual file surgery.
-- Quick mode and dev mode are both represented.
-- Platform defaults are visible and changeable at install time.
+- Installers can bootstrap the platform without manual file surgery. Complete.
+- Quick mode and dev mode are both represented. Complete.
+- Platform defaults are visible and changeable at install time. Complete.
 
 ---
 
 ## 11. Phase 8 - CLI
 
 **Target version:** `v0.8.0`
+
+**Status:** `roadmap:status-planned`
 
 **Goal**
 - Define the operator CLI contract before implementation begins.

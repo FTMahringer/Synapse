@@ -1,0 +1,52 @@
+name: synapse-prod
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-synapse}
+      POSTGRES_USER: ${POSTGRES_USER:-synapse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ../../backend/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ../../backend/db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    networks:
+      - synapse
+
+  redis:
+    image: redis:8
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - synapse
+
+  qdrant:
+    image: qdrant/qdrant:v1.14.1
+    restart: unless-stopped
+    volumes:
+      - qdrant-data:/qdrant/storage
+    networks:
+      - synapse
+
+  ollama:
+    image: ollama/ollama:latest
+    restart: unless-stopped
+    profiles:
+      - local-models
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - synapse
+
+networks:
+  synapse:
+
+volumes:
+  postgres-data:
+  redis-data:
+  qdrant-data:
+  ollama-data:
