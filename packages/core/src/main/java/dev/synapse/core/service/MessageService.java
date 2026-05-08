@@ -1,41 +1,104 @@
 package dev.synapse.core.service;
 
+import dev.synapse.core.domain.Conversation;
 import dev.synapse.core.domain.Message;
+import dev.synapse.core.domain.ModelProvider;
 import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.provider.ollama.OllamaChat;
+import dev.synapse.core.provider.ollama.OllamaProviderService;
 import dev.synapse.core.repository.ConversationRepository;
 import dev.synapse.core.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
 
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
+    private final ModelProviderService providerService;
+    private final OllamaProviderService ollamaProviderService;
+    private final MainAgentPromptService promptService;
 
     public MessageService(
         MessageRepository messageRepository,
-        ConversationRepository conversationRepository
+        ConversationRepository conversationRepository,
+        ModelProviderService providerService,
+        OllamaProviderService ollamaProviderService,
+        MainAgentPromptService promptService
     ) {
         this.messageRepository = messageRepository;
         this.conversationRepository = conversationRepository;
+        this.providerService = providerService;
+        this.ollamaProviderService = ollamaProviderService;
+        this.promptService = promptService;
     }
 
     @Transactional
     public Message sendMessage(UUID conversationId, String content) {
-        if (!conversationRepository.existsById(conversationId)) {
-            throw new ResourceNotFoundException("Conversation", conversationId.toString());
+        Conversation conversation = conversationRepository.findById(conversationId)
+            .orElseThrow(() -> new ResourceNotFoundException("Conversation", conversationId.toString()));
+
+        // Save user message
+        Message userMessage = new Message();
+        userMessage.setConversationId(conversationId);
+        userMessage.setRole(Message.MessageRole.USER);
+        userMessage.setContent(content);
+        userMessage = messageRepository.save(userMessage);
+
+        // Get conversation history
+        List<Message> history = messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
+
+        // Get default provider (first enabled Ollama provider for now)
+        ModelProvider provider = providerService.findAll().stream()
+            .filter(p -> "ollama".equals(p.getProviderType()) && p.isEnabled())
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("No enabled Ollama provider found"));
+
+        // Assemble prompt with Main Agent identity
+        String systemPrompt = promptService.assemblePrompt();
+
+        // Build chat messages
+        List<OllamaChat.Message> chatMessages = new ArrayList<>();
+        chatMessages.add(new OllamaChat.Message("system", systemPrompt));
+        
+        for (Message msg : history) {
+            String role = msg.getRole() == Message.MessageRole.USER ? "user" : "assistant";
+            chatMessages.add(new OllamaChat.Message(role, msg.getContent()));
         }
 
-        Message message = new Message();
-        message.setConversationId(conversationId);
-        message.setRole(Message.MessageRole.USER);
-        message.setContent(content);
+        // Get model from provider config
+        String model = provider.getConfiguration() != null 
+            ? provider.getConfiguration().path("model").asText("llama3.2") 
+            : "llama3.2";
 
-        return messageRepository.save(message);
+        // Call Ollama
+        OllamaChat.ChatRequest request = new OllamaChat.ChatRequest(
+            model,
+            chatMessages,
+            false,
+            null
+        );
+
+        OllamaChat.ChatResponse response = ollamaProviderService.chatCompletion(provider, request);
+
+        // Save assistant message
+        Message assistantMessage = new Message();
+        assistantMessage.setConversationId(conversationId);
+        assistantMessage.setRole(Message.MessageRole.ASSISTANT);
+        assistantMessage.setContent(response.message().content());
+        assistantMessage.setTokens(
+            (response.promptEvalCount() != null ? response.promptEvalCount() : 0) +
+            (response.evalCount() != null ? response.evalCount() : 0)
+        );
+        messageRepository.save(assistantMessage);
+
+        return userMessage;
     }
 
     @Transactional(readOnly = true)
