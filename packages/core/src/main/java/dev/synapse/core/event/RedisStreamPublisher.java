@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.redis.connection.stream.ObjectRecord;
-import org.springframework.data.redis.connection.stream.StreamRecords;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -47,16 +45,10 @@ public class RedisStreamPublisher {
                 "data", json
             );
 
-            ObjectRecord<String, Map<String, String>> record = StreamRecords.newRecord()
-                .in(STREAM_KEY)
-                .ofMap(body);
-            redisTemplate.opsForStream().add(record);
+            redisTemplate.opsForStream().add(STREAM_KEY, body);
 
             if (event.type() == SynapseEventType.LOG_WRITTEN) {
-                ObjectRecord<String, Map<String, String>> logRecord = StreamRecords.newRecord()
-                    .in(LOG_STREAM_KEY)
-                    .ofMap(body);
-                redisTemplate.opsForStream().add(logRecord);
+                redisTemplate.opsForStream().add(LOG_STREAM_KEY, body);
             }
         } catch (JsonProcessingException e) {
             log.warn("Failed to serialize event for Redis stream: {}", e.getMessage());
