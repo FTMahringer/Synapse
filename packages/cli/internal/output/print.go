@@ -5,36 +5,35 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	labelStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	valueStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("252"))
-	headerStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("86"))
-	errorStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("196"))
-	okStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("82"))
+const (
+	reset = "\033[0m"
+	bold  = "\033[1m"
+	cyan  = "\033[36m"
+	green = "\033[32m"
+	red   = "\033[31m"
+	dim   = "\033[2m"
 )
 
 func Header(text string) {
-	fmt.Println(headerStyle.Render(text))
+	fmt.Printf("%s%s%s%s\n", bold, cyan, text, reset)
 }
 
 func KV(key, value string) {
-	fmt.Printf("%s  %s\n", labelStyle.Render(key+":"), valueStyle.Render(value))
+	fmt.Printf("  %s%-14s%s %s\n", dim, key+":", reset, value)
 }
 
 func Row(cols ...string) {
-	fmt.Println(strings.Join(cols, "  "))
+	fmt.Println("  " + strings.Join(cols, "  "))
 }
 
 func OK(msg string) {
-	fmt.Println(okStyle.Render("✓ " + msg))
+	fmt.Printf("%s✓%s %s\n", green, reset, msg)
 }
 
 func Error(msg string) {
-	fmt.Fprintln(os.Stderr, errorStyle.Render("✗ "+msg))
+	fmt.Fprintf(os.Stderr, "%s✗%s %s\n", red, reset, msg)
 }
 
 func JSON(v any) {
@@ -47,5 +46,5 @@ func JSON(v any) {
 }
 
 func Separator() {
-	fmt.Println(labelStyle.Render(strings.Repeat("─", 48)))
+	fmt.Println(dim + strings.Repeat("─", 48) + reset)
 }
