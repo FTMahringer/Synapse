@@ -19,7 +19,7 @@ const showTeamForm = ref(false)
 const teamForm = ref({ id: '', name: '', leaderAgentId: '' })
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
-function authH() { const t = localStorage.getItem('synapse_token'); return t ? { Authorization: `Bearer ${t}` } : {} }
+function authH(): Record<string, string> { const t = localStorage.getItem("synapse_token"); return t ? { Authorization: `Bearer ${t}` } : {} }
 
 onMounted(async () => {
   try {

@@ -18,7 +18,7 @@ const form = ref({ name: '', type: 'OLLAMA', baseUrl: '', apiKey: '' })
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 
-function authHeader() {
+function authHeader(): Record<string, string> {
   const t = localStorage.getItem('synapse_token')
   return t ? { Authorization: `Bearer ${t}` } : {}
 }

@@ -10,7 +10,7 @@ const installConfirmed = ref(false)
 const manifest = ref({ id: '', name: '', type: 'SKILL', version: '1.0.0', author: '', source: '' })
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
-function authH() { const t = localStorage.getItem('synapse_token'); return t ? { Authorization: `Bearer ${t}` } : {} }
+function authH(): Record<string, string> { const t = localStorage.getItem("synapse_token"); return t ? { Authorization: `Bearer ${t}` } : {} }
 
 onMounted(load)
 
