@@ -7,7 +7,7 @@ import java.time.Instant;
  * Usage stats for an installed plugin.
  */
 @Entity
-@Table(name = "plugin_stats")
+@Table(name = "plugin_operational_stats")
 public class PluginStats {
 
     @Id

@@ -1,4 +1,4 @@
-CREATE TABLE plugin_stats (
+CREATE TABLE plugin_operational_stats (
     plugin_id VARCHAR(255) PRIMARY KEY,
     install_count BIGINT NOT NULL DEFAULT 0,
     enable_count BIGINT NOT NULL DEFAULT 0,
