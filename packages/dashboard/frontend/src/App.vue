@@ -6,8 +6,6 @@ import {
   fetchHealth,
   fetchLogs,
   fetchRoutingLogs,
-  connectLogStream,
-  connectConversationStream,
   activateAgent,
   pauseAgent,
   disableAgent,
@@ -19,6 +17,7 @@ import {
   type RoutingLog,
   type SystemLog,
 } from './api'
+import { connectWithBackoff, connectWsWithBackoff } from './reconnect'
 
 const health = ref<HealthResponse | null>(null)
 const agents = ref<AgentDefinition[]>([])
@@ -32,23 +31,41 @@ const activeTab = ref<'overview' | 'agents' | 'routing' | 'logs'>('overview')
 const liveConnected = ref(false)
 const wsConnected = ref(false)
 
-let logStream: EventSource | null = null
-let conversationWs: WebSocket | null = null
+const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+
+let stopLogStream: (() => void) | null = null
+let stopWsStream: (() => void) | null = null
 
 onMounted(async () => {
   await reload()
-  logStream = connectLogStream(
-    (event) => {
-      liveLogs.value.unshift(event)
-      if (liveLogs.value.length > 100) liveLogs.value.pop()
-      liveConnected.value = true
+
+  stopLogStream = connectWithBackoff(
+    `${API_BASE}/api/logs/stream`,
+    'log',
+    (data) => {
+      try {
+        const event: LiveLogEvent = JSON.parse(data)
+        liveLogs.value.unshift(event)
+        if (liveLogs.value.length > 100) liveLogs.value.pop()
+        liveConnected.value = true
+      } catch { /* ignore */ }
     },
-    () => { liveConnected.value = false }
+    {
+      onFallback: () => {
+        liveConnected.value = false
+      }
+    }
   )
-  conversationWs = connectConversationStream(
-    (event) => {
-      conversationEvents.value.unshift(event)
-      if (conversationEvents.value.length > 50) conversationEvents.value.pop()
+
+  const wsUrl = `${API_BASE.replace(/^http/, 'ws')}/ws/conversations`
+  stopWsStream = connectWsWithBackoff(
+    wsUrl,
+    (data) => {
+      try {
+        const event: ConversationStreamEvent = JSON.parse(data)
+        conversationEvents.value.unshift(event)
+        if (conversationEvents.value.length > 50) conversationEvents.value.pop()
+      } catch { /* ignore */ }
     },
     () => { wsConnected.value = true },
     () => { wsConnected.value = false }
@@ -56,8 +73,8 @@ onMounted(async () => {
 })
 
 onUnmounted(() => {
-  logStream?.close()
-  conversationWs?.close()
+  stopLogStream?.()
+  stopWsStream?.()
 })
 
 async function reload() {
