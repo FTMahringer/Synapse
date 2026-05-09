@@ -2,6 +2,9 @@ package dev.synapse.core.logging;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.synapse.core.event.EventPublisher;
+import dev.synapse.core.event.SynapseEvent;
+import dev.synapse.core.event.SynapseEventType;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +20,12 @@ public class SystemLogService {
 
     private final JdbcClient jdbcClient;
     private final ObjectMapper objectMapper;
+    private final EventPublisher eventPublisher;
 
-    public SystemLogService(JdbcClient jdbcClient, ObjectMapper objectMapper) {
+    public SystemLogService(JdbcClient jdbcClient, ObjectMapper objectMapper, EventPublisher eventPublisher) {
         this.jdbcClient = jdbcClient;
         this.objectMapper = objectMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     public void info(LogCategory category, String event, String source, String payload) {
@@ -44,6 +49,13 @@ public class SystemLogService {
                 .param("correlationId", correlationId)
                 .param("traceId", traceId)
                 .update();
+
+        eventPublisher.publish(SynapseEvent.of(
+            SynapseEventType.LOG_WRITTEN,
+            source != null ? source : "system",
+            Map.of("level", level.name(), "category", category.name(), "event", event),
+            correlationId
+        ));
     }
 
     private String toJson(Map<String, Object> map) {
