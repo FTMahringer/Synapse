@@ -54,6 +54,8 @@ services:
       SECRETS_ENCRYPTION_KEY: ${SECRETS_ENCRYPTION_KEY:-dev_key_32_bytes_change_me_now!!}
       JWT_SECRET: ${JWT_SECRET:-CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256}
       ECHO_ENABLED: ${ECHO_ENABLED:-true}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - "8080:8080"
     depends_on:
