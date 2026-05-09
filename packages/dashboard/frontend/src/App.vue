@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import {
   fetchAgents,
   fetchAgentRuntimes,
   fetchHealth,
   fetchLogs,
   fetchRoutingLogs,
+  connectLogStream,
   activateAgent,
   pauseAgent,
   disableAgent,
   type AgentDefinition,
   type AgentRuntime,
   type HealthResponse,
+  type LiveLogEvent,
   type RoutingLog,
   type SystemLog,
 } from './api'
@@ -20,12 +22,28 @@ const health = ref<HealthResponse | null>(null)
 const agents = ref<AgentDefinition[]>([])
 const runtimes = ref<AgentRuntime[]>([])
 const logs = ref<SystemLog[]>([])
+const liveLogs = ref<LiveLogEvent[]>([])
 const routingLogs = ref<RoutingLog[]>([])
 const error = ref<string | null>(null)
 const activeTab = ref<'overview' | 'agents' | 'routing' | 'logs'>('overview')
+const liveConnected = ref(false)
+
+let logStream: EventSource | null = null
 
 onMounted(async () => {
   await reload()
+  logStream = connectLogStream(
+    (event) => {
+      liveLogs.value.unshift(event)
+      if (liveLogs.value.length > 100) liveLogs.value.pop()
+      liveConnected.value = true
+    },
+    () => { liveConnected.value = false }
+  )
+})
+
+onUnmounted(() => {
+  logStream?.close()
 })
 
 async function reload() {
@@ -189,7 +207,24 @@ async function setAgentState(agentId: string, action: 'activate' | 'pause' | 'di
       <!-- Logs Tab -->
       <template v-if="activeTab === 'logs'">
         <section class="panel">
-          <h2>System Logs</h2>
+          <h2>
+            Live Stream
+            <span class="state-badge" :class="liveConnected ? 'active' : 'disabled'">
+              {{ liveConnected ? 'CONNECTED' : 'DISCONNECTED' }}
+            </span>
+          </h2>
+          <ul v-if="liveLogs.length" class="log-list">
+            <li v-for="entry in liveLogs" :key="entry.id">
+              <strong>{{ entry.payload?.category ?? entry.type }}</strong>
+              <span>{{ entry.payload?.event ?? entry.source }}</span>
+              <small>{{ entry.payload?.level ?? '' }} · {{ new Date(entry.occurredAt).toLocaleTimeString() }}</small>
+            </li>
+          </ul>
+          <p v-else>Waiting for live log events…</p>
+        </section>
+
+        <section class="panel">
+          <h2>Recent Logs (historic)</h2>
           <ul v-if="logs.length" class="log-list">
             <li v-for="log in logs" :key="log.id">
               <strong>{{ log.category }}</strong>

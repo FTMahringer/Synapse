@@ -94,3 +94,27 @@ export async function fetchLogs(limit = 25): Promise<SystemLog[]> {
   if (!response.ok) throw new Error(`Logs request failed: ${response.status}`)
   return response.json()
 }
+
+export interface LiveLogEvent {
+  id: string
+  type: string
+  source: string
+  payload: Record<string, string>
+  occurredAt: string
+}
+
+export function connectLogStream(
+  onEvent: (event: LiveLogEvent) => void,
+  onError?: (err: Event) => void
+): EventSource {
+  const es = new EventSource(`${API_BASE}/api/logs/stream`)
+  es.addEventListener('log', (e: MessageEvent) => {
+    try {
+      onEvent(JSON.parse(e.data))
+    } catch {
+      // ignore malformed events
+    }
+  })
+  if (onError) es.onerror = onError
+  return es
+}
