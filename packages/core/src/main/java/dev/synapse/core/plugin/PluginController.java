@@ -15,10 +15,16 @@ public class PluginController {
 
     private final PluginLifecycleService lifecycleService;
     private final PluginStatsService statsService;
+    private final PluginSafetyService safetyService;
 
-    public PluginController(PluginLifecycleService lifecycleService, PluginStatsService statsService) {
+    public PluginController(
+        PluginLifecycleService lifecycleService,
+        PluginStatsService statsService,
+        PluginSafetyService safetyService
+    ) {
         this.lifecycleService = lifecycleService;
         this.statsService = statsService;
+        this.safetyService = safetyService;
     }
 
     @GetMapping
@@ -33,8 +39,16 @@ public class PluginController {
 
     @PostMapping("/install")
     @ResponseStatus(HttpStatus.CREATED)
-    public PluginDTO install(@RequestBody Map<String, Object> manifest) {
-        return DtoMapper.toDTO(lifecycleService.install(manifest));
+    public PluginDTO install(
+        @RequestBody Map<String, Object> manifest,
+        @RequestParam(defaultValue = "false") boolean confirmed
+    ) {
+        return DtoMapper.toDTO(safetyService.safeInstall(manifest, confirmed));
+    }
+
+    @PostMapping("/install/assess")
+    public PluginSafetyPolicy assessInstall(@RequestBody Map<String, Object> manifest) {
+        return safetyService.assess(manifest);
     }
 
     @PostMapping("/{id}/enable")
