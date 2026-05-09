@@ -247,6 +247,28 @@ article strong {
 
 .logout-btn:hover { color: #e8edf2; border-color: rgba(232, 237, 242, 0.4); }
 
+.tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.tab-bar button {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(232,237,242,0.15);
+  border-radius: 6px;
+  color: #aab4bf;
+  cursor: pointer;
+  font-size: 0.88rem;
+  padding: 6px 16px;
+}
+
+.tab-bar button.active {
+  background: #243143;
+  border-color: rgba(232,237,242,0.25);
+  color: #f7fafc;
+}
+
 .conv-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
