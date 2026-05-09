@@ -30,6 +30,8 @@ synapse:
   system-name: ${SYSTEM_NAME:SYNAPSE}
   version: ${SYNAPSE_VERSION:v1.0.0}
   agents-path: ${SYNAPSE_AGENTS_PATH:agents}
+  store:
+    registry-path: ${SYNAPSE_STORE_REGISTRY_PATH:store/registry.yml}
   echo:
     enabled: ${ECHO_ENABLED:true}
     debug-only: true
