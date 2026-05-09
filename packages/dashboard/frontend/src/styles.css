@@ -247,6 +247,45 @@ article strong {
 
 .logout-btn:hover { color: #e8edf2; border-color: rgba(232, 237, 242, 0.4); }
 
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.panel-header h2 { margin: 0; }
+
+.panel-header button,
+.inline-form button {
+  background: #243143;
+  border: 1px solid rgba(232, 237, 242, 0.2);
+  border-radius: 6px;
+  color: #f7fafc;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 6px 14px;
+}
+
+.inline-form {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 6px;
+}
+
+.inline-form input,
+.inline-form select {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(232, 237, 242, 0.18);
+  border-radius: 6px;
+  color: #e8edf2;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+}
+
 .agent-row {
   display: flex;
   justify-content: space-between;
