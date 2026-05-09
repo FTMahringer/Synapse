@@ -7,11 +7,13 @@ import {
   fetchLogs,
   fetchRoutingLogs,
   connectLogStream,
+  connectConversationStream,
   activateAgent,
   pauseAgent,
   disableAgent,
   type AgentDefinition,
   type AgentRuntime,
+  type ConversationStreamEvent,
   type HealthResponse,
   type LiveLogEvent,
   type RoutingLog,
@@ -23,12 +25,15 @@ const agents = ref<AgentDefinition[]>([])
 const runtimes = ref<AgentRuntime[]>([])
 const logs = ref<SystemLog[]>([])
 const liveLogs = ref<LiveLogEvent[]>([])
+const conversationEvents = ref<ConversationStreamEvent[]>([])
 const routingLogs = ref<RoutingLog[]>([])
 const error = ref<string | null>(null)
 const activeTab = ref<'overview' | 'agents' | 'routing' | 'logs'>('overview')
 const liveConnected = ref(false)
+const wsConnected = ref(false)
 
 let logStream: EventSource | null = null
+let conversationWs: WebSocket | null = null
 
 onMounted(async () => {
   await reload()
@@ -40,10 +45,19 @@ onMounted(async () => {
     },
     () => { liveConnected.value = false }
   )
+  conversationWs = connectConversationStream(
+    (event) => {
+      conversationEvents.value.unshift(event)
+      if (conversationEvents.value.length > 50) conversationEvents.value.pop()
+    },
+    () => { wsConnected.value = true },
+    () => { wsConnected.value = false }
+  )
 })
 
 onUnmounted(() => {
   logStream?.close()
+  conversationWs?.close()
 })
 
 async function reload() {
@@ -143,6 +157,23 @@ async function setAgentState(agentId: string, action: 'activate' | 'pause' | 'di
             </li>
           </ul>
           <p v-else>No logs available yet.</p>
+        </section>
+
+        <section class="panel">
+          <h2>
+            Conversation Stream
+            <span class="state-badge" :class="wsConnected ? 'active' : 'disabled'">
+              {{ wsConnected ? 'LIVE' : 'OFFLINE' }}
+            </span>
+          </h2>
+          <ul v-if="conversationEvents.length" class="log-list">
+            <li v-for="event in conversationEvents" :key="event.id">
+              <strong>{{ event.type }}</strong>
+              <span>{{ event.source }}</span>
+              <small>{{ new Date(event.occurredAt).toLocaleTimeString() }}</small>
+            </li>
+          </ul>
+          <p v-else>No conversation events yet.</p>
         </section>
       </template>
 

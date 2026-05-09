@@ -95,6 +95,29 @@ export async function fetchLogs(limit = 25): Promise<SystemLog[]> {
   return response.json()
 }
 
+export interface ConversationStreamEvent {
+  id: string
+  type: string
+  source: string
+  payload: Record<string, unknown>
+  correlationId: string | null
+  occurredAt: string
+}
+
+export function connectConversationStream(
+  onEvent: (event: ConversationStreamEvent) => void,
+  onOpen?: () => void,
+  onClose?: () => void
+): WebSocket {
+  const ws = new WebSocket(`${API_BASE.replace(/^http/, 'ws')}/ws/conversations`)
+  ws.onmessage = (e: MessageEvent) => {
+    try { onEvent(JSON.parse(e.data)) } catch { /* ignore */ }
+  }
+  if (onOpen) ws.onopen = onOpen
+  if (onClose) ws.onclose = onClose
+  return ws
+}
+
 export interface LiveLogEvent {
   id: string
   type: string
