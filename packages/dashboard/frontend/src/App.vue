@@ -6,6 +6,12 @@ import {
   fetchHealth,
   fetchLogs,
   fetchRoutingLogs,
+  fetchPlugins,
+  fetchStore,
+  enablePlugin,
+  disablePlugin,
+  uninstallPlugin,
+  installBundle,
   activateAgent,
   pauseAgent,
   disableAgent,
@@ -14,7 +20,9 @@ import {
   type ConversationStreamEvent,
   type HealthResponse,
   type LiveLogEvent,
+  type Plugin,
   type RoutingLog,
+  type StoreEntry,
   type SystemLog,
 } from './api'
 import { connectWithBackoff, connectWsWithBackoff } from './reconnect'
@@ -26,8 +34,10 @@ const logs = ref<SystemLog[]>([])
 const liveLogs = ref<LiveLogEvent[]>([])
 const conversationEvents = ref<ConversationStreamEvent[]>([])
 const routingLogs = ref<RoutingLog[]>([])
+const plugins = ref<Plugin[]>([])
+const storeEntries = ref<StoreEntry[]>([])
 const error = ref<string | null>(null)
-const activeTab = ref<'overview' | 'agents' | 'routing' | 'logs'>('overview')
+const activeTab = ref<'overview' | 'agents' | 'routing' | 'plugins' | 'store' | 'logs'>('overview')
 const liveConnected = ref(false)
 const wsConnected = ref(false)
 
@@ -79,18 +89,22 @@ onUnmounted(() => {
 
 async function reload() {
   try {
-    const [healthRes, agentsRes, runtimesRes, logsRes, routingRes] = await Promise.all([
+    const [healthRes, agentsRes, runtimesRes, logsRes, routingRes, pluginsRes, storeRes] = await Promise.all([
       fetchHealth(),
       fetchAgents(),
       fetchAgentRuntimes(),
       fetchLogs(),
       fetchRoutingLogs(),
+      fetchPlugins(),
+      fetchStore(),
     ])
     health.value = healthRes
     agents.value = agentsRes
     runtimes.value = runtimesRes
     logs.value = logsRes
     routingLogs.value = routingRes
+    plugins.value = pluginsRes
+    storeEntries.value = storeRes
     error.value = null
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Unable to reach backend'
@@ -99,6 +113,31 @@ async function reload() {
 
 function getRuntimeState(agentId: string): AgentRuntime | undefined {
   return runtimes.value.find(r => r.agentId === agentId)
+}
+
+async function setPluginState(id: string, action: 'enable' | 'disable' | 'uninstall') {
+  try {
+    if (action === 'uninstall') {
+      await uninstallPlugin(id)
+      plugins.value = plugins.value.filter(p => p.id !== id)
+    } else {
+      const updated = action === 'enable' ? await enablePlugin(id) : await disablePlugin(id)
+      const idx = plugins.value.findIndex(p => p.id === id)
+      if (idx >= 0) plugins.value[idx] = updated
+    }
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Plugin action failed'
+  }
+}
+
+async function installStoreBundle(id: string) {
+  try {
+    const result = await installBundle(id)
+    if (result.success) await reload()
+    else error.value = 'Bundle install failed: ' + result.errors.join(', ')
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Bundle install failed'
+  }
 }
 
 async function setAgentState(agentId: string, action: 'activate' | 'pause' | 'disable') {
@@ -122,6 +161,8 @@ async function setAgentState(agentId: string, action: 'activate' | 'pause' | 'di
         <a :class="{ active: activeTab === 'overview' }" @click="activeTab = 'overview'">Overview</a>
         <a :class="{ active: activeTab === 'agents' }" @click="activeTab = 'agents'">Agents</a>
         <a :class="{ active: activeTab === 'routing' }" @click="activeTab = 'routing'">Routing</a>
+        <a :class="{ active: activeTab === 'plugins' }" @click="activeTab = 'plugins'">Plugins</a>
+        <a :class="{ active: activeTab === 'store' }" @click="activeTab = 'store'">Store</a>
         <a :class="{ active: activeTab === 'logs' }" @click="activeTab = 'logs'">Logs</a>
       </nav>
     </aside>
@@ -234,6 +275,55 @@ async function setAgentState(agentId: string, action: 'activate' | 'pause' | 'di
             </li>
           </ul>
           <p v-else>No runtime records yet.</p>
+        </section>
+      </template>
+
+      <!-- Plugins Tab -->
+      <template v-if="activeTab === 'plugins'">
+        <section class="panel">
+          <h2>Installed Plugins</h2>
+          <ul v-if="plugins.length" class="agent-list">
+            <li v-for="plugin in plugins" :key="plugin.id">
+              <div class="agent-row">
+                <div>
+                  <span>{{ plugin.name }}</span>
+                  <small>{{ plugin.type }} · v{{ plugin.version }}</small>
+                </div>
+                <div class="agent-controls">
+                  <span class="state-badge" :class="plugin.status === 'INSTALLED' ? 'active' : 'disabled'">
+                    {{ plugin.status }}
+                  </span>
+                  <button @click="setPluginState(plugin.id, 'enable')">Enable</button>
+                  <button @click="setPluginState(plugin.id, 'disable')">Disable</button>
+                  <button @click="setPluginState(plugin.id, 'uninstall')">Uninstall</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p v-else>No plugins installed.</p>
+        </section>
+      </template>
+
+      <!-- Store Tab -->
+      <template v-if="activeTab === 'store'">
+        <section class="panel">
+          <h2>Store</h2>
+          <ul v-if="storeEntries.length" class="agent-list">
+            <li v-for="entry in storeEntries" :key="entry.id">
+              <div class="agent-row">
+                <div>
+                  <span>{{ entry.name }}</span>
+                  <small>{{ entry.type }} · {{ entry.source }} · v{{ entry.version }}</small>
+                  <small v-if="entry.description">{{ entry.description }}</small>
+                </div>
+                <div class="agent-controls">
+                  <button v-if="entry.type === 'BUNDLE'" @click="installStoreBundle(entry.id)">Install Bundle</button>
+                  <span v-else class="state-badge unknown">{{ entry.type }}</span>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <p v-else>No store entries loaded.</p>
         </section>
       </template>
 

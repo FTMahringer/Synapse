@@ -89,6 +89,62 @@ export async function fetchRoutingLogs(): Promise<RoutingLog[]> {
   return response.json()
 }
 
+export interface Plugin {
+  id: string
+  name: string
+  type: string
+  version: string
+  status: string
+  createdAt: string
+}
+
+export interface StoreEntry {
+  id: string
+  name: string
+  type: string
+  source: string
+  version: string
+  author: string | null
+  description: string | null
+  tags: string[] | null
+}
+
+export async function fetchPlugins(): Promise<Plugin[]> {
+  const response = await fetch(`${API_BASE}/api/plugins`)
+  if (!response.ok) throw new Error(`Plugins request failed: ${response.status}`)
+  return response.json()
+}
+
+export async function enablePlugin(id: string): Promise<Plugin> {
+  const response = await fetch(`${API_BASE}/api/plugins/${id}/enable`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Enable plugin failed: ${response.status}`)
+  return response.json()
+}
+
+export async function disablePlugin(id: string): Promise<Plugin> {
+  const response = await fetch(`${API_BASE}/api/plugins/${id}/disable`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Disable plugin failed: ${response.status}`)
+  return response.json()
+}
+
+export async function uninstallPlugin(id: string): Promise<void> {
+  const response = await fetch(`${API_BASE}/api/plugins/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`Uninstall plugin failed: ${response.status}`)
+}
+
+export async function fetchStore(type?: 'PLUGIN' | 'BUNDLE'): Promise<StoreEntry[]> {
+  const url = type ? `${API_BASE}/api/store?type=${type}` : `${API_BASE}/api/store`
+  const response = await fetch(url)
+  if (!response.ok) throw new Error(`Store request failed: ${response.status}`)
+  return response.json()
+}
+
+export async function installBundle(id: string): Promise<{ success: boolean; installed: string[]; errors: string[] }> {
+  const response = await fetch(`${API_BASE}/api/store/${id}/install`, { method: 'POST' })
+  if (!response.ok) throw new Error(`Bundle install failed: ${response.status}`)
+  return response.json()
+}
+
 export async function fetchLogs(limit = 25): Promise<SystemLog[]> {
   const response = await fetch(`${API_BASE}/api/logs?limit=${limit}`)
   if (!response.ok) throw new Error(`Logs request failed: ${response.status}`)
