@@ -26,17 +26,20 @@ public class PluginLifecycleService {
     private final ManifestValidator validator;
     private final SystemLogService logService;
     private final EventPublisher eventPublisher;
+    private final PluginStatsService statsService;
 
     public PluginLifecycleService(
         PluginRepository pluginRepository,
         ManifestValidator validator,
         SystemLogService logService,
-        EventPublisher eventPublisher
+        EventPublisher eventPublisher,
+        PluginStatsService statsService
     ) {
         this.pluginRepository = pluginRepository;
         this.validator = validator;
         this.logService = logService;
         this.eventPublisher = eventPublisher;
+        this.statsService = statsService;
     }
 
     @Transactional
@@ -67,6 +70,8 @@ public class PluginLifecycleService {
         eventPublisher.publish(SynapseEvent.of(SynapseEventType.LOG_WRITTEN, "PluginLifecycleService",
             Map.of("event", "PLUGIN_INSTALLED", "pluginId", saved.getId())));
 
+        statsService.recordInstall(saved.getId());
+
         return saved;
     }
 
@@ -82,6 +87,8 @@ public class PluginLifecycleService {
             Map.of("id", id),
             null, null);
 
+        statsService.recordEnable(id);
+
         return saved;
     }
 
@@ -96,6 +103,8 @@ public class PluginLifecycleService {
             "PLUGIN_DISABLED",
             Map.of("id", id),
             null, null);
+
+        statsService.recordDisable(id);
 
         return saved;
     }

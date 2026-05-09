@@ -1,5 +1,6 @@
 package dev.synapse.core.plugin;
 
+import dev.synapse.core.domain.PluginStats;
 import dev.synapse.core.dto.DtoMapper;
 import dev.synapse.core.dto.PluginDTO;
 import org.springframework.http.HttpStatus;
@@ -13,9 +14,11 @@ import java.util.Map;
 public class PluginController {
 
     private final PluginLifecycleService lifecycleService;
+    private final PluginStatsService statsService;
 
-    public PluginController(PluginLifecycleService lifecycleService) {
+    public PluginController(PluginLifecycleService lifecycleService, PluginStatsService statsService) {
         this.lifecycleService = lifecycleService;
+        this.statsService = statsService;
     }
 
     @GetMapping
@@ -48,5 +51,16 @@ public class PluginController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void uninstall(@PathVariable String id) {
         lifecycleService.uninstall(id);
+    }
+
+    @GetMapping("/stats")
+    public List<PluginStats> allStats() {
+        return statsService.findAll();
+    }
+
+    @GetMapping("/{id}/stats")
+    public PluginStats pluginStats(@PathVariable String id) {
+        return statsService.findById(id)
+            .orElse(null);
     }
 }
