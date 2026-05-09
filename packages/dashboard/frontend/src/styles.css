@@ -33,6 +33,8 @@ a {
   border-right: 1px solid rgba(232, 237, 242, 0.12);
   padding: 28px 20px;
   background: rgba(16, 20, 24, 0.82);
+  display: flex;
+  flex-direction: column;
 }
 
 .brand {
@@ -53,9 +55,17 @@ nav a {
   color: #aab4bf;
 }
 
-nav a.active {
+nav a.active,
+nav a.router-link-active {
   background: #243143;
   color: #f7fafc;
+}
+
+.stream-status {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 16px;
 }
 
 .content {
