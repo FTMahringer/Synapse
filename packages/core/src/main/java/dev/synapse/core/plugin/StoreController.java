@@ -10,15 +10,15 @@ import java.util.List;
 public class StoreController {
 
     private final StoreRegistryService storeRegistryService;
+    private final BundleInstallService bundleInstallService;
 
-    public StoreController(StoreRegistryService storeRegistryService) {
+    public StoreController(StoreRegistryService storeRegistryService, BundleInstallService bundleInstallService) {
         this.storeRegistryService = storeRegistryService;
+        this.bundleInstallService = bundleInstallService;
     }
 
     @GetMapping
-    public List<StoreEntry> listEntries(
-        @RequestParam(required = false) String type
-    ) {
+    public List<StoreEntry> listEntries(@RequestParam(required = false) String type) {
         if (type != null) {
             try {
                 return storeRegistryService.findByType(StoreEntry.StoreEntryType.valueOf(type.toUpperCase()));
@@ -27,5 +27,15 @@ public class StoreController {
             }
         }
         return storeRegistryService.findAll();
+    }
+
+    @PostMapping("/{id}/validate")
+    public ValidationResult validateBundle(@PathVariable String id) {
+        return bundleInstallService.validateBundle(id);
+    }
+
+    @PostMapping("/{id}/install")
+    public BundleInstallService.BundleInstallResult installBundle(@PathVariable String id) {
+        return bundleInstallService.installBundle(id);
     }
 }
