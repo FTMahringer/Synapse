@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { RouterView, RouterLink } from 'vue-router'
 import { connectWithBackoff, connectWsWithBackoff } from './reconnect'
 import { useLiveStore } from './stores/liveStore'
+import { useAuthStore } from './stores/authStore'
 import type { ConversationStreamEvent, LiveLogEvent } from './api'
 
 const live = useLiveStore()
+const auth = useAuthStore()
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
+
+const loginUsername = ref('')
+const loginPassword = ref('')
+
+async function doLogin() {
+  await auth.login(loginUsername.value, loginPassword.value)
+}
 
 let stopLogStream: (() => void) | null = null
 let stopWsStream: (() => void) | null = null
@@ -38,7 +47,22 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <main class="shell">
+  <!-- Login overlay when not authenticated -->
+  <div v-if="!auth.isAuthenticated" class="login-overlay">
+    <div class="login-card">
+      <div class="brand">SYNAPSE</div>
+      <p class="login-sub">Operator Console</p>
+      <form @submit.prevent="doLogin">
+        <input v-model="loginUsername" type="text" placeholder="Username" autocomplete="username" />
+        <input v-model="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
+        <p v-if="auth.loginError" class="error">{{ auth.loginError }}</p>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main shell when authenticated -->
+  <main v-else class="shell">
     <aside class="sidebar">
       <div class="brand">SYNAPSE</div>
       <nav>
@@ -55,6 +79,8 @@ onUnmounted(() => {
       <div class="stream-status">
         <span class="state-badge" :class="live.sseConnected ? 'active' : 'disabled'">SSE</span>
         <span class="state-badge" :class="live.wsConnected ? 'active' : 'disabled'">WS</span>
+        <span class="role-badge">{{ auth.role }}</span>
+        <button class="logout-btn" @click="auth.logout()">Out</button>
       </div>
     </aside>
 

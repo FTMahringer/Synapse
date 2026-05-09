@@ -47,47 +47,39 @@ export interface SystemLog {
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? ''
 
-export async function fetchHealth(): Promise<HealthResponse> {
-  const response = await fetch(`${API_BASE}/api/health`)
-  if (!response.ok) throw new Error(`Health request failed: ${response.status}`)
-  return response.json()
+function authHeaders(): HeadersInit {
+  const token = localStorage.getItem('synapse_token')
+  return token ? { Authorization: `Bearer ${token}` } : {}
 }
 
-export async function fetchAgents(): Promise<AgentDefinition[]> {
-  const response = await fetch(`${API_BASE}/api/agents`)
-  if (!response.ok) throw new Error(`Agents request failed: ${response.status}`)
-  return response.json()
+async function get<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, { headers: authHeaders() })
+  if (!res.ok) throw new Error(`GET ${path} failed: ${res.status}`)
+  return res.json()
 }
 
-export async function fetchAgentRuntimes(): Promise<AgentRuntime[]> {
-  const response = await fetch(`${API_BASE}/api/agents/runtime`)
-  if (!response.ok) throw new Error(`Agent runtimes request failed: ${response.status}`)
-  return response.json()
+async function post<T>(path: string, body?: unknown): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...authHeaders() },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  })
+  if (!res.ok) throw new Error(`POST ${path} failed: ${res.status}`)
+  return res.json()
 }
 
-export async function activateAgent(agentId: string): Promise<AgentRuntime> {
-  const response = await fetch(`${API_BASE}/api/agents/${agentId}/activate`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Activate failed: ${response.status}`)
-  return response.json()
+async function del(path: string): Promise<void> {
+  const res = await fetch(`${API_BASE}${path}`, { method: 'DELETE', headers: authHeaders() })
+  if (!res.ok) throw new Error(`DELETE ${path} failed: ${res.status}`)
 }
 
-export async function pauseAgent(agentId: string): Promise<AgentRuntime> {
-  const response = await fetch(`${API_BASE}/api/agents/${agentId}/pause`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Pause failed: ${response.status}`)
-  return response.json()
-}
-
-export async function disableAgent(agentId: string): Promise<AgentRuntime> {
-  const response = await fetch(`${API_BASE}/api/agents/${agentId}/disable`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Disable failed: ${response.status}`)
-  return response.json()
-}
-
-export async function fetchRoutingLogs(): Promise<RoutingLog[]> {
-  const response = await fetch(`${API_BASE}/api/agents/routing`)
-  if (!response.ok) throw new Error(`Routing logs request failed: ${response.status}`)
-  return response.json()
-}
+export const fetchHealth = () => get<HealthResponse>('/api/health')
+export const fetchAgents = () => get<AgentDefinition[]>('/api/agents')
+export const fetchAgentRuntimes = () => get<AgentRuntime[]>('/api/agents/runtime')
+export const activateAgent = (id: string) => post<AgentRuntime>(`/api/agents/${id}/activate`)
+export const pauseAgent = (id: string) => post<AgentRuntime>(`/api/agents/${id}/pause`)
+export const disableAgent = (id: string) => post<AgentRuntime>(`/api/agents/${id}/disable`)
+export const fetchRoutingLogs = () => get<RoutingLog[]>('/api/agents/routing')
 
 export interface Plugin {
   id: string
@@ -109,47 +101,16 @@ export interface StoreEntry {
   tags: string[] | null
 }
 
-export async function fetchPlugins(): Promise<Plugin[]> {
-  const response = await fetch(`${API_BASE}/api/plugins`)
-  if (!response.ok) throw new Error(`Plugins request failed: ${response.status}`)
-  return response.json()
-}
+export const fetchPlugins = () => get<Plugin[]>('/api/plugins')
+export const enablePlugin = (id: string) => post<Plugin>(`/api/plugins/${id}/enable`)
+export const disablePlugin = (id: string) => post<Plugin>(`/api/plugins/${id}/disable`)
+export const uninstallPlugin = (id: string) => del(`/api/plugins/${id}`)
+export const fetchStore = (type?: 'PLUGIN' | 'BUNDLE') =>
+  get<StoreEntry[]>(type ? `/api/store?type=${type}` : '/api/store')
+export const installBundle = (id: string) =>
+  post<{ success: boolean; installed: string[]; errors: string[] }>(`/api/store/${id}/install`)
 
-export async function enablePlugin(id: string): Promise<Plugin> {
-  const response = await fetch(`${API_BASE}/api/plugins/${id}/enable`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Enable plugin failed: ${response.status}`)
-  return response.json()
-}
-
-export async function disablePlugin(id: string): Promise<Plugin> {
-  const response = await fetch(`${API_BASE}/api/plugins/${id}/disable`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Disable plugin failed: ${response.status}`)
-  return response.json()
-}
-
-export async function uninstallPlugin(id: string): Promise<void> {
-  const response = await fetch(`${API_BASE}/api/plugins/${id}`, { method: 'DELETE' })
-  if (!response.ok) throw new Error(`Uninstall plugin failed: ${response.status}`)
-}
-
-export async function fetchStore(type?: 'PLUGIN' | 'BUNDLE'): Promise<StoreEntry[]> {
-  const url = type ? `${API_BASE}/api/store?type=${type}` : `${API_BASE}/api/store`
-  const response = await fetch(url)
-  if (!response.ok) throw new Error(`Store request failed: ${response.status}`)
-  return response.json()
-}
-
-export async function installBundle(id: string): Promise<{ success: boolean; installed: string[]; errors: string[] }> {
-  const response = await fetch(`${API_BASE}/api/store/${id}/install`, { method: 'POST' })
-  if (!response.ok) throw new Error(`Bundle install failed: ${response.status}`)
-  return response.json()
-}
-
-export async function fetchLogs(limit = 25): Promise<SystemLog[]> {
-  const response = await fetch(`${API_BASE}/api/logs?limit=${limit}`)
-  if (!response.ok) throw new Error(`Logs request failed: ${response.status}`)
-  return response.json()
-}
+export const fetchLogs = (limit = 25) => get<SystemLog[]>(`/api/logs?limit=${limit}`)
 
 export interface ConversationStreamEvent {
   id: string

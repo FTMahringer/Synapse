@@ -162,6 +162,91 @@ article strong {
   color: #aab4bf;
 }
 
+.login-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #101418;
+}
+
+.login-card {
+  background: rgba(24, 29, 34, 0.9);
+  border: 1px solid rgba(232, 237, 242, 0.12);
+  border-radius: 12px;
+  padding: 40px 48px;
+  width: 340px;
+  display: grid;
+  gap: 16px;
+}
+
+.login-card .brand {
+  font-size: 1.4rem;
+  margin-bottom: 0;
+}
+
+.login-sub {
+  color: #8fbca7;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.login-card form {
+  display: grid;
+  gap: 12px;
+}
+
+.login-card input {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(232, 237, 242, 0.18);
+  border-radius: 6px;
+  color: #e8edf2;
+  font-size: 0.95rem;
+  padding: 10px 12px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: rgba(143, 188, 167, 0.5);
+}
+
+.login-card button[type=submit] {
+  background: #243143;
+  border: 1px solid rgba(232, 237, 242, 0.2);
+  border-radius: 6px;
+  color: #f7fafc;
+  cursor: pointer;
+  font-size: 0.95rem;
+  padding: 10px;
+  width: 100%;
+}
+
+.login-card button[type=submit]:hover {
+  background: #2d3f58;
+}
+
+.role-badge {
+  color: #8fbca7;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid rgba(232, 237, 242, 0.18);
+  border-radius: 4px;
+  color: #aab4bf;
+  cursor: pointer;
+  font-size: 0.72rem;
+  padding: 2px 7px;
+}
+
+.logout-btn:hover { color: #e8edf2; border-color: rgba(232, 237, 242, 0.4); }
+
 .agent-row {
   display: flex;
   justify-content: space-between;
