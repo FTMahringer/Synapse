@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 @ConfigurationPropertiesScan
 @EnableConfigurationProperties(SynapseProperties.class)
-@EnableAsync
+@EnableAsync(proxyTargetClass = true)
 public class SynapseApplication {
 
     public static void main(String[] args) {
