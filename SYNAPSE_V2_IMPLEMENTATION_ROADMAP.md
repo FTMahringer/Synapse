@@ -304,19 +304,123 @@ Exit criteria:
 - CLI can inspect health, logs, agents, providers, and conversations.
 - CLI can send a message through the chat runtime.
 
-### v1.10.0 - Release Hardening
+
+# v1.10.0 - Spring-boot file seperation / movement
+
+## Goal
+
+Restructure and harden the backend/core architecture.
+
+Focus only on the `core` module and internal backend structure.
+The `/dev/synapse` directory currently contains many unused or empty directories.
+Analyze the existing structure and redistribute files into cleaner and more maintainable locations.
+
+The objective is to:
+
+* improve project organization
+* reduce architectural chaos
+* prepare the backend for future scaling
+* ensure imports, dependencies, and package structures are clean and consistent
+
+---
+
+## Release Steps
+
+### `v1.9.1-dev` — Structure Analysis & Planning
+
+* Analyze the complete backend/core structure
+* Inspect all folders inside `/dev/synapse`
+* Identify:
+
+  * empty directories
+  * misplaced files
+  * duplicated logic
+  * inconsistent package structures
+* Create a detailed `plan.md` inside the Spring Boot `/dev/synapse` directory
+* Define:
+
+  * new target structure
+  * file redistribution plan
+  * architecture improvements
+  * cleanup candidates
+
+---
+
+### `v1.9.2-dev` — Core Refactor & File Redistribution
+
+* Begin restructuring based on `plan.md`
+* Move files into their correct modules/packages
+* Remove obsolete or unused folders
+* Consolidate duplicated logic where possible
+* Improve separation of concerns between:
+
+  * config
+  * core
+  * modules
+  * services
+  * utils
+  * integrations
+  * infrastructure
+* Keep the refactor backend-only and core-focused
+
+---
+
+### `v1.9.3-dev` — Dependency & Import Validation
+
+* Validate all:
+
+  * imports
+  * package declarations
+  * Spring component scans
+  * dependency injections
+  * configuration references
+* Fix broken references caused by restructuring
+* Ensure:
+
+  * builds compile correctly
+  * no circular dependencies exist
+  * naming conventions stay consistent
+* Run cleanup for unused imports and dead code
+
+---
+
+### `v1.9.4-dev` — Error Detection & Hotfix Phase
+
+* Run full backend validation
+* Detect:
+
+  * compilation issues
+  * runtime errors
+  * broken beans/services
+  * invalid configs
+  * failing startup sequences
+* Apply targeted `-hotfix` patches where required
+* Stabilize the new architecture for release readiness
+
+---
+
+## Notes
+
+* Focus strictly on backend/core files
+* Avoid frontend/UI modifications
+* Prefer long-term maintainability over temporary fixes
+* Keep architecture modular and scalable
+* Preserve existing functionality while restructuring
+---
+
+### v1.11.0 - Release Hardening
 
 Goal: make `v2.0.0` safe to tag as the first operational platform release.
 
 Patch steps:
 
-- `v1.9.1-dev`: Add backend unit and integration tests for auth, providers, chat, logs, and plugins.
-- `v1.9.2-dev`: Add frontend test/build CI.
-- `v1.9.3-dev`: Add migration validation CI.
-- `v1.9.4-dev`: Add Compose smoke test workflow.
-- `v1.9.5-dev`: Update docs to match implemented behavior.
-- `v1.9.6-dev`: Add release notes with all V2 changelog entries.
-- `v1.9.7-dev`: Tag and release `v2.0.0`.
+- `v1.10.1-dev`: Add backend unit and integration tests for auth, providers, chat, logs, and plugins.
+- `v1.10.2-dev`: Add frontend test/build CI.
+- `v1.10.3-dev`: Add migration validation CI.
+- `v1.10.4-dev`: Add Compose smoke test workflow.
+- `v1.10.5-dev`: Update docs to match implemented behavior.
+- `v1.90.6-dev`: Add release notes with all V2 changelog entries.
+- `v1.10.7-dev`: Tag and release `v2.0.0`.
 
 Exit criteria:
 
