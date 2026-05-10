@@ -1,4 +1,4 @@
-package dev.synapse.core.agents;
+package dev.synapse.agents;
 
 import dev.synapse.core.infrastructure.config.SynapseProperties;
 import org.springframework.stereotype.Service;

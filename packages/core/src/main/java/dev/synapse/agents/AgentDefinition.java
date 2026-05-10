@@ -1,4 +1,4 @@
-package dev.synapse.core.agents;
+package dev.synapse.agents;
 
 import java.util.List;
 import java.util.Map;

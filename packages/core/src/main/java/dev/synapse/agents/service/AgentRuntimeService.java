@@ -1,4 +1,4 @@
-package dev.synapse.core.agents.service;
+package dev.synapse.agents.service;
 
 import dev.synapse.core.common.domain.AgentActivationState;
 import dev.synapse.core.common.domain.AgentRuntimeRegistry;

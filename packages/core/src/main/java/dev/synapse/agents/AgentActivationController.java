@@ -1,11 +1,11 @@
-package dev.synapse.core.agents;
+package dev.synapse.agents;
 
 import dev.synapse.core.common.domain.AgentHeartbeat;
 import dev.synapse.core.common.domain.AgentRuntimeRegistry;
 import dev.synapse.core.common.domain.RoutingLog;
-import dev.synapse.core.agents.service.AgentHeartbeatService;
-import dev.synapse.core.agents.service.AgentRuntimeService;
-import dev.synapse.core.agents.service.MainAgentRouterService;
+import dev.synapse.agents.service.AgentHeartbeatService;
+import dev.synapse.agents.service.AgentRuntimeService;
+import dev.synapse.agents.service.MainAgentRouterService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

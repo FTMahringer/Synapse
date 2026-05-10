@@ -1,7 +1,7 @@
-package dev.synapse.core.agents.service;
+package dev.synapse.agents.service;
 
-import dev.synapse.core.agents.AgentDefinition;
-import dev.synapse.core.agents.AgentDefinitionLoader;
+import dev.synapse.agents.AgentDefinition;
+import dev.synapse.agents.AgentDefinitionLoader;
 import dev.synapse.core.common.domain.Agent;
 import dev.synapse.core.common.domain.Agent.AgentType;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;

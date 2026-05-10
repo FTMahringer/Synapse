@@ -1,9 +1,9 @@
-package dev.synapse.core.agents;
+package dev.synapse.agents;
 
 import dev.synapse.core.dto.AgentTeamDTO;
 import dev.synapse.core.dto.CreateAgentTeamRequest;
 import dev.synapse.core.dto.DtoMapper;
-import dev.synapse.core.agents.service.AgentTeamService;
+import dev.synapse.agents.service.AgentTeamService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
