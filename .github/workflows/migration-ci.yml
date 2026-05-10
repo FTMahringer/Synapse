@@ -1,0 +1,72 @@
+name: Migration Validation
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/core/src/main/resources/db/migration/**'
+      - '.github/workflows/migration-ci.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'packages/core/src/main/resources/db/migration/**'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_DB: synapse_test
+          POSTGRES_USER: synapse
+          POSTGRES_PASSWORD: synapse_test_password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    defaults:
+      run:
+        working-directory: packages/core
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: 'maven'
+
+      - name: Run Flyway migrations
+        run: |
+          mvn flyway:migrate \
+            -Dflyway.url=jdbc:postgresql://localhost:5432/synapse_test \
+            -Dflyway.user=synapse \
+            -Dflyway.password=synapse_test_password \
+            -Dflyway.locations=filesystem:src/main/resources/db/migration
+
+      - name: Validate migration idempotency
+        run: |
+          mvn flyway:migrate \
+            -Dflyway.url=jdbc:postgresql://localhost:5432/synapse_test \
+            -Dflyway.user=synapse \
+            -Dflyway.password=synapse_test_password \
+            -Dflyway.locations=filesystem:src/main/resources/db/migration
+
+      - name: Check migration count
+        run: |
+          MIGRATION_COUNT=$(psql postgresql://synapse:synapse_test_password@localhost:5432/synapse_test \
+            -t -c "SELECT COUNT(*) FROM flyway_schema_history WHERE success = true;")
+          echo "Successful migrations: $MIGRATION_COUNT"
+          if [ "$MIGRATION_COUNT" -lt 11 ]; then
+            echo "ERROR: Expected at least 11 migrations, found $MIGRATION_COUNT"
+            exit 1
+          fi

@@ -1,0 +1,77 @@
+name: Compose Smoke Test
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'packages/**'
+      - 'installer/compose/**'
+      - '.github/workflows/compose-smoke-test.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'packages/**'
+      - 'installer/compose/**'
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start Docker Compose stack
+        working-directory: installer/compose
+        run: docker compose up -d
+
+      - name: Wait for services to be healthy
+        run: |
+          echo "Waiting for backend to be ready..."
+          timeout 120 bash -c 'until curl -f http://localhost:8080/api/health; do sleep 2; done'
+
+      - name: Run health check
+        run: |
+          RESPONSE=$(curl -s http://localhost:8080/api/health)
+          echo "Health response: $RESPONSE"
+          STATUS=$(echo $RESPONSE | jq -r '.status')
+          if [ "$STATUS" != "UP" ]; then
+            echo "ERROR: Health check failed. Status: $STATUS"
+            exit 1
+          fi
+          echo "✓ Health check passed"
+
+      - name: Check dashboard accessibility
+        run: |
+          curl -f http://localhost:3000 || exit 1
+          echo "✓ Dashboard is accessible"
+
+      - name: Check Flyway migrations
+        run: |
+          # Wait a bit for migrations to complete
+          sleep 5
+          docker compose -f installer/compose/docker-compose.yml logs backend | grep "Successfully applied 11 migrations"
+          if [ $? -eq 0 ]; then
+            echo "✓ All 11 migrations applied successfully"
+          else
+            echo "ERROR: Migrations did not complete as expected"
+            docker compose -f installer/compose/docker-compose.yml logs backend
+            exit 1
+          fi
+
+      - name: Show logs on failure
+        if: failure()
+        working-directory: installer/compose
+        run: |
+          echo "=== Backend logs ==="
+          docker compose logs backend
+          echo "=== PostgreSQL logs ==="
+          docker compose logs postgres
+          echo "=== Container status ==="
+          docker compose ps
+
+      - name: Cleanup
+        if: always()
+        working-directory: installer/compose
+        run: docker compose down -v
