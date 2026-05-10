@@ -1,10 +1,10 @@
 package dev.synapse.core.provider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.synapse.core.domain.ModelProvider;
+import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.ModelProviderRepository;
+import dev.synapse.core.common.repository.ModelProviderRepository;
 import dev.synapse.core.infrastructure.security.SecretEncryptionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
