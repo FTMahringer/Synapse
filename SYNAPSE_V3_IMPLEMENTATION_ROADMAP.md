@@ -3,12 +3,19 @@
 ## Vision
 
 V3 focuses on **architectural excellence** and **production readiness** through:
-- Comprehensive documentation with Docusaurus
 - Clean, modular package structure following domain-driven design
 - Enhanced observability and monitoring
 - Performance optimization and caching strategies
 - Advanced agent capabilities and collaboration features
 - Production-grade deployment and operations
+
+:::info Documentation
+SYNAPSE Documentation is maintained in a **separate repository** with independent versioning.
+
+📚 **Live Docs**: https://ftmahringer.github.io/Synapse/  
+📦 **Docs Repo**: https://github.com/FTMahringer/Synapse-docs  
+📋 **Docs Roadmap**: [SYNAPSE_DOCS_ROADMAP.md](./SYNAPSE_DOCS_ROADMAP.md)
+:::
 
 ---
 
@@ -18,127 +25,25 @@ V3 focuses on **architectural excellence** and **production readiness** through:
 
 **For every development version (`v*.*.x-dev`):**
 1. ✅ Implement feature/changes
-2. ✅ **Update documentation** to reflect changes
-3. ✅ Commit code + documentation together
+2. ✅ Update CHANGELOG.md
+3. ✅ Commit changes
 4. ✅ Create annotated tag
 5. ✅ Push immediately (don't batch)
 6. ✅ Create GitHub pre-release
 
 **For every milestone release (`v*.x.0`):**
-1. ✅ Review all documentation for accuracy
+1. ✅ Review all changes for completeness
 2. ✅ Create comprehensive release notes file
 3. ✅ Update README if needed
 4. ✅ Create GitHub release (NOT pre-release)
-5. ✅ Update version selector in Docusaurus
+5. ✅ Check for security issues (Dependabot, CodeQL)
+6. ✅ Create hotfix if security issues found
 
-**Documentation updates are MANDATORY at each step.**
-
----
-
-## v2.1.0 - Documentation Platform
-
-**Goal**: Establish comprehensive, professional documentation with Docusaurus to support all future development and user onboarding.
-
-**Philosophy**: Documentation-first approach - before implementing major architectural changes, ensure the existing system is well-documented and future changes can be properly explained.
-
-### Implementation Steps
-
-#### v2.0.1-dev: Docusaurus Setup & Structure
-**Initialize documentation site**
-- Create `/synapse-docs` as separate git repository (gitignored from main repo)
-- Initialize Docusaurus project with custom theme
-- Set up documentation structure:
-  - Getting Started (Quick Start, Installation, First Agent)
-  - Core Concepts (Architecture, Agents, Conversations, Plugins)
-  - User Guides (Agent Teams, Memory System, Plugin Development)
-  - API Reference (REST API, WebSocket API, CLI)
-  - Deployment (Docker Compose, Bare-Metal, Kubernetes)
-  - Administration (Configuration, Security, Monitoring)
-  - Development (Contributing, Architecture, Codebase)
-- Configure Algolia DocSearch for search functionality
-- Set up versioned documentation (v2.x, v3.x)
-- Custom branding and theme matching SYNAPSE identity
-- **📝 Commit:** Code + initial documentation structure
-- **🏷️ Tag:** `v2.0.1-dev`
-- **🚀 Push:** Immediately after commit
-- **📦 Release:** GitHub pre-release
-
-#### v2.0.2-dev: Migrate & Enhance Existing Docs
-**Convert markdown docs from /docs to Docusaurus**
-- Migrate existing documentation from `/docs/*.md`
-- Enhance with Docusaurus features:
-  - Code tabs for multiple languages/approaches
-  - Admonitions (tips, warnings, notes)
-  - Mermaid diagrams for architecture
-  - Interactive examples
-- Organize into logical sections:
-  - Architecture docs → Core Concepts
-  - API docs → API Reference
-  - System docs → Administration
-- Add screenshots and diagrams
-- Create tutorial sequences
-
-#### v2.0.3-dev: Installation & Deployment Guides
-**Comprehensive setup documentation**
-- Docker Compose quick start guide
-- Bare-metal installation (Linux, Windows, macOS)
-- Environment variable reference
-- Database setup and migrations
-- Redis and Qdrant configuration
-- Reverse proxy setup (Traefik, Nginx PM)
-- SSL/TLS configuration
-- Backup and restore procedures
-- Troubleshooting guide
-- Migration guides (upgrades, version changes)
-
-#### v2.0.4-dev: API Documentation & Examples
-**Complete API reference with examples**
-- REST API documentation (auto-generated from OpenAPI/Swagger)
-- WebSocket API documentation
-- Authentication flows
-- Example requests/responses for all endpoints
-- SDK documentation (if applicable)
-- Webhook documentation
-- Error handling reference
-- Rate limiting documentation
-- Interactive API playground (Swagger UI)
-
-#### v2.0.5-dev: Developer & Contributor Docs
-**Onboarding documentation for developers**
-- Contributing guide (code style, PR process, testing)
-- Development environment setup
-- Architecture deep-dive (package structure, data flow)
-- Database schema documentation
-- Plugin development tutorial
-- Testing guide (unit, integration, E2E)
-- Code generation and tooling
-- Release process documentation
-- Roadmap visibility and tracking
-
-#### v2.0.6-dev: Deployment & Hosting
-**Deploy documentation site**
-- GitHub Pages deployment workflow
-- Netlify/Vercel as alternatives
-- Custom domain setup (docs.synapse.dev or similar)
-- Automated deployment on documentation changes
-- Version selector for v2.x vs v3.x docs
-- Edit-on-GitHub links
-- Search functionality verification
-
-#### v2.1.0: Tag Documentation Platform Release
-- Complete Docusaurus documentation site
-- All existing docs migrated and enhanced
-- Deployed and publicly accessible
-- Search functionality working
-- Versioned documentation structure
-- **📝 Documentation:** Comprehensive release notes (`RELEASE_NOTES_V2.1.0.md`)
-- **🏷️ Tag:** `v2.1.0` (milestone release)
-- **📦 Release:** GitHub release (NOT pre-release)
-- **📚 Update:** Version selector to include v2.1.0
+**Documentation Note**: Code changes in this repository should reference docs but documentation itself lives in synapse-docs repository with independent versioning.
 
 ---
 
-## v2.2.0 - Package Restructure & Domain-Driven Architecture
+## v2.1.0 - Package Restructure & Domain-Driven Architecture
 
 **Goal**: Refactor Java backend from monolithic `/core` structure to clean, modular domain packages.
 
@@ -237,13 +142,13 @@ dev/synapse/
 - Fix any remaining import issues
 - **Exit**: All tests passing, Docker Compose healthy
 
-#### v2.2.0: Tag Architectural Refactor Release
+#### v2.1.0: Tag Architectural Refactor Release
 - Update documentation with new package structure
 - Tag `v3.1.0` - Package Restructure Complete
 
 ---
 
-## v2.3.0 - Observability & Monitoring
+## v2.1.0 - Observability & Monitoring
 
 **Goal**: Production-grade monitoring, tracing, and metrics.
 
@@ -276,7 +181,7 @@ dev/synapse/
 - Include trace context in all logs
 - Log aggregation ready
 
-#### v2.3.0: Tag Observability Release
+#### v2.1.0: Tag Observability Release
 
 **📝 Documentation requirements:**
 - Update monitoring and operations guides
@@ -286,7 +191,7 @@ dev/synapse/
 
 ---
 
-## v2.4.0 - Performance & Caching
+## v2.1.0 - Performance & Caching
 
 **Goal**: Optimize database queries, add caching, improve response times.
 
@@ -315,11 +220,11 @@ dev/synapse/
 - Redis connection pool tuning
 - HTTP client connection pooling
 
-#### v2.4.0: Tag Performance Release
+#### v2.1.0: Tag Performance Release
 
 ---
 
-## v2.5.0 - Advanced Agent Capabilities
+## v2.1.0 - Advanced Agent Capabilities
 
 **Goal**: Enhanced agent collaboration, memory, and reasoning.
 
@@ -349,11 +254,11 @@ dev/synapse/
 - Tool execution sandboxing
 - Tool result caching
 
-#### v2.5.0: Tag Advanced Agents Release
+#### v2.1.0: Tag Advanced Agents Release
 
 ---
 
-## v2.6.0 - Security Hardening
+## v2.1.0 - Security Hardening
 
 **Goal**: Production-grade security, compliance, and audit logging.
 
@@ -384,11 +289,11 @@ dev/synapse/
 - Right to deletion
 - Data anonymization
 
-#### v2.6.0: Tag Security Release
+#### v2.1.0: Tag Security Release
 
 ---
 
-## v2.7.0 - Plugin Ecosystem
+## v2.1.0 - Plugin Ecosystem
 
 **Goal**: Robust plugin system with marketplace and community contributions.
 
@@ -418,11 +323,11 @@ dev/synapse/
 - Error reporting
 - User feedback collection
 
-#### v2.7.0: Tag Plugin Ecosystem Release
+#### v2.1.0: Tag Plugin Ecosystem Release
 
 ---
 
-## v2.8.0 - Multi-Tenancy
+## v2.1.0 - Multi-Tenancy
 
 **Goal**: Support multiple organizations with data isolation.
 
@@ -446,11 +351,11 @@ dev/synapse/
 - Billing dashboard
 - Usage analytics
 
-#### v2.8.0: Tag Multi-Tenancy Release
+#### v2.1.0: Tag Multi-Tenancy Release
 
 ---
 
-## v2.9.0 - Infrastructure & Deployment Platform
+## v2.1.0 - Infrastructure & Deployment Platform
 
 **Goal**: Production-ready deployment infrastructure with Docker-first philosophy, optional Kubernetes orchestration, and distributed execution capabilities.
 
@@ -524,19 +429,19 @@ dev/synapse/
 - Kubernetes deployment sizing guide
 - When to use Kubernetes vs Docker
 
-#### v2.9.0: Tag Infrastructure Platform Release
+#### v2.1.0: Tag Infrastructure Platform Release
 - Complete Docker-first deployment ecosystem
 - Optional Kubernetes orchestration
 - Infrastructure management UI
 - Distributed worker system
 - **📝 Documentation:** Complete deployment guides overhaul
-- **🏷️ Tag:** `v2.9.0` (major milestone)
+- **🏷️ Tag:** `v2.1.0` (major milestone)
 - **📦 Release:** Comprehensive infrastructure release notes
 - **📚 Update:** Installation, runner setup, Traefik guides
 
 ---
 
-## v2.10.0 - Frontend Modernization
+## v2.1.0 - Frontend Modernization
 
 **Goal**: Enhanced UI/UX with modern Vue 3 patterns.
 
@@ -560,11 +465,11 @@ dev/synapse/
 - Bundle size optimization
 - Server-side rendering (SSR)
 
-#### v2.10.0: Tag Frontend Release
+#### v2.1.0: Tag Frontend Release
 
 ---
 
-## v2.11.0 - Analytics & Insights
+## v2.1.0 - Analytics & Insights
 
 **Goal**: Usage analytics, insights, and reporting.
 
@@ -588,11 +493,11 @@ dev/synapse/
 - User intent detection
 - Anomaly detection
 
-#### v2.11.0: Tag Analytics Release
+#### v2.1.0: Tag Analytics Release
 
 ---
 
-## v2.12.0 - Release Hardening (Final)
+## v2.1.0 - Release Hardening (Final)
 
 **Goal**: Final polish for production v3.0.0 release.
 
@@ -622,7 +527,7 @@ dev/synapse/
 - Known issues
 - Upgrade instructions
 
-#### v2.12.0: Pre-release Testing
+#### v2.1.0: Pre-release Testing
 - Final QA and testing
 - Documentation completeness audit
 - Migration guides finalized
@@ -641,17 +546,17 @@ dev/synapse/
 | Version | Milestone | Focus Area |
 |---------|-----------|------------|
 | v2.1.0 | Documentation Platform | Docusaurus Site & Guides |
-| v2.2.0 | Package Restructure | Architecture & Code Organization |
-| v2.3.0 | Observability | Monitoring & Tracing |
-| v2.4.0 | Performance | Caching & Optimization |
-| v2.5.0 | Advanced Agents | AI Capabilities |
-| v2.6.0 | Security | Hardening & Compliance |
-| v2.7.0 | Plugin Ecosystem | Extensibility |
-| v2.8.0 | Multi-Tenancy | Enterprise Features |
-| v2.9.0 | Infrastructure Platform | Deployment & Orchestration |
-| v2.10.0 | Frontend | UI/UX Enhancement |
-| v2.11.0 | Analytics | Insights & Reporting |
-| v2.12.0 | Release Hardening | Final Polish |
+| v2.1.0 | Package Restructure | Architecture & Code Organization |
+| v2.1.0 | Observability | Monitoring & Tracing |
+| v2.1.0 | Performance | Caching & Optimization |
+| v2.1.0 | Advanced Agents | AI Capabilities |
+| v2.1.0 | Security | Hardening & Compliance |
+| v2.1.0 | Plugin Ecosystem | Extensibility |
+| v2.1.0 | Multi-Tenancy | Enterprise Features |
+| v2.1.0 | Infrastructure Platform | Deployment & Orchestration |
+| v2.1.0 | Frontend | UI/UX Enhancement |
+| v2.1.0 | Analytics | Insights & Reporting |
+| v2.1.0 | Release Hardening | Final Polish |
 | **v3.0.0** | **Production** | **🚀 SYNAPSE V3** |
 
 ---
