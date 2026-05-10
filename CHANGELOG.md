@@ -1,768 +1,558 @@
 # Changelog
 
-All notable project changes are tracked here once they become part of a roadmap milestone.
+All notable changes to the SYNAPSE project are documented in this file.
 
-## v1.3.0 - Model Providers (2026-05-08)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-**Milestone Release**: Integrated model provider infrastructure with support for Ollama, OpenAI, and Anthropic. Includes provider configuration, secret encryption, chat completions, cost tracking, and testing endpoints.
+---
 
-### Added
+## [v2.0.0] - 2026-05-10
 
-**Provider Configuration (v1.2.1-dev)**
-- ModelProvider entity with support for OLLAMA, OPENAI, ANTHROPIC, OPENAI_COMPATIBLE types
-- ModelProviderRepository for provider persistence
-- SecretEncryptionService using AES-256-GCM for API key encryption
-- ModelProviderService for CRUD operations with automatic secret encryption/decryption
-- ModelProviderController with full REST API (GET, POST, PUT, PATCH, DELETE)
-- ModelProviderDTO, CreateModelProviderRequest, UpdateModelProviderRequest
-- Encrypted secrets stored in database, never exposed in API responses
-- Provider-specific configuration stored in JSONB for flexibility
+**Milestone:** SYNAPSE v2 - Operational AI Platform
 
-**Ollama Provider (v1.2.2-dev, v1.2.3-dev)**
-- OllamaModels DTOs for Ollama API requests and responses
-- OllamaProviderService for local Ollama integration
-- OllamaProviderController with health, models, and chat endpoints
-- GET /api/providers/ollama/{id}/health for connectivity checks
-- GET /api/providers/ollama/{id}/models for available model listing
-- POST /api/providers/ollama/{id}/chat for chat completions
-- Support for temperature, top_p, top_k, num_predict parameters
-- Token counting (prompt_eval_count, eval_count)
-- Duration tracking (total_duration, load_duration, eval_duration)
-- Default baseUrl: http://localhost:11434 (configurable via provider config)
-
-**OpenAI-Compatible Provider (v1.2.4-dev)**
-- OpenAIModels DTOs for OpenAI API format
-- OpenAIProviderService for OpenAI and compatible providers (OpenRouter, Azure OpenAI, etc.)
-- OpenAIProviderController with health, models, and chat endpoints
-- GET /api/providers/openai/{id}/health for API connectivity checks
-- GET /api/providers/openai/{id}/models for model listing
-- POST /api/providers/openai/{id}/chat for chat completions
-- Support for temperature, max_tokens, top_p, frequency_penalty, presence_penalty
-- API key authentication via Authorization: Bearer header
-- Default baseUrl: https://api.openai.com (configurable for compatible providers)
-- Token usage tracking (prompt_tokens, completion_tokens, total_tokens)
-
-**Anthropic Provider (v1.2.5-dev)**
-- AnthropicModels DTOs for Anthropic Messages API
-- AnthropicProviderService for Claude model integration
-- AnthropicProviderController with health and chat endpoints
-- GET /api/providers/anthropic/{id}/health for API connectivity checks
-- POST /api/providers/anthropic/{id}/chat for chat completions
-- Support for temperature, top_p, top_k, max_tokens parameters
-- API key authentication via x-api-key header
-- Anthropic API version: 2023-06-01
-- Content blocks in responses with type and text fields
-- Stop reason tracking (end_turn, max_tokens, stop_sequence)
-
-**Cost and Latency Logging (v1.2.6-dev)**
-- ProviderUsageLog entity for tracking all provider API calls
-- ProviderUsageLogRepository with aggregation queries
-- ProviderUsageLogService for usage logging and analytics
-- Track prompt tokens, completion tokens, total tokens per request
-- Track latency (milliseconds) for each provider call
-- Track success/failure status with error messages (secrets excluded)
-- Analytics queries: average latency, total tokens, failure count, success rate
-- Usage logs persisted for both successful and failed requests
-- Integrated into all provider services (Ollama, OpenAI, Anthropic)
-
-**Provider Testing (v1.2.7-dev)**
-- TestProviderRequest DTO for unified provider testing
-- TestProviderResponse DTO with success, latency, tokens, preview
-- ProviderTestService for testing any configured provider
-- ProviderTestController with POST /api/providers/test
-- Support for testing Ollama, OpenAI, and Anthropic providers
-- storePrompt flag (default: false) to control prompt content logging
-- Response preview (first 200 characters of completion)
-- Metadata field with provider-specific details (response IDs, finish reasons, durations)
-- Failed tests return success=false with error details
-
-### Security
-
-- AES-256-GCM encryption for API keys and secrets
-- Encrypted secrets never exposed in API responses
-- Constant-time decryption operations
-- API keys transmitted only over HTTPS in production
-- Error logs sanitized to exclude secrets and sensitive prompt content
-- Test endpoint respects storePrompt flag for privacy
-
-### Configuration
-
-- secrets.encryption-key: AES-256 key for provider secrets (MUST change in production)
-- Provider-specific baseUrl configurable via provider config JSONB
-- Ollama default: http://localhost:11434
-- OpenAI default: https://api.openai.com
-- Anthropic: https://api.anthropic.com (fixed)
-
-### Exit Criteria (v1.3.0 Milestone)
-
-✅ Ollama can produce responses locally  
-✅ External API-key providers (OpenAI, Anthropic) can be configured  
-✅ Failed provider calls logged without exposing secrets  
-✅ ECHO not used automatically when providers fail (explicit error handling)
-
-### Notes
-
-- Milestone release consolidates patches v1.2.1-dev through v1.2.7-dev
-- All provider integrations use Spring RestClient for HTTP calls
-- Streaming disabled (stream: false) for synchronous responses
-- Token usage and latency tracked for cost estimation and monitoring
-- Future: cost calculation from token counts + provider pricing tables
-- Future: retry logic and fallback providers
-- Future: caching and rate limiting
-
-## v1.2.7-dev - Provider Test Endpoint
+This is the first production release of SYNAPSE as a working AI platform. V2 transforms the v1.0.0 runtime shell into an operational multi-user system with authentication, model provider execution, conversation management, agent orchestration, realtime event delivery, plugin lifecycle, dashboard management, and CLI tooling.
 
 ### Added
-
-- Added TestProviderRequest DTO for provider testing.
-- Added TestProviderResponse DTO with success, latency, tokens, preview.
-- Added ProviderTestService for unified provider testing.
-- Added ProviderTestController with POST /api/providers/test endpoint.
-- Support for testing Ollama, OpenAI, and Anthropic providers.
-- storePrompt flag (default: false) to control prompt logging.
-- Response preview (first 200 characters of completion).
-- Metadata field with provider-specific details (response ID, finish reason, durations).
-- Test requests logged only when storePrompt=true.
-- Failed tests logged with error message and latency.
-
-### Notes
-
-- `v1.2.7-dev` completes the v1.3.0-dev milestone (Model Providers).
-- POST /api/providers/test accepts providerId, model, messages, temperature, maxTokens, storePrompt.
-- By default, storePrompt=false prevents logging prompt content (privacy/security).
-- Response includes success boolean, latency, token counts, and 200-char preview.
-- Errors return success=false with errorMessage field populated.
-- Test endpoint uses actual provider services (logs usage via ProviderUsageLogService).
-- Metadata varies by provider: Ollama (totalDuration, loadDuration), OpenAI (responseId, finishReason), Anthropic (responseId, stopReason).
-
-## v1.2.6-dev - Provider Cost and Latency Logging
-
-### Added
-
-- Added ProviderUsageLog entity for tracking provider API calls.
-- Added ProviderUsageLogRepository with aggregation queries.
-- Added ProviderUsageLogService for logging and analytics.
-- Integrated usage logging into all provider services (Ollama, OpenAI, Anthropic).
-- Track prompt tokens, completion tokens, total tokens per request.
-- Track latency (milliseconds) for each provider call.
-- Track success/failure status with error messages.
-- GET queries for provider history and statistics.
-- Average latency calculation per provider.
-- Total token consumption tracking per provider.
-- Failure count and success rate calculations.
-- Usage logs persisted in provider_usage_logs table.
+- Multi-user authentication & authorization with JWT
+- Password hashing with Argon2id
+- Secrets encryption service for API keys
+- Security context helpers and filters
+- Model provider integrations (OpenAI, Anthropic, Ollama)
+- Provider usage logging and analytics
+- Conversation & message management
+- Agent orchestration system
+- Agent teams and collaboration
+- AI Firm dispatch system
+- Agent memory vault with vector storage
+- Agent heartbeat monitoring
+- Realtime event delivery (SSE + WebSocket)
+- Redis Streams for event fanout
+- Plugin lifecycle management
+- Plugin safety validation
+- Store registry synchronization
+- Bundle installation system
+- Vue.js dashboard management UI
+- Authenticated routing and navigation
+- Multiple management screens (conversations, agents, providers, plugins, logs, settings)
+- Go CLI runtime with Cobra
+- CLI commands for auth, agents, providers, plugins, conversations, logs, health
+- Conversation streaming in CLI with TUI
+- Docker Compose smoke test workflow
+- Frontend CI workflow (Vue build/typecheck)
+- Migration validation workflow
+- 31 unit tests for core services
+- Integration test framework with TestContainers
+- Comprehensive release documentation
 
 ### Changed
+- Backend restructured into feature modules (v1.10.0)
+- Eliminated flat `service/` package
+- Organized into domain-driven packages: `agents/`, `conversation/`, `tasks/`, `users/`, `providers/`, `plugin/`
+- Updated all service imports and dependencies
+- Improved Docker Compose configuration
+- Enhanced environment variable handling
 
-- Updated OllamaProviderService to log usage in finally block.
-- Updated OpenAIProviderService to log usage in finally block.
-- Updated AnthropicProviderService to log usage in finally block.
-- All provider services inject ProviderUsageLogService.
+### Fixed
+- UUID/String type mismatches in agents
+- Redis Streams API configuration
+- @EnableAsync proxy conflicts
+- Plugin_stats migration conflict
+- TypeScript HeadersInit type errors
+- Bubbletea dependency compile errors
+- Missing imports in various services
+- Docker Compose startup issues
 
-### Notes
+### Development Versions
+- v1.10.6-dev: Documentation updates
+- v1.10.5-dev: Release notes compilation
+- v1.10.4-dev: CI/CD workflows
+- v1.10.3-dev: Integration test framework
+- v1.10.2-dev: Backend unit tests
+- v1.10.1-dev: Docker Compose validation
 
-- `v1.2.6-dev` continues the v1.3.0-dev milestone (Model Providers).
-- Usage logs created for both successful and failed requests.
-- Error messages logged without exposing secrets or prompt content.
-- Latency tracked from request start to response/error.
-- Token counts sourced from provider responses (may be null for failures).
-- Analytics queries: averageLatencyForProvider, totalTokensForProvider, failureCountForProvider.
-- Future: cost estimation can be calculated from token counts + provider pricing.
+---
 
-## v1.2.5-dev - Anthropic Provider
+## [v1.10.0] - 2026-05-10
 
-### Added
+**Milestone:** Backend Restructure
 
-- Added AnthropicModels DTOs for Anthropic API requests and responses.
-- Added AnthropicProviderService for Anthropic Claude models.
-- Added AnthropicProviderController with health and chat endpoints.
-- Support for ANTHROPIC provider type.
-- GET /api/providers/anthropic/{id}/health for health checks.
-- POST /api/providers/anthropic/{id}/chat for chat completions.
-- Support for temperature, top_p, top_k, max_tokens parameters.
-- API key authentication via x-api-key header.
-- Anthropic API version: 2023-06-01.
-- Token usage tracking (input_tokens, output_tokens).
-- Support for content blocks in responses (text type).
-- Structured logging with token usage and latency.
-
-### Notes
-
-- `v1.2.5-dev` continues the v1.3.0-dev milestone (Model Providers).
-- Anthropic endpoint: https://api.anthropic.com/v1/messages.
-- Messages API format (different from OpenAI).
-- Max tokens required parameter for Anthropic API.
-- Response includes content blocks with type and text.
-- Stop reasons tracked: end_turn, max_tokens, stop_sequence.
-- Failed API calls logged without exposing API keys.
-- Health check uses minimal test request (10 tokens) with claude-3-5-haiku model.
-
-## v1.2.4-dev - OpenAI-Compatible Provider
-
-### Added
-
-- Added OpenAIModels DTOs for OpenAI API requests and responses.
-- Added OpenAIProviderService for OpenAI and OpenAI-compatible providers.
-- Added OpenAIProviderController with health, models, and chat endpoints.
-- Support for OPENAI and OPENAI_COMPATIBLE provider types.
-- GET /api/providers/openai/{id}/health for health checks.
-- GET /api/providers/openai/{id}/models for listing available models.
-- POST /api/providers/openai/{id}/chat for chat completions.
-- Support for temperature, max_tokens, top_p, frequency_penalty, presence_penalty.
-- API key authentication via Authorization: Bearer header.
-- Default baseUrl: https://api.openai.com (configurable for compatible providers).
-- Token usage tracking (prompt_tokens, completion_tokens, total_tokens).
-- Structured logging with token usage and latency.
-
-### Notes
-
-- `v1.2.4-dev` continues the v1.3.0-dev milestone (Model Providers).
-- Supports both OpenAI and compatible providers (OpenRouter, Azure OpenAI, etc.).
-- API key stored encrypted in provider secrets.
-- Compatible providers configure custom baseUrl in provider config.
-- Standard OpenAI API format: /v1/models, /v1/chat/completions.
-- Streaming disabled (stream: false) for synchronous responses.
-- Failed API calls logged without exposing API keys.
-
-## v1.2.3-dev - Ollama Chat Completion
-
-### Added
-
-- Added OllamaChat DTOs for chat completion requests and responses.
-- Added chatCompletion() method to OllamaProviderService.
-- Added POST /api/providers/ollama/{id}/chat endpoint for chat completions.
-- Support for temperature, top_p, top_k, num_predict options in chat requests.
-- Token counting in responses (prompt_eval_count, eval_count).
-- Duration tracking for chat completions (total_duration, load_duration, eval_duration).
-- Structured logging for chat completions with token counts and latency.
-- Failed chat attempts logged with error details and duration.
-
-### Notes
-
-- `v1.2.3-dev` continues the v1.3.0-dev milestone (Model Providers).
-- Ollama chat endpoint: /api/chat (POST).
-- Streaming disabled (stream: false) for synchronous responses.
-- Request includes model, messages (role + content), and optional options.
-- Response includes assistant message, token counts, and timing information.
-- Errors logged without exposing sensitive prompt content.
-
-## v1.2.2-dev - Ollama Provider Health and Model Listing
-
-### Added
-
-- Added OllamaProviderService for Ollama provider integration.
-- Added OllamaProviderController with health check and model listing endpoints.
-- Added OllamaModels DTOs for Ollama API response parsing.
-- GET /api/providers/ollama/{id}/health endpoint for provider health checks.
-- GET /api/providers/ollama/{id}/models endpoint for listing available Ollama models.
-- RestClient integration for HTTP calls to Ollama API.
-- Default Ollama baseUrl: http://localhost:11434 (configurable via provider config).
-- Structured logging for health checks and model listing operations.
-- Model info includes name, size, digest, format, family, and quantization details.
-
-### Notes
-
-- `v1.2.2-dev` continues the v1.3.0-dev milestone (Model Providers).
-- Ollama API endpoint: /api/tags for both health check and model listing.
-- Health check returns true if Ollama responds, false on error.
-- Failed health checks logged as warnings (not errors).
-- Provider baseUrl configurable in provider config JSONB field.
-- Model listing includes all models available in Ollama instance.
-
-## v1.2.1-dev - Model Provider Configuration with Encrypted Secrets
-
-### Added
-
-- Added ModelProvider domain entity with support for OLLAMA, OPENAI, ANTHROPIC, OPENAI_COMPATIBLE types.
-- Added ModelProviderRepository with query methods for enabled providers and by type.
-- Added SecretEncryptionService using AES-256-GCM for encrypting API keys and secrets.
-- Added ModelProviderService with CRUD operations and secret encryption/decryption.
-- Added ModelProviderController with REST endpoints (GET, POST, PATCH, DELETE).
-- Added ModelProviderDTO, CreateModelProviderRequest, UpdateModelProviderRequest DTOs.
-- Provider configuration stored in JSONB config field for flexibility.
-- Secrets encrypted at rest using AES-256-GCM with random IV per encryption.
-- Structured logging for provider creation, updates, and deletion.
-- GET /api/providers?enabled=true to filter only enabled providers.
-
-### Notes
-
-- `v1.2.1-dev` starts the v1.3.0-dev milestone (Model Providers).
-- Encryption key configurable via secrets.encryption-key property (MUST change in production).
-- Encryption key must be exactly 32 bytes for AES-256.
-- Secrets never exposed in API responses (encrypted_secrets field excluded from DTOs).
-- GCM mode provides both confidentiality and authenticity of encrypted secrets.
-- Provider config supports flexible JSON structure for provider-specific settings.
-
-## v1.2.0 - Auth and Users (Milestone Release)
-
-**Release Date:** 2026-05-08
-
-This milestone delivers a complete authentication and user management system with modern password hashing and JWT-based stateless authentication.
-
-### Added
-
-- **User Management with Argon2id Password Hashing**
-  - Spring Security dependency for authentication infrastructure
-  - PasswordHashingService using Argon2id algorithm (64MB memory, 3 iterations, parallelism=1)
-  - Argon2id chosen for resistance to GPU cracking and side-channel attacks
-  - Bouncy Castle provider for Argon2 implementation
-  - Constant-time hash comparison to prevent timing attacks
-  - PHC string format: `$argon2id$v=19$m=65536,t=3,p=1$[salt]$[hash]`
-
-- **User CRUD APIs**
-  - UserController with REST endpoints (GET, POST, PATCH, DELETE)
-  - Enhanced UserService with create(), update(), and updatePassword() methods
-  - UpdatePasswordRequest and UpdateUserRequest DTOs
-  - Username and email uniqueness validation
-  - Structured logging for user operations (create, update, password change, delete)
-  - Change tracking for user updates (before/after values)
-
-- **JWT Infrastructure**
-  - JJWT library version 0.12.6 for JWT token generation and validation
-  - JwtService for access and refresh token management
-  - Access tokens valid for 15 minutes (configurable via jwt.access-token-validity-ms)
-  - Refresh tokens valid for 7 days (configurable via jwt.refresh-token-validity-ms)
-  - Tokens signed with HS256 (HMAC-SHA256) algorithm
-  - Token claims: userId, username, role, token type (access/refresh)
-  - JWT secret configurable via jwt.secret property
-
-- **Authentication Endpoints**
-  - AuthenticationService with login() and refreshToken() methods
-  - AuthenticationController with POST /api/auth/login and POST /api/auth/refresh
-  - LoginRequest and RefreshTokenRequest DTOs
-  - Structured logging for login attempts (success and failure) and token refreshes
-  - BadCredentialsException for invalid credentials
-
-- **JWT Authentication and Authorization**
-  - JwtAuthenticationFilter extracting and validating JWT from Authorization header
-  - SecurityContextHelper utility for accessing current user context
-  - Method-level security enabled with @EnableMethodSecurity
-  - All /api/** endpoints require authentication except /api/auth/** and /api/health
-  - Bearer token format: `Authorization: Bearer <access_token>`
-  - Spring Security context populated with userId, username, and role
-  - GrantedAuthority with ROLE_ prefix for role-based authorization
-  - JwtAuthenticationDetails attached to authentication for user metadata access
-
-- **Security Configuration**
-  - SecurityConfig with CSRF disabled and stateless session management
-  - Public endpoints: /api/auth/**, /api/health, /actuator/**
-  - All other endpoints require valid JWT access token
-  - Method security annotations (@PreAuthorize, @Secured) functional
-
-### Notes
-
-- This milestone includes patches v1.0.7-dev through v1.0.10-dev
-- BREAKING CHANGE: All API endpoints now require authentication (except auth and health)
-- JWT secret MUST be changed in production (default is for development only)
-- Argon2id 64MB memory requirement makes brute-force attacks computationally expensive
-- Only access tokens accepted for authentication (refresh tokens only for token refresh endpoint)
-
-## v1.0.10-dev - JWT Authentication and Authorization
-
-### Added
-
-- Added JwtAuthenticationFilter to extract and validate JWT tokens from Authorization header.
-- Added SecurityContextHelper utility for accessing current user context.
-- Enhanced SecurityConfig to enforce authentication on all endpoints except auth and health.
-- Enabled method-level security with @EnableMethodSecurity annotation.
-- JWT filter extracts userId, username, and role from access tokens into Spring Security context.
-- Access tokens populate GrantedAuthority with ROLE_ prefix for role-based authorization.
-- JwtAuthenticationDetails attached to authentication for accessing user metadata.
-
-### Notes
-
-- `v1.0.10-dev` completes the v1.2.0-dev milestone (Auth and Users).
-- All /api/** endpoints now require authentication except /api/auth/** and /api/health.
-- Bearer token format: `Authorization: Bearer <access_token>`.
-- Invalid or expired tokens silently skip authentication (401 returned by framework).
-- SecurityContextHelper provides getCurrentUserId(), getCurrentUsername(), getCurrentUserRole().
-- Method security annotations (@PreAuthorize, @Secured) now functional.
-- Only access tokens accepted (refresh tokens rejected in filter).
-
-## v1.0.9-dev - Switch to Argon2 Password Hashing
+Major refactoring of the Java backend to improve modularity and maintainability.
 
 ### Changed
+- Restructured backend packages from flat `service/` to feature-based organization
+- Created feature modules: `agents/`, `conversation/`, `tasks/`, `users/`
+- Moved services to feature-specific `service/` subpackages
+- Updated all imports across the codebase
 
-- Replaced BCrypt with Argon2id for password hashing (more secure and modern).
-- Added Bouncy Castle dependency (bcprov-jdk18on) for Argon2 implementation.
-- Updated PasswordHashingService to use Argon2id with 64MB memory, 3 iterations, parallelism=1.
-- Hash format: $argon2id$v=19$m=65536,t=3,p=1$[salt]$[hash] (PHC string format).
-- Constant-time comparison for hash verification to prevent timing attacks.
-
-### Notes
-
-- `v1.0.9-dev` continues the v1.2.0-dev milestone (Auth and Users).
-- Argon2id chosen for resistance to both GPU cracking and side-channel attacks.
-- 64MB memory requirement makes brute-force attacks computationally expensive.
-- Existing BCrypt hashes from v1.0.7-dev incompatible (users must reset passwords).
-- Salt is 16 bytes, hash output is 32 bytes.
-
-## v1.0.8-dev - JWT Infrastructure
-
-### Added
-
-- Added JJWT dependencies (jjwt-api, jjwt-impl, jjwt-jackson) version 0.12.6 for JWT support.
-- Added JwtService for generating and validating JWT access and refresh tokens.
-- Added AuthenticationService with login() and refreshToken() methods.
-- Added AuthenticationController with POST /api/auth/login and POST /api/auth/refresh endpoints.
-- Added LoginRequest and RefreshTokenRequest DTOs.
-- Added structured logging for login attempts (success and failure) and token refreshes.
-- JWT access tokens valid for 15 minutes (900000ms) by default.
-- JWT refresh tokens valid for 7 days (604800000ms) by default.
-- Tokens include userId, username, role, and token type claims.
-
-### Notes
-
-- `v1.0.8-dev` continues the v1.2.0-dev milestone (Auth and Users).
-- JWT secret configurable via jwt.secret property (default included for dev, MUST change in production).
-- Token validity periods configurable via jwt.access-token-validity-ms and jwt.refresh-token-validity-ms.
-- Access tokens contain username and role claims for authorization.
-- Refresh tokens are minimal (only userId and type) for security.
-- Failed login attempts logged with reason for security monitoring.
-- Tokens signed with HS256 (HMAC-SHA256) algorithm.
-
-## v1.0.7-dev - User CRUD with Password Hashing
-
-### Added
-
-- Added spring-boot-starter-security dependency for password hashing and security infrastructure.
-- Added PasswordHashingService using BCrypt with strength 12 for password hashing and verification.
-- Added SecurityConfig with disabled CSRF and stateless session management (JWT preparation).
-- Enhanced UserService with create(), update(), and updatePassword() methods with password hashing.
-- Added UserController with REST endpoints (GET, POST, PATCH users, PATCH password, DELETE).
-- Added UpdatePasswordRequest and UpdateUserRequest DTOs.
-- Added structured logging for user creation, updates, password changes, and deletion.
-- Username and email uniqueness validation on create and update operations.
-
-### Notes
-
-- `v1.0.7-dev` starts the v1.2.0-dev milestone (Auth and Users).
-- BCrypt strength set to 12 for balance between security and performance.
-- SecurityConfig currently permits all requests (authentication enforcement in v1.0.10-dev).
-- PATCH /api/users/{id} supports partial updates (only provided fields updated).
-- PATCH /api/users/{id}/password allows password changes without exposing hash.
-- User updates track before/after values for username, email, and role.
-
-## v1.0.6-dev - API Error Model and Request Correlation
-
-### Added
-
-- Added CorrelationIdFilter to generate and track correlation IDs across requests.
-- Added RequestLoggingFilter for structured HTTP request/response logging.
-- Added HTTP log category to LogCategory enum.
-- Enhanced GlobalExceptionHandler to extract correlation IDs from MDC (SLF4J Mapped Diagnostic Context).
-- Added generic Exception handler for unhandled exceptions with structured logging.
-- Added X-Correlation-ID header to all HTTP responses.
-- Request correlation IDs automatically propagated to system logs and error responses.
-- HTTP request logging includes method, path, status, duration, and correlation ID.
-
-### Notes
-
-- `v1.0.6-dev` completes the sixth and final patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- Correlation IDs provided in X-Correlation-ID request header are preserved; otherwise auto-generated.
-- CorrelationIdFilter uses SLF4J MDC to make correlation ID available throughout request lifecycle.
-- RequestLoggingFilter excludes health check and actuator endpoints from logging.
-- Error responses now include both correlationId and traceId for debugging.
-- Generic exception handler catches all unhandled exceptions with stack trace logging.
-
-## v1.0.5-dev - Task and Task Log APIs
-
-### Added
-
-- Added TaskController with REST endpoints (GET, POST, PATCH, DELETE tasks, GET task logs).
-- Added TaskLogDTO and UpdateTaskRequest DTOs for task API contracts.
-- Enhanced TaskService with structured logging and automatic task log creation.
-- Added task log tracking for all task mutations (create, update, delete).
-- Added change tracking in task updates to log only modified fields.
-- Added GET /api/tasks endpoint with optional projectId query parameter filter.
-- Added GET /api/tasks/{id}/logs endpoint to retrieve task event history.
-- Task logs automatically created on task creation and updates with change details.
-
-### Notes
-
-- `v1.0.5-dev` completes the fifth patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- PATCH /api/tasks/{id} supports partial updates (only provided fields updated).
-- Task updates track before/after values for title, status, assignedAgentId, and size.
-- Task logs provide audit trail of all task lifecycle events.
-- GET /api/tasks?projectId={uuid} filters tasks by project.
-
-## v1.0.4-dev - Settings and System Metadata APIs
-
-### Added
-
-- Added SystemMetadata domain entity with singleton pattern (id constrained to TRUE).
-- Added SystemMetadataRepository for system_metadata table access.
-- Added SystemMetadataService with metadata CRUD and settings merge operations.
-- Added SystemMetadataController with REST endpoints (GET /api/system/metadata, PUT /api/system/metadata, GET /api/system/settings, PATCH /api/system/settings).
-- Added SystemMetadataDTO and UpdateSystemMetadataRequest DTOs.
-- Added structured logging for metadata and settings updates.
-- Settings PATCH endpoint merges incoming settings with existing settings rather than replacing.
-
-### Notes
-
-- `v1.0.4-dev` completes the fourth patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- System metadata is a singleton table with id=true constraint.
-- GET /api/system/metadata returns platform name, version, and full settings.
-- PATCH /api/system/settings merges partial updates into existing settings.
-- Default metadata created on first access with name="SYNAPSE", version="1.0.0".
-
-## v1.0.3-dev - Agent and Team CRUD with File Bootstrap
-
-### Added
-
-- Added AgentManagementService with hybrid file+database agent loading strategy.
-- Added AgentManagementController with REST endpoints for agents CRUD (GET, POST, PUT, DELETE).
-- Added POST /api/agents/_sync endpoint to import file-based agents into database.
-- Added AgentTeamService with CRUD operations for teams.
-- Added AgentTeamController with REST endpoints for teams (GET, POST, PUT, DELETE).
-- Added AgentTeamDTO and CreateAgentTeamRequest DTOs for team API contracts.
-- Added API log category to LogCategory enum for request/response logging.
-- Added structured logging for all agent and team mutating operations.
-- Added DtoMapper methods for AgentTeam entity-DTO conversion.
-
-### Notes
-
-- `v1.0.3-dev` completes the third patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- File-based agents (from `agents/` directory) are merged with database agents in listAllAgents().
-- File agents are marked with `"source": "file"` in their config field.
-- Agents can be synced from file definitions into database via POST /_sync endpoint.
-- Database agents take precedence over file-based agents with same ID.
-
-## v1.0.2-dev - DTOs and Validation
-
-### Added
-
-- Added stable DTO records for all domain entities (UserDTO, AgentDTO, ConversationDTO, MessageDTO, TaskDTO, PluginDTO).
-- Added validated request DTOs with Jakarta Bean Validation constraints (CreateUserRequest, CreateAgentRequest, CreateConversationRequest, CreateMessageRequest, CreateTaskRequest).
-- Added DtoMapper utility class for bidirectional entity-DTO conversion.
-- Added JacksonConfig for ObjectMapper bean with JavaTimeModule support.
-- Added Map-based logging method to SystemLogService for structured logging integration.
-- Added validation error handler in GlobalExceptionHandler for MethodArgumentNotValidException.
-- Added jackson-datatype-jsr310 dependency to pom.xml for Instant/LocalDateTime serialization.
-
-### Notes
-
-- `v1.0.2-dev` completes the second patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- DTOs use Jakarta validation annotations for input validation.
-- All DTOs use JsonInclude.NON_NULL to omit null fields in responses.
-- DtoMapper provides clean separation between domain model and API contracts.
-
-## v1.0.1-dev - Persistence API Layer
-
-### Added
-
-- Added JPA domain entities for users, agents, teams, plugins, conversations, messages, projects, tasks, and task logs with PostgreSQL schema mappings.
-- Added Spring Data repositories for all domain entities with query methods for common access patterns.
-- Added service layer with @Transactional boundaries for users, agents, conversations, messages, tasks, and plugins.
-- Added global exception handling with ApiException base class, ResourceNotFoundException, ValidationException, and ErrorResponse DTO.
-- Added correlation ID and trace ID support in exception handling for request tracing.
-- Added structured logging for API errors through SystemLogService integration.
-- Created repository/service/exception package structure in backend core module.
-
-### Notes
-
-- `v1.0.1-dev` completes the first patch step of the v1.1.0-dev milestone (Persistence API Layer).
-- Database-backed CRUD services are now available but not yet exposed through REST controllers.
-- File-defined agent bootstrap integration still pending.
-
-## v1.0.0 - Initial Runnable Platform Release
-
-### Added
-
-- Added the complete documentation scaffold for the platform architecture, agent identity model, teams, AI-Firm, plugin system, store, bundles, logging, dashboard theming, installer, CLI contract, ACP registry, MCP, skills, heartbeat, self-learning, multi-user support, Git providers, custom commands, ECHO, and API reference.
-- Added root project documentation, contribution guidance, MIT license, build-step checklist, implementation roadmap, and release tracking.
-- Added PostgreSQL schema and seed data covering agents, teams, AI-Firm, plugins, channels, model providers, skills, MCP, conversations, messages, projects, tasks, logs, costs, heartbeat, sessions, store cache, users, auth sessions, and Git integrations.
-- Added agent identity files for the Main Agent, ECHO debug agent, AI-Firm CEO, and reusable agent/team templates.
-- Added plugin templates for channels, model providers, skills, MCP, and a Telegram channel skeleton.
-- Added store registry, bundle specification, store specification, and plugin submission guide.
-- Added Unix/macOS and Windows installer scripts plus Docker Compose quick/dev and production stacks.
-- Added the first Spring Boot backend runtime under `packages/core` with health API, configuration properties, Dockerfile, Flyway migration files, explicit migration execution, file-defined agent listing, and structured logging APIs.
-- Added the first Vue/Vite dashboard runtime under `packages/dashboard/frontend` with health, agents, and recent-log panels.
-- Added Nginx API proxying for the packaged dashboard container.
-- Added release automation support through roadmap-label and milestone-release workflows.
+### Development Versions
+- v1.9.5-dev: Docker Compose validation
+- v1.9.4-dev: Delete service/ package, distribute remaining services
+- v1.9.3-dev: Move agent services to agents/service/
+- v1.9.2-dev: Move tasks/ and users/ packages
+- v1.9.1-dev: Backend restructure audit
 
 ### Fixed
+- v1.9.7-hotfix: Missing ModelProviderService import in MessageService
+- v1.9.6-hotfix: Missing MainAgentPromptService import in MessageService
 
-- Corrected README documentation links and project structure references.
-- Normalized text file line endings for backend, dashboard, SQL, XML, Vue, TypeScript, and Nginx config files.
-- Made the backend health API independent of Actuator internals.
-- Updated Docker Compose PostgreSQL 18 volume handling and added service health checks for deterministic startup.
-- Filtered runtime agent listing so scaffold templates are not exposed as concrete agents.
+---
 
-### Validation
+## [v1.9.0] - 2026-05-09
 
-- Backend Docker image builds successfully.
-- Dashboard Docker image builds successfully.
-- Docker Compose config validates for quick/dev and production files.
-- The local runtime starts PostgreSQL, Redis, Qdrant, backend, and dashboard.
-- `GET /api/health` responds through both backend port `8080` and dashboard proxy port `3000`.
-- `GET /api/agents` returns concrete runtime agents.
-- `GET /api/logs` returns persisted structured startup logs.
+**Milestone:** CLI Runtime
 
-### Notes
-
-- `v1.0.0` is the first runnable MVP baseline.
-- The release does not yet include live chat execution, model invocation, realtime log streaming, user authentication, plugin installation, or full dashboard management workflows. Those move to the V2 roadmap.
-
-## v1.0.0-dev - Development Baseline
+Complete Go-based CLI implementation for SYNAPSE platform management.
 
 ### Added
+- Go module initialization with go 1.26
+- Cobra command framework
+- Auth commands (login, logout, session)
+- Agent management commands
+- Provider management commands
+- Plugin management commands
+- Conversation commands (list, send, stream)
+- Health check command
+- Logs viewing command
+- Bubble Tea TUI for conversation streaming
+- Config profile handling (.synapse/config.json)
+- ANSI-colored output for better UX
 
-- Added the v1 implementation roadmap for the runnable Spring Boot backend, Vue dashboard, database migrations, APIs, model provider shell, Compose runtime, and first release hardening.
-- Added the first Spring Boot backend skeleton with health API, configuration properties, Maven project file, and Dockerfile.
-- Added the first Vue/Vite dashboard skeleton with health API client, operator console shell, and Dockerfile.
-- Added structured log categories, log write/query service, `/api/logs`, startup logging, and dashboard recent-log display.
-- Added explicit Flyway migration execution during backend startup so the first runnable stack creates its schema before writing runtime logs.
-- Added Nginx API proxying for the packaged dashboard container.
+### Development Versions
+- v1.8.6-dev: Config profile handling
+- v1.8.5-dev: Bubble Tea TUI overview
+- v1.8.4-dev: Conversation send and stream commands
+- v1.8.3-dev: Health, logs, agents, providers, plugin commands
+- v1.8.2-dev: Auth login/logout/session commands
+- v1.8.1-dev: Go module and cobra command shell
 
 ### Fixed
+- v1.8.8-hotfix: Drop external TUI deps, ANSI output, go 1.26
+- v1.8.7-hotfix: Fix bubbletea dependency compile error
 
-- Updated Docker Compose PostgreSQL 18 volume handling and service health checks.
-- Filtered runtime agent listing so scaffold templates are not exposed as concrete agents.
+---
 
-### Notes
+## [v1.8.0] - 2026-05-09
 
-- `v1.0.0-dev` marked the active implementation track before the `v1.0.0` release.
+**Milestone:** Dashboard Management
 
-## v0.10.0 - Hardening
+Complete Vue.js dashboard implementation with authenticated navigation and management screens.
 
 ### Added
+- Vue Router integration
+- Pinia state management
+- Authenticated layout with sidebar navigation
+- Role-aware navigation (admin vs user)
+- Providers screen (add/edit/test providers)
+- Conversations screen (list, create, view conversations)
+- Agents and teams screen (agent management, team creation)
+- Plugins and store screens (plugin installation, store browsing)
+- Logs and observability screen (live system logs)
+- Settings and user management screens (profile, users, system settings)
 
-- Added the hardening report with file-count verification, critical-file status, validation notes, and quality-rule notes.
+### Development Versions
+- v1.7.8-dev: Settings and user management screens
+- v1.7.7-dev: Logs and observability screen
+- v1.7.6-dev: Plugins and store screens
+- v1.7.5-dev: Agents and teams screen
+- v1.7.4-dev: Conversations screen
+- v1.7.3-dev: Providers screen
+- v1.7.2-dev: Authenticated layout and role-aware navigation
+- v1.7.1-dev: Vue Router, Pinia, view structure
 
 ### Fixed
+- v1.7.9-hotfix: TypeScript HeadersInit type error fix
 
-- Corrected README documentation links to match the actual documentation file names.
-- Corrected the README project structure to point at `installer/compose/` instead of a root Compose file.
+---
 
-### Notes
+## [v1.7.0] - 2026-05-09
 
-- `v0.10.0` closes the initial implementation-roadmap pass.
+**Milestone:** Plugin and Store Runtime
 
-## v0.9.0 - Runtime Delivery
-
-### Added
-
-- Added runtime delivery documentation for WebSocket, SSE, polling fallback, dashboard blocks, operator paths, and failure rules.
-- Documented that runtime transport failures never activate ECHO automatically.
-
-### Notes
-
-- `v0.9.0` closes the runtime delivery milestone.
-- The next milestone is `v0.10.0`, focused on hardening and final quality checks.
-
-## v0.8.0 - CLI Contract
+Complete plugin lifecycle management and store integration system.
 
 ### Added
+- Plugin manifest parser and validator
+- Plugin install/enable/disable/uninstall APIs
+- Store registry sync from registry.yml
+- Bundle validation and install flow
+- Plugin stats tracking (installs, usage, errors)
+- Dashboard plugin and store management views
+- Safety rules for community plugin installs
+- Plugin trust levels and safety policies
 
-- Added the CLI reference with global flags, command tree, TUI views, Main Agent path, manual path, and logging behavior.
-- Linked the API reference to the dedicated CLI contract.
+### Development Versions
+- v1.6.7-dev: Safety rules for community plugin installs
+- v1.6.6-dev: Dashboard plugin and store management views
+- v1.6.5-dev: Plugin stats tracking
+- v1.6.4-dev: Bundle validation and install flow
+- v1.6.3-dev: Store registry sync from registry.yml
+- v1.6.2-dev: Plugin install/enable/disable/uninstall APIs
+- v1.6.1-dev: Plugin manifest parser and validator
 
-### Notes
+### Fixed
+- v1.6.8-hotfix: Fix V11 migration conflict with V1 plugin_stats
 
-- `v0.8.0` closes the CLI specification milestone.
-- The next milestone is `v0.9.0`, focused on runtime delivery and observability.
+---
 
-## v0.7.0 - Installer
+## [v1.6.0] - 2026-05-09
 
-### Added
+**Milestone:** Realtime Runtime
 
-- Added Unix/macOS shell installer with interactive prompts and Docker Compose startup.
-- Added Windows PowerShell installer with equivalent prompt and Compose behavior.
-- Added quick/dev Docker Compose file for PostgreSQL, Redis, Qdrant, and optional Ollama.
-- Added production Docker Compose file with restart policies and internal networking.
-
-### Notes
-
-- `v0.7.0` closes the installer milestone.
-- The next milestone is `v0.8.0`, focused on the CLI command contract.
-
-## v0.6.0 - Documentation Set
-
-### Added
-
-- Added the missing subsystem docs for agents, teams, AI-Firm, heartbeat, skills, MCP, ACP, bundles, multi-user, logging, theming, ECHO, git providers, custom commands, and API reference.
-- Documented Main Agent and manual paths for creatable and configurable subsystems.
-- Added logging categories, API endpoints, and operator guidance required by the build-step checklist.
-
-### Notes
-
-- `v0.6.0` closes the documentation milestone.
-- The next milestone is `v0.7.0`, focused on installers and Compose bootstrap files.
-
-## v0.5.0 - Store and Bundle System
+Realtime event delivery system with SSE and WebSocket support.
 
 ### Added
+- Internal event publisher abstraction
+- Redis Streams log fanout
+- SSE endpoint for live logs
+- WebSocket endpoint for conversation events
+- Dashboard live log panel
+- Dashboard streaming conversation updates
+- Reconnect, backoff, polling fallback mechanisms
 
-- Added an example store registry with official, community, skills.sh, and ACP sources.
-- Added example plugin, bundle, and statistics entries for store cache structure.
-- Added the plugin and bundle submission guide covering Official Store, Community Store, skills publishing, manual installs, and logging.
-- Completed the store file count required by the original build steps.
+### Development Versions
+- v1.5.7-dev: Reconnect, backoff, polling fallback
+- v1.5.6-dev: Dashboard streaming conversation updates
+- v1.5.5-dev: Dashboard live log panel
+- v1.5.4-dev: WebSocket endpoint for conversation events
+- v1.5.3-dev: SSE endpoint for live logs
+- v1.5.2-dev: Redis Streams log fanout
+- v1.5.1-dev: Internal event publisher abstraction
 
-### Notes
+### Fixed
+- v1.5.9-hotfix: Fix @EnableAsync proxy conflict
+- v1.5.8-hotfix: Redis Streams API fix
 
-- `v0.5.0` closes the store milestone.
-- The next milestone is `v0.6.0`, focused on completing the documentation set.
+---
 
-## v0.4.0 - Plugin Templates
+## [v1.5.0] - 2026-05-08
 
-### Added
+**Milestone:** Agent Orchestration
 
-- Added the Ollama model provider manifest.
-- Added the skills plugin manifest template and Claude Code Skills format template.
-- Added the MCP server manifest template with stdio, HTTP, tool policy, and logging fields.
-- Completed the plugin template file count required by the original build steps.
-
-### Notes
-
-- `v0.4.0` closes the plugin template milestone.
-- The next milestone is `v0.5.0`, focused on the store and bundle system.
-
-## v0.3.0 - Agent Identity Layer
-
-### Added
-
-- Added the AI-Firm example configuration with Paperclip mode routing, singleton constraints, and AI_FIRM logging events.
-- Added Firm CEO identity, soul, and system prompt files.
-- Completed the missing Step 10 agent files from the original build steps.
-
-### Notes
-
-- `v0.3.0` closes the agent identity milestone.
-- The next milestone is `v0.4.0`, focused on plugin templates and provider integration.
-
-## v0.2.0 - Backend Foundation
+Complete agent orchestration system with teams, memory, and dispatch.
 
 ### Added
+- Agent runtime registry
+- Main Agent router service
+- Team dispatch contract
+- AI-Firm project dispatch
+- Agent memory vault
+- Agent heartbeat records
+- Dashboard agent management UI
 
-- Added stronger backend schema invariants for singleton metadata, installed plugin uniqueness, channel relationships, session-linked heartbeat records, and store cache source uniqueness.
-- Added idempotent seed data for system metadata and default runtime settings.
-- Added explicit manual-only ECHO debug activation to the seed configuration.
-- Expanded the vault specification with path-safety and compression failure handling rules.
+### Development Versions
+- v1.4.7-dev: Dashboard agent management
+- v1.4.6-dev: Agent heartbeat records
+- v1.4.5-dev: Agent memory vault
+- v1.4.4-dev: AI-Firm project dispatch
+- v1.4.3-dev: Team dispatch contract
+- v1.4.2-dev: Main Agent router
+- v1.4.1-dev: Agent runtime registry
 
-### Notes
+### Fixed
+- v1.4.8-hotfix: UUID/String type mismatch fix
 
-- `v0.2.0` closes the backend foundation milestone.
-- The next milestone is `v0.3.0`, focused on the agent identity layer.
+---
 
-## v0.1.0 - Foundation
+## [v1.4.0] - 2026-05-08
+
+**Milestone:** Chat Runtime
+
+Conversation and message management with model provider integration.
 
 ### Added
+- Model provider integration for chat
+- Response metadata tracking
+- Error handling and graceful degradation
+- Chat API documentation
 
-- Added the implementation roadmap as the source of truth for build order, versioning, and roadmap labels.
-- Added GitHub Actions automation to sync fixed roadmap labels from the roadmap file.
-- Added release process documentation for patch commits, milestone commits, labels, and tags.
-- Added roadmap issue and pull request templates.
-- Added repository line-ending rules for stable cross-platform diffs.
+### Development Versions
+- v1.3.7-dev: Chat API documentation
+- v1.3.6-dev: Error handling and graceful degradation
+- v1.3.5-dev: Response metadata tracking
+- v1.3.4-dev: Model provider integration for chat
 
-### Notes
+### Fixed
+- v1.3.9-hotfix: Missing UUID import
+- v1.3.8-hotfix: Compilation error fixes
+- v1.3.0.1-hotfix: Docker Compose startup fixes
 
-- `v0.1.0` is the first implementation milestone after the scaffold baseline.
-- The next milestone is `v0.2.0`, focused on the backend foundation.
+---
 
-## v0.0.0 - Scaffold Baseline
+## [v1.3.0] - 2026-05-08
+
+**Milestone:** Model Providers
+
+Complete model provider management system with OpenAI, Anthropic, and Ollama support.
 
 ### Added
+- Model provider CRUD APIs
+- Provider configuration with encrypted secrets
+- OpenAI integration
+- Anthropic integration
+- Ollama integration
+- Provider testing endpoint
+- Usage logging and analytics
+- Provider switching logic
 
-- Added the initial project plan and build-step plan.
-- Added root project files, agent files, backend database and vault specs, partial docs, plugin templates, and store specs.
+---
+
+## [v1.2.0] - 2026-05-08
+
+**Milestone:** Auth and Users
+
+Multi-user authentication and authorization system.
+
+### Added
+- JWT authentication with refresh tokens
+- User CRUD operations
+- Password hashing with Argon2id
+- Login/logout endpoints
+- Session management
+- Security filters and context helpers
+- Secret encryption service
+
+### Development Versions
+- v1.2.7-dev: Session management
+- v1.2.6-dev: Security filters
+- v1.2.5-dev: Login/logout endpoints
+- v1.2.4-dev: Password hashing
+- v1.2.3-dev: JWT service
+- v1.2.2-dev: User CRUD
+- v1.2.1-dev: User entity and repository
+
+---
+
+## [v1.0.0] - 2026-05-08
+
+**Milestone:** Initial Runnable Platform Release
+
+First working version of SYNAPSE with basic runtime infrastructure.
+
+### Added
+- Spring Boot 4.0.0 application bootstrap
+- PostgreSQL 18 database integration
+- Redis 8 caching integration
+- Qdrant vector database integration
+- Flyway database migrations
+- Docker Compose deployment
+- Health check endpoints
+- Basic domain models (Agent, Conversation, Message, User, etc.)
+- Repository layer with Spring Data JPA
+- System logging infrastructure
+- Request correlation and logging filters
+
+### Development Versions
+- v1.0.10-dev: Logging infrastructure
+- v1.0.9-dev: Filters and correlation
+- v1.0.8-dev: Repositories
+- v1.0.7-dev: Domain models
+- v1.0.6-dev: Health endpoints
+- v1.0.5-dev: Flyway migrations
+- v1.0.4-dev: Qdrant integration
+- v1.0.3-dev: Redis integration
+- v1.0.0-dev: Spring Boot bootstrap
+
+---
+
+## [v0.10.0] - 2026-05-08
+
+**Milestone:** Hardening
+
+Pre-release hardening and quality assurance.
+
+### Added
+- Hardening report documentation
+- Security checklist
+- Performance baseline tests
+- Error handling improvements
+
+---
+
+## [v0.9.0] - 2026-05-08
+
+**Milestone:** Runtime Delivery
+
+Runtime delivery and deployment infrastructure.
+
+### Added
+- Runtime delivery documentation
+- Deployment scripts
+- Installation guides
+
+---
+
+## [v0.8.0] - 2026-05-08
+
+**Milestone:** CLI Contract
+
+CLI command structure and interface definitions.
+
+### Added
+- CLI reference documentation
+- Custom commands documentation
+- Command specifications
+
+---
+
+## [v0.7.0] - 2026-05-08
+
+**Milestone:** Installer
+
+Installation and deployment tooling.
+
+### Added
+- Docker Compose configuration
+- Installation scripts
+- Environment setup documentation
+
+---
+
+## [v0.6.0] - 2026-05-08
+
+**Milestone:** Documentation Set
+
+Comprehensive documentation for all system components.
+
+### Added
+- Architecture documentation
+- API reference
+- System documentation (agents, teams, memory, heartbeat, logging)
+- Plugin system documentation
+- Store concept documentation
+- MCP integration guide
+- Skills integration guide
+- Git provider integration documentation
+
+---
+
+## [v0.5.0] - 2026-05-08
+
+**Milestone:** Store and Bundle System
+
+Plugin store and bundle management system design.
+
+### Added
+- Store concept documentation
+- Bundle system documentation
+- ACP registry documentation
+
+---
+
+## [v0.4.0] - 2026-05-08
+
+**Milestone:** Plugin Templates
+
+Plugin development templates and examples.
+
+### Added
+- Plugin system documentation
+- Plugin manifest specifications
+- Echo debug agent example
+
+---
+
+## [v0.3.0] - 2026-05-08
+
+**Milestone:** Agent Identity Layer
+
+Agent identity and team management system design.
+
+### Added
+- Agent identity system documentation
+- Agent teams system documentation
+- AI firm system documentation
+
+---
+
+## [v0.2.0] - 2026-05-08
+
+**Milestone:** Backend Foundation
+
+Core backend architecture and infrastructure.
+
+### Added
+- Spring Boot project structure
+- Database schema design
+- API architecture
+- Logging system design
+- Multi-user support design
+
+---
+
+## [v0.1.0] - 2026-05-08
+
+**Milestone:** Foundation
+
+Project foundation and development infrastructure.
+
+### Added
+- Implementation roadmap (SYNAPSE_V1_IMPLEMENTATION_ROADMAP.md)
+- GitHub Actions automation for roadmap label sync
+- Release process documentation
+- Roadmap issue and PR templates
+- Repository line-ending rules (.gitattributes)
+- Build order and versioning guidelines
+
+---
+
+## Version Index
+
+### Major Releases
+- [v2.0.0] - 2026-05-10 - Operational AI Platform
+- [v1.10.0] - 2026-05-10 - Backend Restructure
+- [v1.9.0] - 2026-05-09 - CLI Runtime
+- [v1.8.0] - 2026-05-09 - Dashboard Management
+- [v1.7.0] - 2026-05-09 - Plugin and Store Runtime
+- [v1.6.0] - 2026-05-09 - Realtime Runtime
+- [v1.5.0] - 2026-05-08 - Agent Orchestration
+- [v1.4.0] - 2026-05-08 - Chat Runtime
+- [v1.3.0] - 2026-05-08 - Model Providers
+- [v1.2.0] - 2026-05-08 - Auth and Users
+- [v1.0.0] - 2026-05-08 - Initial Runnable Platform
+- [v0.10.0] - 2026-05-08 - Hardening
+- [v0.9.0] - 2026-05-08 - Runtime Delivery
+- [v0.8.0] - 2026-05-08 - CLI Contract
+- [v0.7.0] - 2026-05-08 - Installer
+- [v0.6.0] - 2026-05-08 - Documentation Set
+- [v0.5.0] - 2026-05-08 - Store and Bundle System
+- [v0.4.0] - 2026-05-08 - Plugin Templates
+- [v0.3.0] - 2026-05-08 - Agent Identity Layer
+- [v0.2.0] - 2026-05-08 - Backend Foundation
+- [v0.1.0] - 2026-05-08 - Foundation
+
+### Development Versions
+See individual milestone sections for complete development version (v*.*.x-dev) history.
+
+### Hotfixes
+- v1.9.7-hotfix, v1.9.6-hotfix
+- v1.8.8-hotfix, v1.8.7-hotfix
+- v1.7.9-hotfix
+- v1.6.8-hotfix
+- v1.5.9-hotfix, v1.5.8-hotfix
+- v1.4.8-hotfix
+- v1.3.9-hotfix, v1.3.8-hotfix, v1.3.0.1-hotfix
+
+---
+
+[v2.0.0]: https://github.com/FTMahringer/Synapse/releases/tag/v2.0.0
+[v1.10.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.10.0
+[v1.9.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.9.0
+[v1.8.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.8.0
+[v1.7.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.7.0
+[v1.6.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.6.0
+[v1.5.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.5.0
+[v1.4.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.4.0
+[v1.3.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.3.0
+[v1.2.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.2.0
+[v1.0.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.0.0
+[v0.10.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.10.0
+[v0.9.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.9.0
+[v0.8.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.8.0
+[v0.7.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.7.0
+[v0.6.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.6.0
+[v0.5.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.5.0
+[v0.4.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.4.0
+[v0.3.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.3.0
+[v0.2.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.2.0
+[v0.1.0]: https://github.com/FTMahringer/Synapse/releases/tag/v0.1.0
