@@ -118,7 +118,8 @@ V2 turns SYNAPSE from a visible runtime shell into an operational AI platform:
 | `v1.7.0` | Plugin and Store Runtime | Install, enable, disable, validate, and list plugins/bundles |
 | `v1.8.0` | Dashboard Management | Full operator UI over V2 APIs |
 | `v1.9.0` | CLI Runtime | Go CLI/TUI connected to backend APIs |
-| `v1.10.0` | Release Hardening | Tests, CI, docs, migrations, and `v2.0.0` release readiness |
+| `v1.10.0` | Backend Restructure | Spring Boot package reorganisation — feature modules, clean service layer |
+| `v1.11.0` | Release Hardening | Tests, CI, docs, migrations, and `v2.0.0` release readiness |
 
 ---
 
@@ -305,107 +306,73 @@ Exit criteria:
 - CLI can send a message through the chat runtime.
 
 
-# v1.10.0 - Spring-boot file seperation / movement
+### v1.10.0 - Backend Restructure
 
-## Goal
+Goal: reorganise the Spring Boot backend into coherent feature modules. Eliminate the flat `service/` dumping ground and fix misplaced files before hardening begins.
 
-Restructure and harden the backend/core architecture.
+**Known problems going in:**
+- `service/` holds 21 files — agent, conversation, provider, task, user, and routing logic all mixed flat.
+- `service/TaskController.java` and `service/UserController.java` are controllers living in a service package.
+- `agents/` mixes controllers, loaders, and services with no sub-structure.
+- `plugin/` mixes controllers with lifecycle and safety services.
+- `dto/` and `repository/` are flat across all domains.
 
-Focus only on the `core` module and internal backend structure.
-The `/dev/synapse` directory currently contains many unused or empty directories.
-Analyze the existing structure and redistribute files into cleaner and more maintainable locations.
+**Target package structure:**
+```
+dev.synapse.core
+├── config/               # Spring config, properties, beans
+├── shared/
+│   ├── domain/           # JPA entities
+│   ├── dto/              # Cross-cutting DTOs and DtoMapper
+│   ├── repository/       # JPA repositories
+│   └── exception/        # ResourceNotFoundException, error model
+├── agents/
+│   ├── api/              # AgentManagementController, AgentTeamController,
+│   │                     #   AgentActivationController, AgentMemoryController, AiFirmController
+│   └── service/          # AgentService, AgentManagementService, AgentRuntimeService,
+│                         #   AgentHeartbeatService, AgentMemoryService, AgentTeamService,
+│                         #   AiFirmDispatchService, MainAgentRouterService,
+│                         #   MainAgentPromptService, TeamDispatchService, AgentDefinitionLoader
+├── auth/                 # Merge of security/
+│   ├── api/              # AuthenticationController
+│   └── service/          # JwtTokenService, password hashing, audit logging
+├── conversation/
+│   ├── api/              # ConversationController (already placed correctly)
+│   └── service/          # ConversationService, MessageService (moved from service/)
+├── tasks/                # Promoted from service/
+│   ├── api/              # TaskController (moved from service/)
+│   └── service/          # TaskService (moved from service/)
+├── users/                # Promoted from service/
+│   ├── api/              # UserController (moved from service/)
+│   └── service/          # UserService (moved from service/)
+├── provider/             # Model provider (already structured)
+├── plugin/
+│   ├── api/              # PluginController, StoreController
+│   └── service/          # PluginLifecycleService, StoreRegistryService, etc.
+├── realtime/             # WebSocket/SSE (already structured)
+├── logging/              # System logging (already structured)
+├── health/               # Health endpoints (already structured)
+├── filter/               # HTTP filters (already structured)
+└── event/                # Event bus (already structured)
+```
 
-The objective is to:
+Patch steps:
 
-* improve project organization
-* reduce architectural chaos
-* prepare the backend for future scaling
-* ensure imports, dependencies, and package structures are clean and consistent
+- `v1.9.1-dev`: Audit current structure. Write `RESTRUCTURE.md` at project root — list every misplaced file, its current package, and its target package. Identify empty directories and dead code candidates.
+- `v1.9.2-dev`: Create `agents/api/` and `agents/service/` sub-packages. Move all agent-related controllers out of the flat `agents/` root and all agent services out of `service/`. Move `TaskController` and `UserController` out of `service/` into `tasks/api/` and `users/api/`.
+- `v1.9.3-dev`: Create `tasks/service/`, `users/service/`, `conversation/service/`. Move remaining services out of `service/` into their feature modules (`ConversationService`, `MessageService`, `TaskService`, `UserService`, `ModelProviderService`, `SystemMetadataService`). Move `PluginController` and `StoreController` into `plugin/api/`. Delete the now-empty `service/` package.
+- `v1.9.4-dev`: Rename `security/` to `auth/` and create `auth/api/` and `auth/service/` sub-packages. Move `domain/`, `dto/`, `repository/`, and `exception/` under `shared/`. Update all `package` declarations and `import` statements throughout the codebase.
+- `v1.9.5-dev`: Docker Compose build and startup validation. Fix any broken Spring component scans, missing `@ComponentScan` paths, unresolved `@Autowired` beans, or circular dependencies introduced by the moves. Apply `-hotfix` tags for each fix batch. Confirm all 11 Flyway migrations still pass on a clean volume.
 
----
+Exit criteria:
 
-## Release Steps
+- No `.java` file has a package declaration that does not match its directory path.
+- `service/` package is deleted — all contents redistributed to feature modules.
+- `TaskController` and `UserController` live in `tasks/api/` and `users/api/` respectively.
+- `RESTRUCTURE.md` documents every move made.
+- Docker Compose starts cleanly from an empty volume with all migrations passing.
+- No functionality is changed — only file locations and package names.
 
-### `v1.9.1-dev` — Structure Analysis & Planning
-
-* Analyze the complete backend/core structure
-* Inspect all folders inside `/dev/synapse`
-* Identify:
-
-  * empty directories
-  * misplaced files
-  * duplicated logic
-  * inconsistent package structures
-* Create a detailed `plan.md` inside the Spring Boot `/dev/synapse` directory
-* Define:
-
-  * new target structure
-  * file redistribution plan
-  * architecture improvements
-  * cleanup candidates
-
----
-
-### `v1.9.2-dev` — Core Refactor & File Redistribution
-
-* Begin restructuring based on `plan.md`
-* Move files into their correct modules/packages
-* Remove obsolete or unused folders
-* Consolidate duplicated logic where possible
-* Improve separation of concerns between:
-
-  * config
-  * core
-  * modules
-  * services
-  * utils
-  * integrations
-  * infrastructure
-* Keep the refactor backend-only and core-focused
-
----
-
-### `v1.9.3-dev` — Dependency & Import Validation
-
-* Validate all:
-
-  * imports
-  * package declarations
-  * Spring component scans
-  * dependency injections
-  * configuration references
-* Fix broken references caused by restructuring
-* Ensure:
-
-  * builds compile correctly
-  * no circular dependencies exist
-  * naming conventions stay consistent
-* Run cleanup for unused imports and dead code
-
----
-
-### `v1.9.4-dev` — Error Detection & Hotfix Phase
-
-* Run full backend validation
-* Detect:
-
-  * compilation issues
-  * runtime errors
-  * broken beans/services
-  * invalid configs
-  * failing startup sequences
-* Apply targeted `-hotfix` patches where required
-* Stabilize the new architecture for release readiness
-
----
-
-## Notes
-
-* Focus strictly on backend/core files
-* Avoid frontend/UI modifications
-* Prefer long-term maintainability over temporary fixes
-* Keep architecture modular and scalable
-* Preserve existing functionality while restructuring
 ---
 
 ### v1.11.0 - Release Hardening
@@ -419,7 +386,7 @@ Patch steps:
 - `v1.10.3-dev`: Add migration validation CI.
 - `v1.10.4-dev`: Add Compose smoke test workflow.
 - `v1.10.5-dev`: Update docs to match implemented behavior.
-- `v1.90.6-dev`: Add release notes with all V2 changelog entries.
+- `v1.10.6-dev`: Add release notes with all V2 changelog entries.
 - `v1.10.7-dev`: Tag and release `v2.0.0`.
 
 Exit criteria:
@@ -441,7 +408,8 @@ Exit criteria:
 7. Plugin/store runtime.
 8. Dashboard workflows.
 9. CLI.
-10. Release hardening.
+10. Backend restructure (package organisation).
+11. Release hardening.
 
 This order keeps backend contracts ahead of dashboard expansion and prevents UI work from becoming static mock data.
 
