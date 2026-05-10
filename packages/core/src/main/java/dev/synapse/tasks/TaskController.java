@@ -1,4 +1,4 @@
-package dev.synapse.core.tasks;
+package dev.synapse.tasks;
 
 import dev.synapse.core.dto.*;
 import jakarta.validation.Valid;

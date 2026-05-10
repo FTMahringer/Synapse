@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-@SpringBootApplication(scanBasePackages = {"dev.synapse.core", "dev.synapse.agents", "dev.synapse.conversation"})
+@SpringBootApplication(scanBasePackages = {"dev.synapse.core", "dev.synapse.agents", "dev.synapse.conversation", "dev.synapse.tasks"})
 @ConfigurationPropertiesScan
 @EnableConfigurationProperties(SynapseProperties.class)
 @EnableAsync(proxyTargetClass = true)
