@@ -104,6 +104,22 @@ Three-tier structure improves self-learning loops by separating:
 
 This reduces noise contamination and allows policy feedback to target the right tier.
 
+### Lifecycle Cadence (Storage + Quality)
+
+To reduce long-term storage and quality risks, run scheduled maintenance:
+
+1. **Monthly KNOWLEDGE compaction to ARCHIVE**
+   - Generate compressed summaries of stale but still relevant KNOWLEDGE clusters.
+   - Preserve canonical high-value entries in KNOWLEDGE when confidence/importance remains high.
+   - Link archive summaries back to source entries for traceability.
+
+2. **Bi-monthly ARCHIVE cleanup/compaction**
+   - Detect duplicate or near-duplicate archived summaries.
+   - Merge/compact similar artifacts and drop low-value duplicates.
+   - Recompute archive metadata (freshness, confidence, lineage pointers).
+
+This cadence keeps retrieval sets cleaner and slows storage growth while preserving useful historical signal.
+
 ## API/Service Behavior
 
 Introduce tier-aware methods while preserving existing API compatibility:
@@ -150,7 +166,7 @@ Introduce tier-aware methods while preserving existing API compatibility:
 2. **Risk:** Over-promotion into `KNOWLEDGE`.
    - **Mitigation:** conservative thresholds + explicit promotion reason tracking.
 3. **Risk:** Archive bloat.
-   - **Mitigation:** retention/compaction policies and source linkage.
+   - **Mitigation:** retention/compaction policies, source linkage, and bi-monthly archive dedupe/merge.
 
 ## Success Criteria
 
