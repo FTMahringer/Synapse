@@ -41,6 +41,8 @@ public class RedisStreamPublisher {
                 "type", event.type().name(),
                 "source", event.source() != null ? event.source() : "",
                 "correlationId", event.correlationId() != null ? event.correlationId().toString() : "",
+                "traceId", event.traceId() != null ? event.traceId() : "",
+                "spanId", event.spanId() != null ? event.spanId() : "",
                 "occurredAt", event.occurredAt().toString(),
                 "data", json
             );
