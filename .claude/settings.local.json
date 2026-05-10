@@ -20,7 +20,22 @@
       "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.conversation;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/conversation/ConversationService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/conversation/MessageService.java)",
       "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.provider;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ModelProviderService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ProviderTestService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ProviderUsageLogService.java)",
       "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.config;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/config/SystemMetadataService.java)",
-      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.plugin;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/plugin/PluginService.java)"
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.plugin;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/plugin/PluginService.java)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" status)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" add ideas/AGENT_SYSTEM.md ideas/API_AND_RUNTIME.md ideas/INTEGRATIONS.md ideas/MEMORY_AND_LEARNING.md ideas/OBSERVABILITY.md ideas/PLATFORM_FEATURES.md synapse-docs)",
+      "Bash(git -C D:/projects/Agents-Umgeung-planning/Synapse commit -m ' *)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" submodule status)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs\" status)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs\" add docs/getting-started/installation.md)",
+      "Bash(git -C D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs commit -m ' *)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" push)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" push --tags)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs\" push)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs\" push --tags)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse/synapse-docs\" pull --rebase)",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" tag v2.1.2-dev)",
+      "Bash(Remove-Item -Recurse -Force \"D:/projects/Agents-Umgeung-planning/Synapse/docs\")",
+      "Bash(git -C \"D:/projects/Agents-Umgeung-planning/Synapse\" add -A)"
     ]
   }
 }
