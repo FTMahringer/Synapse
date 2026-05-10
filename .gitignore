@@ -15,3 +15,8 @@ Thumbs.db
 
 # Environment
 .env.local
+
+/synapse-docs
+/synapse-plugins
+/synapse-plugin-template
+/synapse-plugins-community
