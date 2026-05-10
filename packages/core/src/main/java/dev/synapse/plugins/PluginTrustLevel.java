@@ -1,4 +1,4 @@
-package dev.synapse.core.plugin;
+package dev.synapse.plugins;
 
 /**
  * Trust level assigned to a plugin based on its store source.

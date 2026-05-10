@@ -1,4 +1,4 @@
-package dev.synapse.core.plugin;
+package dev.synapse.plugins;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

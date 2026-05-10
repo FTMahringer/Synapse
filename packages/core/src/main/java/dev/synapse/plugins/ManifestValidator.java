@@ -1,4 +1,4 @@
-package dev.synapse.core.plugin;
+package dev.synapse.plugins;
 
 import org.springframework.stereotype.Component;
 

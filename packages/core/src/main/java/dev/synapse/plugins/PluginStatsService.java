@@ -1,4 +1,4 @@
-package dev.synapse.core.plugin;
+package dev.synapse.plugins;
 
 import dev.synapse.core.common.domain.PluginStats;
 import dev.synapse.core.common.repository.PluginStatsRepository;
