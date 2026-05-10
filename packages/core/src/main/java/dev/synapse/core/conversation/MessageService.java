@@ -6,6 +6,7 @@ import dev.synapse.core.domain.ModelProvider;
 import dev.synapse.core.exception.ResourceNotFoundException;
 import dev.synapse.core.provider.ollama.OllamaChat;
 import dev.synapse.core.provider.ollama.OllamaProviderService;
+import dev.synapse.core.agents.service.MainAgentPromptService;
 import dev.synapse.core.repository.ConversationRepository;
 import dev.synapse.core.repository.MessageRepository;
 import org.springframework.stereotype.Service;
