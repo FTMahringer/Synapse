@@ -1,5 +1,6 @@
 package dev.synapse.core.security;
 
+import dev.synapse.core.infrastructure.security.PasswordHashingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

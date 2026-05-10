@@ -1,5 +1,6 @@
 package dev.synapse.core.security;
 
+import dev.synapse.core.infrastructure.security.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

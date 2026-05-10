@@ -2,7 +2,7 @@ FROM maven:3.9-eclipse-temurin-25 AS build
 WORKDIR /workspace
 COPY pom.xml .
 COPY src ./src
-RUN mvn -q -DskipTests package
+RUN mvn -q -Dmaven.test.skip=true package
 
 FROM eclipse-temurin:25-jre
 WORKDIR /app

@@ -1,4 +1,4 @@
-package dev.synapse.core.health;
+package dev.synapse.core.bootstrap;
 
 import dev.synapse.core.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
