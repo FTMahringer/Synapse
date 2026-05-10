@@ -3,7 +3,7 @@ package dev.synapse.core.agents;
 import dev.synapse.core.dto.AgentDTO;
 import dev.synapse.core.dto.CreateAgentRequest;
 import dev.synapse.core.dto.DtoMapper;
-import dev.synapse.core.service.AgentManagementService;
+import dev.synapse.core.agents.service.AgentManagementService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;

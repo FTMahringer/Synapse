@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.agents.service;
 
 import dev.synapse.core.domain.FirmProject;
 import dev.synapse.core.exception.ResourceNotFoundException;

@@ -3,7 +3,7 @@ package dev.synapse.core.agents;
 import dev.synapse.core.dto.DispatchProjectRequest;
 import dev.synapse.core.dto.DtoMapper;
 import dev.synapse.core.dto.FirmProjectDTO;
-import dev.synapse.core.service.AiFirmDispatchService;
+import dev.synapse.core.agents.service.AiFirmDispatchService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

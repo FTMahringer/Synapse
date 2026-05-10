@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.agents.service;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;

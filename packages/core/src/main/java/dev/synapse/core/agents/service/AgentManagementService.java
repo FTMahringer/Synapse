@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.agents.service;
 
 import dev.synapse.core.agents.AgentDefinition;
 import dev.synapse.core.agents.AgentDefinitionLoader;

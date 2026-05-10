@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.agents.service;
 
 import dev.synapse.core.domain.RoutingDecision;
 import dev.synapse.core.domain.RoutingLog;

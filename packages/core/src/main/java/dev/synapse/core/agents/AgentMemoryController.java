@@ -4,7 +4,7 @@ import dev.synapse.core.dto.AgentMemoryEntryDTO;
 import dev.synapse.core.dto.DtoMapper;
 import dev.synapse.core.dto.WriteMemoryRequest;
 import dev.synapse.core.exception.ResourceNotFoundException;
-import dev.synapse.core.service.AgentMemoryService;
+import dev.synapse.core.agents.service.AgentMemoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

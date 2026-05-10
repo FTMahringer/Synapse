@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.agents.service;
 
 import dev.synapse.core.domain.TeamMembership;
 import dev.synapse.core.repository.TeamMembershipRepository;
