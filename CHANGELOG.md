@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.2-dev] - 2026-05-10
+
+### Fixed
+- Added missing `commons-pool2` dependency required by Redis Lettuce pooling
+- Resolved backend startup failure in Compose smoke test after enabling Redis connection pooling
+
+---
+
 ## [v2.3.1-dev] - 2026-05-10
 
 ### Documentation
