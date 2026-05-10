@@ -77,21 +77,21 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.1.1-dev: Create Infrastructure Layer
+#### v2.0.1-dev: Create Infrastructure Layer
 - Move `config/`, `security/`, `logging/`, `event/`, `exception/`, `filter/` → `core/infrastructure/`
 - Move `health/`, bootstrap config → `core/bootstrap/`
 - Update imports
 - **Exit**: All infrastructure in `core/infrastructure`, bootstrap in `core/bootstrap`
 - **📝 Documentation:** Update architecture diagrams, developer guide
-- **🏷️ Tag:** `v2.1.1-dev` | **🚀 Push** | **📦 Pre-release**
+- **🏷️ Tag:** `v2.0.1-dev` | **🚀 Push** | **📦 Pre-release**
 
-#### v2.1.2-dev: Create Common Layer
+#### v2.0.2-dev: Create Common Layer
 - Move `domain/` → `core/common/domain/`
 - Move `repository/` → `core/common/repository/`
 - Update all service imports
 - **Exit**: Shared entities and repos in `core/common`
 
-#### v2.1.3-dev: Extract Agents Module
+#### v2.0.3-dev: Extract Agents Module
 - Create `/agents` package with `api/`, `service/`, `dto/` subpackages
 - Move controllers from `core.agents.*` → `agents/api/`
 - Move services from `core.agents.service.*` → `agents/service/`
@@ -99,44 +99,44 @@ dev/synapse/
 - Update imports
 - **Exit**: Agents module isolated, all tests passing
 
-#### v2.1.4-dev: Extract Conversation Module
+#### v2.0.4-dev: Extract Conversation Module
 - Create `/conversation` with `api/`, `service/`, `realtime/`, `dto/`
 - Move conversation, message services & controllers
 - Move WebSocket handlers to `conversation/realtime/`
 - Update imports
 - **Exit**: Conversation module isolated
 
-#### v2.1.5-dev: Extract Tasks Module
+#### v2.0.5-dev: Extract Tasks Module
 - Create `/tasks` with `api/`, `service/`, `dto/`
 - Move task controller and service
 - Move task DTOs
 - **Exit**: Tasks module isolated
 
-#### v2.1.6-dev: Extract Users Module
+#### v2.0.6-dev: Extract Users Module
 - Create `/users` with `api/`, `service/`, `auth/`, `dto/`
 - Move user controller and service
 - Move authentication controller to `users/auth/`
 - Move user DTOs
 - **Exit**: Users module isolated
 
-#### v2.1.7-dev: Extract Providers Module
+#### v2.0.7-dev: Extract Providers Module
 - Create `/providers` with `api/`, `service/`, `openai/`, `anthropic/`, `ollama/`, `test/`, `dto/`
 - Move provider services and controllers
 - Organize by provider type
 - **Exit**: Providers module isolated
 
-#### v2.1.8-dev: Extract Plugins Module
+#### v2.0.8-dev: Extract Plugins Module
 - Create `/plugins` with `api/`, `service/`, `domain/`, `dto/`
 - Move plugin lifecycle, safety, store services
 - Move plugin controllers
 - **Exit**: Plugins module isolated
 
-#### v2.1.9-dev: Delete Empty Core Packages
+#### v2.0.9-dev: Delete Empty Core Packages
 - Remove old `core/agents/`, `core/conversation/`, etc.
 - Clean up empty directories
 - **Exit**: Only `core/bootstrap/`, `core/infrastructure/`, `core/common/` remain in core
 
-#### v2.1.10-dev: Integration Testing & Validation
+#### v2.0.10-dev: Integration Testing & Validation
 - Run full test suite (unit + integration)
 - Docker Compose smoke test
 - Fix any remaining import issues
@@ -148,40 +148,40 @@ dev/synapse/
 
 ---
 
-## v2.1.0 - Observability & Monitoring
+## v2.2.0 - Observability & Monitoring
 
 **Goal**: Production-grade monitoring, tracing, and metrics.
 
 ### Implementation Steps
 
-#### v2.2.1-dev: Metrics Infrastructure
+#### v2.1.1-dev: Metrics Infrastructure
 - Add Micrometer + Prometheus dependencies
 - Create metrics configuration
 - Instrument key services (agents, conversations, providers)
 - Expose `/actuator/prometheus` endpoint
 - **📝 Documentation:** Monitoring guide, Prometheus setup
-- **🏷️ Tag:** `v2.2.1-dev` | **🚀 Push** | **📦 Pre-release**
+- **🏷️ Tag:** `v2.1.1-dev` | **🚀 Push** | **📦 Pre-release**
 
-#### v2.2.2-dev: Distributed Tracing
+#### v2.1.2-dev: Distributed Tracing
 - Add Spring Cloud Sleuth
 - Configure trace IDs in all logs
 - Add trace context to Redis events
 - Correlate requests across services
 
-#### v2.2.3-dev: Health Checks Enhancement
+#### v2.1.3-dev: Health Checks Enhancement
 - Add liveness and readiness probes
 - Database connection health
 - Redis connection health
 - Qdrant connection health
 - Provider availability checks
 
-#### v2.2.4-dev: Structured Logging
+#### v2.1.4-dev: Structured Logging
 - Replace System.out with SLF4J
 - Add JSON logging format
 - Include trace context in all logs
 - Log aggregation ready
 
-#### v2.1.0: Tag Observability Release
+#### v2.2.0: Tag Observability Release
 
 **📝 Documentation requirements:**
 - Update monitoring and operations guides
@@ -191,36 +191,36 @@ dev/synapse/
 
 ---
 
-## v2.1.0 - Performance & Caching
+## v2.3.0 - Performance & Caching
 
 **Goal**: Optimize database queries, add caching, improve response times.
 
 ### Implementation Steps
 
-#### v2.3.1-dev: Query Optimization
+#### v2.2.1-dev: Query Optimization
 - Add database indexes for common queries
 - Optimize N+1 query problems
 - Add pagination to large result sets
 - Profile slow queries
 
-#### v2.3.2-dev: Redis Caching Layer
+#### v2.2.2-dev: Redis Caching Layer
 - Add Spring Cache with Redis
 - Cache conversation histories
 - Cache model provider configs
 - Cache user sessions
 - Cache plugin metadata
 
-#### v2.3.3-dev: Response Compression
+#### v2.2.3-dev: Response Compression
 - Enable Gzip compression
 - Compress large JSON responses
 - Optimize DTO serialization
 
-#### v2.3.4-dev: Connection Pooling
+#### v2.2.4-dev: Connection Pooling
 - Optimize HikariCP settings
 - Redis connection pool tuning
 - HTTP client connection pooling
 
-#### v2.1.0: Tag Performance Release
+#### v2.3.0: Tag Performance Release
 
 ---
 
@@ -230,25 +230,25 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.4.1-dev: Agent Memory System
+#### v2.3.1-dev: Agent Memory System
 - Implement vector-based memory with Qdrant
 - Short-term vs long-term memory separation
 - Memory summarization and compression
 - Semantic memory search
 
-#### v2.4.2-dev: Agent Collaboration Framework
+#### v2.3.2-dev: Agent Collaboration Framework
 - Inter-agent messaging protocol
 - Task delegation between agents
 - Shared context management
 - Collaboration session tracking
 
-#### v2.4.3-dev: Reasoning & Planning
+#### v2.3.3-dev: Reasoning & Planning
 - Multi-step planning capabilities
 - Reasoning chain visualization
 - Plan refinement and adaptation
 - Goal-based agent behavior
 
-#### v2.4.4-dev: Native Java Tool Integration
+#### v2.3.4-dev: Native Java Tool Integration
 - Java-based tool interface
 - Tool discovery and registration
 - Tool execution within JVM
@@ -265,26 +265,26 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.5.1-dev: API Security
+#### v2.4.1-dev: API Security
 - Rate limiting per user/endpoint
 - Request throttling
 - API key rotation
 - CORS configuration hardening
 
-#### v2.5.2-dev: Secrets Management
+#### v2.4.2-dev: Secrets Management
 - Integrate with HashiCorp Vault
 - Encrypt secrets at rest
 - Secret rotation automation
 - Environment-based secret injection
 
-#### v2.5.3-dev: Audit Logging
+#### v2.4.3-dev: Audit Logging
 - Comprehensive audit trail
 - User action logging
 - Admin action logging
 - Security event logging
 - Audit log retention policy
 
-#### v2.5.4-dev: Compliance
+#### v2.4.4-dev: Compliance
 - GDPR data handling
 - User data export
 - Right to deletion
@@ -306,7 +306,7 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.6.1-dev: Java Plugin API & Framework
+#### v2.5.1-dev: Java Plugin API & Framework
 - Define `SynapsePlugin` interface
 - Plugin lifecycle hooks (onLoad, onEnable, onDisable)
 - Plugin manifest format (plugin.yml)
@@ -315,7 +315,7 @@ dev/synapse/
 - Plugin dependency injection
 - **Exit**: Core plugin API functional, example plugins working
 
-#### v2.6.2-dev: Plugin SDK & Tooling
+#### v2.5.2-dev: Plugin SDK & Tooling
 - ✅ Java plugin template repository (Gradle-based)
 - Plugin validation tool (`synapse plugin validate`)
 - Plugin testing utilities
@@ -324,7 +324,7 @@ dev/synapse/
 - Developer documentation
 - **Exit**: Developers can create, test, and package Java plugins
 
-#### v2.6.3-dev: Plugin Sandboxing & Security
+#### v2.5.3-dev: Plugin Sandboxing & Security
 - Java Security Manager integration
 - Resource limits (CPU, memory, time)
 - API access control
@@ -333,7 +333,7 @@ dev/synapse/
 - Security auditing
 - **Exit**: Plugins run with controlled permissions and limits
 
-#### v2.6.4-dev: Plugin Marketplace
+#### v2.5.4-dev: Plugin Marketplace
 - Plugin discovery UI
 - Plugin installation/uninstallation
 - Plugin ratings and reviews
@@ -347,14 +347,14 @@ dev/synapse/
 
 ## v2.7.0 - Plugin Ecosystem Advanced Features
 
-#### v2.7.1-dev: Plugin Registry Service
+#### v2.6.1-dev: Plugin Registry Service
 - Central plugin registry API
 - Plugin metadata management
 - Dependency resolution
 - Version compatibility checking
 - Plugin search and filtering
 
-#### v2.7.2-dev: Official Plugin Library
+#### v2.6.2-dev: Official Plugin Library
 - Web search plugin (Java)
 - File operations plugin (Java)
 - Code execution plugin (Java)
@@ -362,7 +362,7 @@ dev/synapse/
 - Database connectors
 - **Exit**: 5+ official Java plugins available
 
-#### v2.7.3-dev: External Plugin Runtime (Foundation)
+#### v2.6.3-dev: External Plugin Runtime (Foundation)
 - Process manager for external plugins
 - gRPC-based IPC mechanism
 - Plugin lifecycle for external processes
@@ -379,19 +379,19 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.8.1-dev: Tenant Model
+#### v2.7.1-dev: Tenant Model
 - Organization entity
 - Tenant isolation in database
 - Tenant-specific configuration
 - Tenant onboarding flow
 
-#### v2.8.2-dev: Resource Quotas
+#### v2.7.2-dev: Resource Quotas
 - Per-tenant limits (agents, conversations, storage)
 - Usage tracking
 - Billing integration hooks
 - Quota enforcement
 
-#### v2.8.3-dev: Tenant Admin Portal
+#### v2.7.3-dev: Tenant Admin Portal
 - Organization management UI
 - User management per tenant
 - Billing dashboard
@@ -413,7 +413,7 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.9.1-dev: Docker & Bare-Metal Hardening
+#### v2.8.1-dev: Docker & Bare-Metal Hardening
 **Production-ready single-node deployments**
 - Enhanced Docker Compose for production (healthchecks, restart policies, resource limits)
 - Multi-node Docker Swarm deployment guide
@@ -475,19 +475,19 @@ dev/synapse/
 - Kubernetes deployment sizing guide
 - When to use Kubernetes vs Docker
 
-#### v2.1.0: Tag Infrastructure Platform Release
+#### v2.9.0: Tag Infrastructure Platform Release
 - Complete Docker-first deployment ecosystem
 - Optional Kubernetes orchestration
 - Infrastructure management UI
 - Distributed worker system
 - **📝 Documentation:** Complete deployment guides overhaul
-- **🏷️ Tag:** `v2.1.0` (major milestone)
+- **🏷️ Tag:** `v2.9.0` (major milestone)
 - **📦 Release:** Comprehensive infrastructure release notes
 - **📚 Update:** Installation, runner setup, Traefik guides
 
 ---
 
-## v2.1.0 - Frontend Modernization
+## v2.10.0 - Frontend Modernization
 
 **Goal**: Enhanced UI/UX with modern Vue 3 patterns.
 
@@ -511,11 +511,11 @@ dev/synapse/
 - Bundle size optimization
 - Server-side rendering (SSR)
 
-#### v2.1.0: Tag Frontend Release
+#### v2.10.0: Tag Frontend Release
 
 ---
 
-## v2.1.0 - Analytics & Insights
+## v2.11.0 - Analytics & Insights
 
 **Goal**: Usage analytics, insights, and reporting.
 
@@ -539,11 +539,11 @@ dev/synapse/
 - User intent detection
 - Anomaly detection
 
-#### v2.1.0: Tag Analytics Release
+#### v2.11.0: Tag Analytics Release
 
 ---
 
-## v2.1.0 - Release Hardening (Final)
+## v2.12.0 - Release Hardening (Final)
 
 **Goal**: Final polish for production v3.0.0 release.
 
@@ -573,7 +573,7 @@ dev/synapse/
 - Known issues
 - Upgrade instructions
 
-#### v2.1.0: Pre-release Testing
+#### v2.12.0: Pre-release Testing
 - Final QA and testing
 - Documentation completeness audit
 - Migration guides finalized
