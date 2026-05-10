@@ -8,6 +8,7 @@ import dev.synapse.providers.ollama.OllamaProviderService;
 import dev.synapse.providers.openai.OpenAIProviderService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -98,7 +99,7 @@ public class HealthController {
 
     private boolean checkRedis() {
         try {
-            String pong = redisTemplate.execute(connection -> connection.ping());
+            String pong = redisTemplate.execute((RedisCallback<String>) connection -> connection.ping());
             return "PONG".equalsIgnoreCase(pong);
         } catch (Exception ex) {
             return false;
