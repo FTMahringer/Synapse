@@ -591,18 +591,18 @@ dev/synapse/
 
 | Version | Milestone | Focus Area |
 |---------|-----------|------------|
-| v2.1.0 | Documentation Platform | Docusaurus Site & Guides |
 | v2.1.0 | Package Restructure | Architecture & Code Organization |
-| v2.1.0 | Observability | Monitoring & Tracing |
-| v2.1.0 | Performance | Caching & Optimization |
-| v2.1.0 | Advanced Agents | AI Capabilities |
-| v2.1.0 | Security | Hardening & Compliance |
-| v2.1.0 | Plugin Ecosystem | Extensibility |
-| v2.1.0 | Multi-Tenancy | Enterprise Features |
-| v2.1.0 | Infrastructure Platform | Deployment & Orchestration |
-| v2.1.0 | Frontend | UI/UX Enhancement |
-| v2.1.0 | Analytics | Insights & Reporting |
-| v2.1.0 | Release Hardening | Final Polish |
+| v2.2.0 | Observability | Monitoring & Tracing |
+| v2.3.0 | Performance | Caching & Optimization |
+| v2.4.0 | Advanced Agents | AI Capabilities |
+| v2.5.0 | Security | Hardening & Compliance |
+| v2.6.0 | Plugin Ecosystem | Java-First Extensibility |
+| v2.7.0 | Plugin Advanced | Registry & External Runtime |
+| v2.8.0 | Multi-Tenancy | Enterprise Features |
+| v2.9.0 | Infrastructure Platform | Deployment & Orchestration |
+| v2.10.0 | Frontend | UI/UX Enhancement |
+| v2.11.0 | Analytics | Insights & Reporting |
+| v2.12.0 | Release Hardening | Final Polish |
 | **v3.0.0** | **Production** | **🚀 SYNAPSE V3** |
 
 ---
