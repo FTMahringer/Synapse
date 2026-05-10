@@ -2,10 +2,10 @@ package dev.synapse.core.tasks;
 
 import dev.synapse.core.domain.Task;
 import dev.synapse.core.domain.TaskLog;
-import dev.synapse.core.exception.ResourceNotFoundException;
-import dev.synapse.core.logging.LogCategory;
-import dev.synapse.core.logging.LogLevel;
-import dev.synapse.core.logging.SystemLogService;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.logging.LogCategory;
+import dev.synapse.core.infrastructure.logging.LogLevel;
+import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.repository.TaskLogRepository;
 import dev.synapse.core.repository.TaskRepository;
 import org.springframework.stereotype.Service;

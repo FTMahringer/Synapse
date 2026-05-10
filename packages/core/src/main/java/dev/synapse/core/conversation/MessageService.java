@@ -3,7 +3,7 @@ package dev.synapse.core.conversation;
 import dev.synapse.core.domain.Conversation;
 import dev.synapse.core.domain.Message;
 import dev.synapse.core.domain.ModelProvider;
-import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.provider.ollama.OllamaChat;
 import dev.synapse.core.provider.ollama.OllamaProviderService;
 import dev.synapse.core.agents.service.MainAgentPromptService;

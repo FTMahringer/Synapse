@@ -2,9 +2,9 @@ package dev.synapse.core.provider.openai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.synapse.core.domain.ModelProvider;
-import dev.synapse.core.logging.LogCategory;
-import dev.synapse.core.logging.LogLevel;
-import dev.synapse.core.logging.SystemLogService;
+import dev.synapse.core.infrastructure.logging.LogCategory;
+import dev.synapse.core.infrastructure.logging.LogLevel;
+import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.provider.ModelProviderService;
 import dev.synapse.core.provider.ProviderUsageLogService;
 import org.springframework.stereotype.Service;

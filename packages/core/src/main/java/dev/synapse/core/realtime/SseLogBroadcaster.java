@@ -1,9 +1,9 @@
 package dev.synapse.core.realtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.synapse.core.event.SynapseEvent;
-import dev.synapse.core.event.SynapseEventType;
-import dev.synapse.core.event.SynapseSpringEvent;
+import dev.synapse.core.infrastructure.event.SynapseEvent;
+import dev.synapse.core.infrastructure.event.SynapseEventType;
+import dev.synapse.core.infrastructure.event.SynapseSpringEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;

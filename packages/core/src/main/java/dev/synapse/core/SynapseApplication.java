@@ -1,6 +1,6 @@
 package dev.synapse.core;
 
-import dev.synapse.core.config.SynapseProperties;
+import dev.synapse.core.infrastructure.config.SynapseProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;

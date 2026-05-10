@@ -1,10 +1,10 @@
 package dev.synapse.core.plugin;
 
 import dev.synapse.core.domain.Plugin;
-import dev.synapse.core.exception.ResourceNotFoundException;
-import dev.synapse.core.logging.LogCategory;
-import dev.synapse.core.logging.LogLevel;
-import dev.synapse.core.logging.SystemLogService;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.logging.LogCategory;
+import dev.synapse.core.infrastructure.logging.LogLevel;
+import dev.synapse.core.infrastructure.logging.SystemLogService;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package dev.synapse.core.conversation;
 
 import dev.synapse.core.domain.Conversation;
-import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.repository.ConversationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

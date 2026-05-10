@@ -1,9 +1,9 @@
 package dev.synapse.core.plugin;
 
 import dev.synapse.core.domain.StoreEntry;
-import dev.synapse.core.logging.LogCategory;
-import dev.synapse.core.logging.LogLevel;
-import dev.synapse.core.logging.SystemLogService;
+import dev.synapse.core.infrastructure.logging.LogCategory;
+import dev.synapse.core.infrastructure.logging.LogLevel;
+import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.repository.StoreEntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

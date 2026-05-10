@@ -1,0 +1,14 @@
+package dev.synapse.core.infrastructure.event;
+
+public enum SynapseEventType {
+    LOG_WRITTEN,
+    MESSAGE_SENT,
+    MESSAGE_RECEIVED,
+    CONVERSATION_STARTED,
+    CONVERSATION_ENDED,
+    AGENT_STATE_CHANGED,
+    ROUTING_DECISION,
+    HEARTBEAT,
+    FIRM_PROJECT_DISPATCHED,
+    FIRM_PROJECT_COMPLETED
+}

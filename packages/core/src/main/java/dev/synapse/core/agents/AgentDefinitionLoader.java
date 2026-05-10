@@ -1,6 +1,6 @@
 package dev.synapse.core.agents;
 
-import dev.synapse.core.config.SynapseProperties;
+import dev.synapse.core.infrastructure.config.SynapseProperties;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

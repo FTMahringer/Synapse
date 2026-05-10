@@ -1,7 +1,7 @@
 package dev.synapse.core.conversation;
 
 import dev.synapse.core.domain.Conversation;
-import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.repository.ConversationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -3,7 +3,7 @@ package dev.synapse.core.agents.service;
 import dev.synapse.core.domain.Agent;
 import dev.synapse.core.domain.Agent.AgentType;
 import dev.synapse.core.domain.Agent.AgentStatus;
-import dev.synapse.core.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.repository.AgentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
