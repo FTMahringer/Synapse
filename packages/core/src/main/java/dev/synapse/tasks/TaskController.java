@@ -19,13 +19,17 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskDTO> listTasks(@RequestParam(required = false) UUID projectId) {
+    public List<TaskDTO> listTasks(
+        @RequestParam(required = false) UUID projectId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
+    ) {
         if (projectId != null) {
-            return taskService.findByProjectId(projectId).stream()
+            return taskService.findByProjectId(projectId, page, size).stream()
                 .map(DtoMapper::toDTO)
                 .toList();
         }
-        return taskService.findAll().stream()
+        return taskService.findAll(page, size).stream()
             .map(DtoMapper::toDTO)
             .toList();
     }

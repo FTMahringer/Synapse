@@ -8,6 +8,10 @@ import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.common.repository.UserRepository;
 import dev.synapse.core.infrastructure.security.PasswordHashingService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,18 +42,27 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public List<User> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "username"));
+        return userRepository.findAll(pageRequest).getContent();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "user-sessions", key = "'id:' + #id")
     public User findById(UUID id) {
         return userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User", id.toString()));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "user-sessions", key = "'username:' + #username")
     public User findByUsername(String username) {
         return userRepository.findByUsername(username)
             .orElseThrow(() -> new ResourceNotFoundException("User", username));
     }
 
     @Transactional
+    @CacheEvict(value = "user-sessions", allEntries = true)
     public User create(User user, String plainPassword) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new ValidationException("Username already exists: " + user.getUsername());
@@ -78,6 +91,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "user-sessions", allEntries = true)
     public User update(UUID id, User updates) {
         User existing = findById(id);
         
@@ -128,6 +142,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "user-sessions", allEntries = true)
     public void updatePassword(UUID id, String newPlainPassword) {
         User user = findById(id);
         String hashedPassword = passwordHashingService.hash(newPlainPassword);
@@ -146,6 +161,7 @@ public class UserService {
     }
 
     @Transactional
+    @CacheEvict(value = "user-sessions", allEntries = true)
     public void deleteById(UUID id) {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User", id.toString());

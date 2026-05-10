@@ -10,6 +10,10 @@ import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.common.repository.ModelProviderRepository;
 import dev.synapse.core.infrastructure.security.SecretEncryptionService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,28 +43,54 @@ public class ModelProviderService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable("provider-configs")
     public List<ModelProvider> findAll() {
         return repository.findAll();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'page:' + #page + ':' + #size")
+    public List<ModelProvider> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return repository.findAll(pageRequest).getContent();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'enabled'")
     public List<ModelProvider> findEnabled() {
         return repository.findByEnabledTrue();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'enabled:page:' + #page + ':' + #size")
+    public List<ModelProvider> findEnabled(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return repository.findByEnabledTrue(pageRequest);
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'id:' + #id")
     public ModelProvider findById(UUID id) {
         return repository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("ModelProvider", id.toString()));
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'name:' + #name")
     public ModelProvider findByName(String name) {
         return repository.findByName(name)
             .orElseThrow(() -> new ResourceNotFoundException("ModelProvider", name));
     }
 
+    @Transactional(readOnly = true)
+    @Cacheable(value = "provider-configs", key = "'default:' + #type.name()")
+    public ModelProvider getDefaultEnabledProvider(ModelProvider.ProviderType type) {
+        return repository.findFirstByTypeAndEnabledTrueOrderByCreatedAtAsc(type)
+            .orElseThrow(() -> new IllegalStateException("No enabled provider found for type: " + type.name()));
+    }
+
     @Transactional
+    @CacheEvict(value = "provider-configs", allEntries = true)
     public ModelProvider create(ModelProvider provider, Map<String, String> secrets) {
         if (repository.existsByName(provider.getName())) {
             throw new ValidationException("Provider name already exists: " + provider.getName());
@@ -87,6 +117,7 @@ public class ModelProviderService {
     }
 
     @Transactional
+    @CacheEvict(value = "provider-configs", allEntries = true)
     public ModelProvider update(UUID id, ModelProvider updates, Map<String, String> secrets) {
         ModelProvider existing = findById(id);
 
@@ -147,6 +178,7 @@ public class ModelProviderService {
     }
 
     @Transactional
+    @CacheEvict(value = "provider-configs", allEntries = true)
     public void deleteById(UUID id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("ModelProvider", id.toString());

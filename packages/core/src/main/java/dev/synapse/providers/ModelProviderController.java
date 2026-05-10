@@ -20,10 +20,14 @@ public class ModelProviderController {
     }
 
     @GetMapping
-    public List<ModelProviderDTO> listProviders(@RequestParam(required = false) Boolean enabled) {
+    public List<ModelProviderDTO> listProviders(
+        @RequestParam(required = false) Boolean enabled,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
+    ) {
         var providers = enabled != null && enabled 
-            ? providerService.findEnabled() 
-            : providerService.findAll();
+            ? providerService.findEnabled(page, size)
+            : providerService.findAll(page, size);
         
         return providers.stream()
             .map(p -> new ModelProviderDTO(

@@ -9,6 +9,10 @@ import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.common.repository.PluginRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +47,7 @@ public class PluginLifecycleService {
     }
 
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public Plugin install(Map<String, Object> rawManifest) {
         PluginManifest manifest = PluginManifest.fromMap(rawManifest);
 
@@ -76,6 +81,7 @@ public class PluginLifecycleService {
     }
 
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public Plugin enable(String id) {
         Plugin plugin = findById(id);
         plugin.setStatus(Plugin.PluginStatus.INSTALLED);
@@ -93,6 +99,7 @@ public class PluginLifecycleService {
     }
 
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public Plugin disable(String id) {
         Plugin plugin = findById(id);
         plugin.setStatus(Plugin.PluginStatus.DISABLED);
@@ -110,6 +117,7 @@ public class PluginLifecycleService {
     }
 
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public void uninstall(String id) {
         if (!pluginRepository.existsById(id)) {
             throw new ResourceNotFoundException("Plugin", id);
@@ -124,8 +132,16 @@ public class PluginLifecycleService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'installed-plugins'")
     public List<Plugin> findAll() {
         return pluginRepository.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'installed-plugins:page:' + #page + ':' + #size")
+    public List<Plugin> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return pluginRepository.findAll(pageRequest).getContent();
     }
 
     @Transactional(readOnly = true)

@@ -18,15 +18,19 @@ public class StoreController {
     }
 
     @GetMapping
-    public List<StoreEntry> listEntries(@RequestParam(required = false) String type) {
+    public List<StoreEntry> listEntries(
+        @RequestParam(required = false) String type,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
+    ) {
         if (type != null) {
             try {
-                return storeRegistryService.findByType(StoreEntry.StoreEntryType.valueOf(type.toUpperCase()));
+                return storeRegistryService.findByType(StoreEntry.StoreEntryType.valueOf(type.toUpperCase()), page, size);
             } catch (IllegalArgumentException e) {
                 return List.of();
             }
         }
-        return storeRegistryService.findAll();
+        return storeRegistryService.findAll(page, size);
     }
 
     @PostMapping("/{id}/validate")

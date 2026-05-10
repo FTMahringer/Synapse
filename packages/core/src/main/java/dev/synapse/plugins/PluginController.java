@@ -28,8 +28,11 @@ public class PluginController {
     }
 
     @GetMapping
-    public List<PluginDTO> listPlugins() {
-        return lifecycleService.findAll().stream().map(DtoMapper::toDTO).toList();
+    public List<PluginDTO> listPlugins(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
+    ) {
+        return lifecycleService.findAll(page, size).stream().map(DtoMapper::toDTO).toList();
     }
 
     @GetMapping("/{id}")

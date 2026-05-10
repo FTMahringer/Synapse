@@ -19,8 +19,11 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDTO> listUsers() {
-        return userService.findAll().stream()
+    public List<UserDTO> listUsers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
+    ) {
+        return userService.findAll(page, size).stream()
             .map(DtoMapper::toDTO)
             .toList();
     }

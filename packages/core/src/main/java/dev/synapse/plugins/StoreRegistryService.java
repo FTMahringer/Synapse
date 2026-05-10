@@ -5,9 +5,13 @@ import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.core.common.repository.StoreEntryRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.yaml.snakeyaml.Yaml;
@@ -37,6 +41,7 @@ public class StoreRegistryService {
     }
 
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public int syncFromFile(String registryPath) {
         Map<String, Object> registry = loadYaml(registryPath);
         if (registry == null) return 0;
@@ -57,13 +62,29 @@ public class StoreRegistryService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'all'")
     public List<StoreEntry> findAll() {
         return storeEntryRepository.findAll();
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'all:page:' + #page + ':' + #size")
+    public List<StoreEntry> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return storeEntryRepository.findAll(pageRequest).getContent();
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'type:' + #type.name()")
     public List<StoreEntry> findByType(StoreEntry.StoreEntryType type) {
         return storeEntryRepository.findByType(type);
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'type:' + #type.name() + ':page:' + #page + ':' + #size")
+    public List<StoreEntry> findByType(StoreEntry.StoreEntryType type, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return storeEntryRepository.findByType(type, pageRequest);
     }
 
     @SuppressWarnings("unchecked")

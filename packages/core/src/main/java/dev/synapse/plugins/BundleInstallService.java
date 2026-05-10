@@ -7,6 +7,8 @@ import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
+import dev.synapse.core.common.repository.PluginRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,15 +24,18 @@ public class BundleInstallService {
 
     private final StoreEntryRepository storeEntryRepository;
     private final PluginLifecycleService lifecycleService;
+    private final PluginRepository pluginRepository;
     private final SystemLogService logService;
 
     public BundleInstallService(
         StoreEntryRepository storeEntryRepository,
         PluginLifecycleService lifecycleService,
+        PluginRepository pluginRepository,
         SystemLogService logService
     ) {
         this.storeEntryRepository = storeEntryRepository;
         this.lifecycleService = lifecycleService;
+        this.pluginRepository = pluginRepository;
         this.logService = logService;
     }
 
@@ -62,6 +67,7 @@ public class BundleInstallService {
      * Returns list of installed plugin IDs.
      */
     @Transactional
+    @CacheEvict(value = "plugin-metadata", allEntries = true)
     public BundleInstallResult installBundle(String bundleId) {
         ValidationResult validation = validateBundle(bundleId);
         if (!validation.valid()) {
@@ -78,7 +84,7 @@ public class BundleInstallService {
             StoreEntry entry = storeEntryRepository.findById(pluginId).orElse(null);
             if (entry == null) continue;
 
-            if (lifecycleService.findAll().stream().anyMatch(p -> p.getId().equals(pluginId))) {
+            if (pluginRepository.existsById(pluginId)) {
                 skipped.add(pluginId);
                 continue;
             }

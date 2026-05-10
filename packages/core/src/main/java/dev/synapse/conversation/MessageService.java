@@ -10,6 +10,10 @@ import dev.synapse.agents.service.MainAgentPromptService;
 import dev.synapse.providers.ModelProviderService;
 import dev.synapse.core.common.repository.ConversationRepository;
 import dev.synapse.core.common.repository.MessageRepository;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +46,7 @@ public class MessageService {
     }
 
     @Transactional
+    @CacheEvict(value = "conversation-history", key = "#conversationId")
     public Message sendMessage(UUID conversationId, String content) {
         Conversation conversation = conversationRepository.findById(conversationId)
             .orElseThrow(() -> new ResourceNotFoundException("Conversation", conversationId.toString()));
@@ -57,10 +62,7 @@ public class MessageService {
         List<Message> history = messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
 
         // Get default provider (first enabled Ollama provider for now)
-        ModelProvider provider = providerService.findAll().stream()
-            .filter(p -> p.getType() == ModelProvider.ProviderType.OLLAMA && p.getEnabled())
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("No enabled Ollama provider found"));
+        ModelProvider provider = providerService.getDefaultEnabledProvider(ModelProvider.ProviderType.OLLAMA);
 
         // Assemble prompt with Main Agent identity
         String systemPrompt = promptService.assemblePrompt();
@@ -126,8 +128,16 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(value = "conversation-history", key = "#conversationId")
     public List<Message> findByConversationId(UUID conversationId) {
         return messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId);
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "conversation-history", key = "#conversationId + ':' + #page + ':' + #size")
+    public List<Message> findByConversationId(UUID conversationId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "createdAt"));
+        return messageRepository.findByConversationIdOrderByCreatedAtAsc(conversationId, pageRequest);
     }
 
     @Transactional(readOnly = true)
@@ -137,6 +147,7 @@ public class MessageService {
     }
 
     @Transactional
+    @CacheEvict(value = "conversation-history", key = "#message.conversationId")
     public Message save(Message message) {
         return messageRepository.save(message);
     }

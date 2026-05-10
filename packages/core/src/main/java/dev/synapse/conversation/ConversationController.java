@@ -40,12 +40,14 @@ public class ConversationController {
 
     @GetMapping
     public List<Conversation> list(
-        @RequestHeader(value = "X-User-ID", required = false) UUID userId
+        @RequestHeader(value = "X-User-ID", required = false) UUID userId,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "50") int size
     ) {
         if (userId == null) {
-            return conversationService.findAll();
+            return conversationService.findAll(page, size);
         }
-        return conversationService.findByUserId(userId);
+        return conversationService.findByUserId(userId, page, size);
     }
 
     @GetMapping("/{id}")
@@ -54,8 +56,12 @@ public class ConversationController {
     }
 
     @GetMapping("/{id}/messages")
-    public List<Message> getMessages(@PathVariable UUID id) {
-        return messageService.findByConversationId(id);
+    public List<Message> getMessages(
+        @PathVariable UUID id,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "200") int size
+    ) {
+        return messageService.findByConversationId(id, page, size);
     }
 
     @PostMapping("/{id}/messages")
