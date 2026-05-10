@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.1-dev] - 2026-05-10
+
+### Documentation
+- Expanded roadmap milestone granularity with added hardening/validation steps across `v2.x.0` tracks
+- Updated AGENT workflow rules for docs-coupled dev cycles
+- Added `synapse-docs` version mapping and pre-release requirements for docs updates
+
+---
+
 ## [v2.3.0] - 2026-05-10
 
 **Milestone:** Performance & Caching

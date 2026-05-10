@@ -26,10 +26,12 @@ SYNAPSE Documentation is maintained in a **separate repository** with independen
 **For every development version (`v*.*.x-dev`):**
 1. ✅ Implement feature/changes
 2. ✅ Update CHANGELOG.md
-3. ✅ Commit changes
-4. ✅ Create annotated tag
-5. ✅ Push immediately (don't batch)
-6. ✅ Create GitHub pre-release
+3. ✅ Update `synapse-docs` immediately if docs are impacted
+4. ✅ Commit changes
+5. ✅ Create annotated tag
+6. ✅ Push immediately (don't batch)
+7. ✅ Create GitHub pre-release
+8. ✅ Create `synapse-docs` pre-release when docs changed
 
 **For every milestone release (`v*.x.0`):**
 1. ✅ Review all changes for completeness
@@ -39,7 +41,9 @@ SYNAPSE Documentation is maintained in a **separate repository** with independen
 5. ✅ Check for security issues (Dependabot, CodeQL)
 6. ✅ Create hotfix if security issues found
 
-**Documentation Note**: Code changes in this repository should reference docs but documentation itself lives in synapse-docs repository with independent versioning.
+**Milestone Granularity Rule (NEW)**: Every `v2.x.0` milestone should include at least one explicit hardening/validation dev step in addition to feature steps.
+
+**Documentation Note**: Documentation lives in `synapse-docs` and should be updated in the same cycle as the code change.
 
 ---
 
@@ -255,6 +259,12 @@ dev/synapse/
 - Tool result caching
 - **Note**: Foundation for Java plugin system (v2.6.0)
 
+#### v2.3.5-dev: Agent Capability Hardening
+- End-to-end validation scenarios for memory/collaboration/planning flows
+- Guardrails for runaway plans and invalid delegation loops
+- Performance/cost profiling for advanced agent workflows
+- Documentation refresh for advanced agent operations
+
 #### v2.4.0: Tag Advanced Agents Release
 
 ---
@@ -289,6 +299,12 @@ dev/synapse/
 - User data export
 - Right to deletion
 - Data anonymization
+
+#### v2.4.5-dev: Security Validation & Runbooks
+- Pen-test style verification for auth and secret boundaries
+- Hardened incident-response playbooks
+- Security-focused deployment checklist validation
+- Documentation updates for audit/compliance operations
 
 #### v2.5.0: Tag Security Release
 
@@ -341,6 +357,12 @@ dev/synapse/
 - Usage analytics (opt-in)
 - **Exit**: Users can discover and install community plugins
 
+#### v2.5.5-dev: Plugin Ecosystem Hardening
+- Plugin lifecycle regression suite
+- Marketplace abuse prevention checks
+- Performance baselines for plugin load/enable/disable flows
+- Documentation updates for plugin operators and developers
+
 #### v2.6.0: Tag Plugin Ecosystem Release
 
 ---
@@ -369,6 +391,12 @@ dev/synapse/
 - Error handling and recovery
 - **Exit**: Foundation for Python/Node.js plugins ready
 
+#### v2.6.4-dev: Registry Reliability & Governance
+- Registry mirroring/caching strategy
+- Metadata quality checks and trust signals
+- Dependency conflict simulation tests
+- Documentation updates for registry administration
+
 #### v2.7.0: Tag Plugin Advanced Features Release
 
 ---
@@ -396,6 +424,12 @@ dev/synapse/
 - User management per tenant
 - Billing dashboard
 - Usage analytics
+
+#### v2.7.4-dev: Tenant Isolation Validation
+- Cross-tenant access boundary testing
+- Quota enforcement stress tests
+- Tenant backup/restore drills
+- Documentation updates for tenant operations
 
 #### v2.8.0: Tag Multi-Tenancy Release
 
@@ -475,6 +509,12 @@ dev/synapse/
 - Kubernetes deployment sizing guide
 - When to use Kubernetes vs Docker
 
+#### v2.8.5-dev: Infrastructure Hardening & DR
+- Disaster recovery validation (restore drills, failover checks)
+- Capacity/load validation for runner orchestration
+- Observability SLOs for infrastructure components
+- Documentation updates for production operations
+
 #### v2.9.0: Tag Infrastructure Platform Release
 - Complete Docker-first deployment ecosystem
 - Optional Kubernetes orchestration
@@ -511,6 +551,12 @@ dev/synapse/
 - Bundle size optimization
 - Server-side rendering (SSR)
 
+#### v2.9.4-dev: Frontend QA & Accessibility Hardening
+- Cross-browser verification matrix
+- Accessibility audit and remediation pass
+- Interaction latency profiling
+- Documentation updates for frontend contribution standards
+
 #### v2.10.0: Tag Frontend Release
 
 ---
@@ -538,6 +584,12 @@ dev/synapse/
 - Agent behavior patterns
 - User intent detection
 - Anomaly detection
+
+#### v2.10.4-dev: Analytics Reliability & Governance
+- Data quality and lineage validation
+- Privacy guardrails for analytics datasets
+- Dashboard correctness regression suite
+- Documentation updates for analytics operators
 
 #### v2.11.0: Tag Analytics Release
 

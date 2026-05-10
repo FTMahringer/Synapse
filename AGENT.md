@@ -71,6 +71,10 @@ gh release create v2.0.1-dev \
 - Create immediately after pushing the tag
 - **Documentation must be updated BEFORE creating pre-release**
 
+**Documentation coupling requirement (NEW):**
+- If a dev change requires documentation, update `synapse-docs` in the same version cycle (do not defer).
+- After docs are pushed, create a `synapse-docs` pre-release for that docs update.
+
 ---
 
 ### 3. GitHub Releases for Minor Versions
@@ -296,6 +300,19 @@ v2.1.2-dev  → Create common layer
 v2.2.0      → Package Restructure Release (milestone)
 ```
 
+### synapse-docs Version Mapping (NEW)
+
+`synapse-docs` now follows a milestone-coupled major/minor format:
+- Format: `vD.N` for milestone docs snapshots and `vD.N-dev` for docs pre-releases
+- `D` matches main repo major (currently `2`)
+- `N` increments by 1 whenever a new main milestone family (`v2.x.*`) introduces docs changes
+
+Examples:
+- Main repo docs changes in `v2.3.x-dev` → docs pre-release `v2.1-dev`, milestone docs release `v2.1`
+- Next docs changes in `v2.4.x-dev` → docs pre-release `v2.2-dev`, milestone docs release `v2.2`
+
+Rule: Every docs-affecting dev version must produce a docs pre-release in `synapse-docs`.
+
 ---
 
 ## Documentation Requirements
@@ -341,6 +358,7 @@ v2.2.0      → Package Restructure Release (milestone)
 5. Add examples for new features
 6. Update screenshots if UI changed
 7. Commit documentation changes WITH the code changes
+8. Create `synapse-docs` pre-release tag/release (`vD.N-dev`) when docs are changed
 
 **Example:**
 ```bash
@@ -529,7 +547,7 @@ docker compose logs backend | grep "Flyway"
 
 ### Documentation Site (`/synapse-docs/`)
 
-**Rule:** Separate git repository, gitignored from main repo.
+**Rule:** Separate git repository with milestone-coupled docs releases.
 
 **Location:** `/synapse-docs/` (root-level folder)  
 **Git:** Separate `.git` folder inside `/synapse-docs/`  
@@ -540,6 +558,7 @@ docker compose logs backend | grep "Flyway"
 - Can be deployed independently
 - Cleaner git history
 - Multiple contributors to docs vs code
+- Docs pre-releases can be issued per code dev version without blocking main repo release flow
 
 ---
 
