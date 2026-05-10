@@ -1,4 +1,4 @@
-package dev.synapse.core.provider;
+package dev.synapse.providers;
 
 import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.dto.TestProviderRequest;
@@ -6,12 +6,12 @@ import dev.synapse.core.dto.TestProviderResponse;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.provider.anthropic.AnthropicModels;
-import dev.synapse.core.provider.anthropic.AnthropicProviderService;
-import dev.synapse.core.provider.ollama.OllamaChat;
-import dev.synapse.core.provider.ollama.OllamaProviderService;
-import dev.synapse.core.provider.openai.OpenAIModels;
-import dev.synapse.core.provider.openai.OpenAIProviderService;
+import dev.synapse.providers.anthropic.AnthropicModels;
+import dev.synapse.providers.anthropic.AnthropicProviderService;
+import dev.synapse.providers.ollama.OllamaChat;
+import dev.synapse.providers.ollama.OllamaProviderService;
+import dev.synapse.providers.openai.OpenAIModels;
+import dev.synapse.providers.openai.OpenAIProviderService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

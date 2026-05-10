@@ -1,7 +1,7 @@
-package dev.synapse.core.provider.anthropic;
+package dev.synapse.providers.anthropic;
 
 import dev.synapse.core.common.domain.ModelProvider;
-import dev.synapse.core.provider.ModelProviderService;
+import dev.synapse.providers.ModelProviderService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,8 +1,8 @@
-package dev.synapse.core.provider;
+package dev.synapse.providers;
 
 import dev.synapse.core.dto.TestProviderRequest;
 import dev.synapse.core.dto.TestProviderResponse;
-import dev.synapse.core.provider.ProviderTestService;
+import dev.synapse.providers.ProviderTestService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

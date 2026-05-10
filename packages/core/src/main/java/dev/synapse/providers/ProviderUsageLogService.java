@@ -1,4 +1,4 @@
-package dev.synapse.core.provider;
+package dev.synapse.providers;
 
 import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.common.domain.ProviderUsageLog;

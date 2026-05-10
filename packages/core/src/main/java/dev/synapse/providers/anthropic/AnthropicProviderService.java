@@ -1,20 +1,19 @@
-package dev.synapse.core.provider.ollama;
+package dev.synapse.providers.anthropic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.provider.ModelProviderService;
-import dev.synapse.core.provider.ProviderUsageLogService;
+import dev.synapse.providers.ModelProviderService;
+import dev.synapse.providers.ProviderUsageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
-public class OllamaProviderService {
+public class AnthropicProviderService {
 
     private final ModelProviderService providerService;
     private final SystemLogService logService;
@@ -22,7 +21,7 @@ public class OllamaProviderService {
     private final ObjectMapper objectMapper;
     private final RestClient restClient;
 
-    public OllamaProviderService(
+    public AnthropicProviderService(
         ModelProviderService providerService,
         SystemLogService logService,
         ProviderUsageLogService usageLogService,
@@ -36,30 +35,44 @@ public class OllamaProviderService {
     }
 
     public boolean checkHealth(ModelProvider provider) {
-        String baseUrl = getBaseUrl(provider);
+        String apiKey = getApiKey(provider);
         
         try {
-            String response = restClient.get()
-                .uri(baseUrl + "/api/tags")
+            AnthropicModels.ChatRequest testRequest = new AnthropicModels.ChatRequest(
+                "claude-3-5-haiku-20241022",
+                10,
+                java.util.List.of(new AnthropicModels.Message("user", "test")),
+                null,
+                null,
+                null,
+                false
+            );
+            
+            restClient.post()
+                .uri("https://api.anthropic.com/v1/messages")
+                .header("x-api-key", apiKey)
+                .header("anthropic-version", "2023-06-01")
+                .header("Content-Type", "application/json")
+                .body(testRequest)
                 .retrieve()
-                .body(String.class);
+                .body(AnthropicModels.ChatResponse.class);
             
             logService.log(
                 LogLevel.INFO,
                 LogCategory.MODEL,
-                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                Map.of("component", "AnthropicProviderService", "providerId", provider.getId().toString()),
                 "PROVIDER_HEALTH_CHECK",
                 Map.of("provider", provider.getName(), "status", "healthy"),
                 null,
                 null
             );
             
-            return response != null;
+            return true;
         } catch (Exception e) {
             logService.log(
                 LogLevel.WARN,
                 LogCategory.MODEL,
-                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
+                Map.of("component", "AnthropicProviderService", "providerId", provider.getId().toString()),
                 "PROVIDER_HEALTH_CHECK_FAILED",
                 Map.of("provider", provider.getName(), "error", e.getMessage()),
                 null,
@@ -70,55 +83,22 @@ public class OllamaProviderService {
         }
     }
 
-    public List<OllamaModels.ModelInfo> listModels(ModelProvider provider) {
-        String baseUrl = getBaseUrl(provider);
-        
-        try {
-            OllamaModels.ModelsResponse response = restClient.get()
-                .uri(baseUrl + "/api/tags")
-                .retrieve()
-                .body(OllamaModels.ModelsResponse.class);
-            
-            logService.log(
-                LogLevel.INFO,
-                LogCategory.MODEL,
-                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
-                "PROVIDER_MODELS_LISTED",
-                Map.of("provider", provider.getName(), "count", response.models().size()),
-                null,
-                null
-            );
-            
-            return response.models();
-        } catch (Exception e) {
-            logService.log(
-                LogLevel.ERROR,
-                LogCategory.MODEL,
-                Map.of("component", "OllamaProviderService", "providerId", provider.getId().toString()),
-                "PROVIDER_MODELS_LIST_FAILED",
-                Map.of("provider", provider.getName(), "error", e.getMessage()),
-                null,
-                null
-            );
-            
-            throw new RuntimeException("Failed to list Ollama models", e);
-        }
-    }
-
-    public OllamaChat.ChatResponse chatCompletion(ModelProvider provider, OllamaChat.ChatRequest request) {
-        String baseUrl = getBaseUrl(provider);
+    public AnthropicModels.ChatResponse chatCompletion(ModelProvider provider, AnthropicModels.ChatRequest request) {
+        String apiKey = getApiKey(provider);
         long startTime = System.currentTimeMillis();
         boolean success = false;
         String errorMessage = null;
-        OllamaChat.ChatResponse response = null;
+        AnthropicModels.ChatResponse response = null;
         
         try {
             response = restClient.post()
-                .uri(baseUrl + "/api/chat")
+                .uri("https://api.anthropic.com/v1/messages")
+                .header("x-api-key", apiKey)
+                .header("anthropic-version", "2023-06-01")
                 .header("Content-Type", "application/json")
                 .body(request)
                 .retrieve()
-                .body(OllamaChat.ChatResponse.class);
+                .body(AnthropicModels.ChatResponse.class);
             
             success = true;
             long duration = System.currentTimeMillis() - startTime;
@@ -127,7 +107,7 @@ public class OllamaProviderService {
                 LogLevel.INFO,
                 LogCategory.MODEL,
                 Map.of(
-                    "component", "OllamaProviderService",
+                    "component", "AnthropicProviderService",
                     "providerId", provider.getId().toString(),
                     "model", request.model()
                 ),
@@ -135,8 +115,8 @@ public class OllamaProviderService {
                 Map.of(
                     "provider", provider.getName(),
                     "duration_ms", duration,
-                    "prompt_tokens", response.promptEvalCount() != null ? response.promptEvalCount() : 0,
-                    "completion_tokens", response.evalCount() != null ? response.evalCount() : 0
+                    "input_tokens", response.usage() != null ? response.usage().inputTokens() : 0,
+                    "output_tokens", response.usage() != null ? response.usage().outputTokens() : 0
                 ),
                 null,
                 null
@@ -152,7 +132,7 @@ public class OllamaProviderService {
                 LogLevel.ERROR,
                 LogCategory.MODEL,
                 Map.of(
-                    "component", "OllamaProviderService",
+                    "component", "AnthropicProviderService",
                     "providerId", provider.getId().toString(),
                     "model", request.model()
                 ),
@@ -166,14 +146,14 @@ public class OllamaProviderService {
                 null
             );
             
-            throw new RuntimeException("Failed to complete Ollama chat", e);
+            throw new RuntimeException("Failed to complete Anthropic chat", e);
         } finally {
             long duration = System.currentTimeMillis() - startTime;
             usageLogService.logUsage(
                 provider,
                 request.model(),
-                response != null ? response.promptEvalCount() : null,
-                response != null ? response.evalCount() : null,
+                response != null && response.usage() != null ? response.usage().inputTokens() : null,
+                response != null && response.usage() != null ? response.usage().outputTokens() : null,
                 duration,
                 success,
                 errorMessage
@@ -181,11 +161,12 @@ public class OllamaProviderService {
         }
     }
 
-    private String getBaseUrl(ModelProvider provider) {
-        Map<String, Object> config = provider.getConfig();
-        if (config == null || !config.containsKey("baseUrl")) {
-            return "http://localhost:11434";
+    private String getApiKey(ModelProvider provider) {
+        Map<String, String> secrets = providerService.decryptSecrets(provider);
+        String apiKey = secrets.get("apiKey");
+        if (apiKey == null || apiKey.isBlank()) {
+            throw new IllegalStateException("API key not configured for provider: " + provider.getName());
         }
-        return config.get("baseUrl").toString();
+        return apiKey;
     }
 }

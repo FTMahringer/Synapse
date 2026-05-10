@@ -1,4 +1,4 @@
-package dev.synapse.core.provider.ollama;
+package dev.synapse.providers.ollama;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
