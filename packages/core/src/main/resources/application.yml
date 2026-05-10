@@ -34,7 +34,7 @@ management:
         liveness:
           include: livenessState,ping
         readiness:
-          include: readinessState,db,redis,qdrant,providers
+          include: readinessState,db,redis,ping
   health:
     livenessstate:
       enabled: true
