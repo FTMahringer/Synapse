@@ -91,3 +91,10 @@ synapse:
     connect-timeout-seconds: ${SYNAPSE_HTTP_CONNECT_TIMEOUT_SECONDS:10}
     pool:
       max-threads: ${SYNAPSE_HTTP_POOL_MAX_THREADS:64}
+  memory:
+    auto-promote:
+      reuse-threshold: ${SYNAPSE_MEMORY_AUTO_PROMOTE_REUSE_THRESHOLD:5}
+    lifecycle:
+      knowledge-compaction-days: ${SYNAPSE_MEMORY_KNOWLEDGE_COMPACTION_DAYS:30}
+      monthly-knowledge-cron: "${SYNAPSE_MEMORY_MONTHLY_KNOWLEDGE_CRON:0 0 3 1 * *}"
+      bimonthly-archive-cron: "${SYNAPSE_MEMORY_BIMONTHLY_ARCHIVE_CRON:0 0 3 1 */2 *}"

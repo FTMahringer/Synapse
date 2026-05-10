@@ -1,9 +1,13 @@
 package dev.synapse.agents;
 
+import dev.synapse.core.common.domain.AgentMemoryEntry.MemoryTier;
+import dev.synapse.core.common.domain.AgentMemoryEntry.PromotionReason;
 import dev.synapse.core.dto.AgentMemoryEntryDTO;
 import dev.synapse.core.dto.DtoMapper;
+import dev.synapse.core.dto.PromoteMemoryRequest;
 import dev.synapse.core.dto.WriteMemoryRequest;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
+import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.agents.service.AgentMemoryService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -24,11 +28,14 @@ public class AgentMemoryController {
     @GetMapping
     public List<AgentMemoryEntryDTO> listMemory(
         @PathVariable String agentId,
-        @RequestParam(required = false) String namespace
+        @RequestParam(required = false) String namespace,
+        @RequestParam(required = false) String tier
     ) {
-        var entries = namespace != null
-            ? memoryService.readByNamespace(agentId, namespace)
-            : memoryService.readAll(agentId);
+        var entries = tier != null
+            ? memoryService.readByTier(agentId, namespace, parseTier(tier))
+            : (namespace != null
+                ? memoryService.readByNamespace(agentId, namespace)
+                : memoryService.readAll(agentId));
         return entries.stream().map(DtoMapper::toDTO).toList();
     }
 
@@ -60,5 +67,36 @@ public class AgentMemoryController {
         @PathVariable String key
     ) {
         memoryService.delete(agentId, key);
+    }
+
+    @PostMapping("/{key}/promote")
+    public AgentMemoryEntryDTO promoteMemory(
+        @PathVariable String agentId,
+        @PathVariable String key,
+        @Valid @RequestBody PromoteMemoryRequest request
+    ) {
+        var entry = memoryService.promote(
+            agentId,
+            key,
+            parseTier(request.targetTier()),
+            parseReason(request.reason())
+        );
+        return DtoMapper.toDTO(entry);
+    }
+
+    private MemoryTier parseTier(String tier) {
+        try {
+            return MemoryTier.valueOf(tier.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Unknown memory tier: " + tier);
+        }
+    }
+
+    private PromotionReason parseReason(String reason) {
+        try {
+            return PromotionReason.valueOf(reason.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Unknown promotion reason: " + reason);
+        }
     }
 }

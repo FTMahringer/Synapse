@@ -152,6 +152,12 @@ public class DtoMapper {
             entry.getKey(),
             entry.getValue(),
             entry.getNamespace(),
+            entry.getTier().name(),
+            entry.getPromotedAt(),
+            entry.getPromotionReason() != null ? entry.getPromotionReason().name() : null,
+            entry.getLastAccessedAt(),
+            entry.getAccessCount(),
+            entry.getRetentionUntil(),
             entry.getCreatedAt(),
             entry.getUpdatedAt()
         );

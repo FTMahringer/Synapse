@@ -9,6 +9,12 @@ public record AgentMemoryEntryDTO(
     String key,
     String value,
     String namespace,
+    String tier,
+    Instant promotedAt,
+    String promotionReason,
+    Instant lastAccessedAt,
+    Integer accessCount,
+    Instant retentionUntil,
     Instant createdAt,
     Instant updatedAt
 ) {}

@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.3-dev] - 2026-05-10
+
+### Added
+- Three-tier agent memory model: `SHORT_TERM`, `KNOWLEDGE`, `ARCHIVE`
+- Memory lifecycle metadata fields (promotion/access/retention/source linkage)
+- Memory promotion endpoint and tier-filtered memory retrieval API support
+- Scheduled memory lifecycle jobs:
+  - monthly knowledge compaction
+  - bi-monthly archive cleanup scaffold
+- New migration: `V13__agent_memory_tiers.sql`
+
+### Changed
+- Agent memory reads now track access counts and auto-promote frequently reused short-term entries to knowledge
+- Memory list endpoint now supports optional `tier` filtering
+
+### Fixed
+- Enforced valid tier transition rules to prevent invalid archive writes and regressions
+
+---
+
 ## [v2.3.2-dev] - 2026-05-10
 
 ### Fixed
