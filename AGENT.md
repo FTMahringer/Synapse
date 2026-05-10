@@ -101,7 +101,125 @@ gh release create v2.1.0 \
 
 ---
 
-### 4. Commit Message Format
+### 4. Security Hotfixes After Milestone Releases
+
+**Rule (CRITICAL):** After EVERY `v*.x.0` milestone release, check GitHub security alerts and fix ALL issues in a SINGLE hotfix.
+
+**Why This Matters:**
+- SYNAPSE has Dependabot and CodeQL enabled
+- Security vulnerabilities must be addressed immediately after release
+- Clean, consolidated hotfix maintains version hygiene
+
+**Workflow:**
+
+1. **Release the milestone** (e.g., `v3.0.0`)
+   ```bash
+   gh release create v3.0.0 --title "v3.0.0: SYNAPSE AI Platform" --notes-file RELEASE_NOTES_V3.0.0.md
+   ```
+
+2. **Immediately check security alerts:**
+   - Visit: `https://github.com/FTMahringer/Synapse/security`
+   - Review Dependabot alerts (dependency vulnerabilities)
+   - Review CodeQL code scanning alerts
+   - Review any secret scanning alerts
+
+3. **Fix ALL security issues:**
+   - Update vulnerable dependencies
+   - Fix code scanning issues
+   - **Test between each fix** to ensure nothing breaks
+   - Validate all fixes locally before committing
+
+4. **Create SINGLE consolidated hotfix:**
+   ```bash
+   # Make all security fixes
+   git add .
+   git commit -m "fix(security): address Dependabot and CodeQL alerts for v3.0.0
+   
+   - Updated vulnerable dependency X from 1.2.3 to 1.2.4
+   - Fixed CodeQL alert: SQL injection in provider service
+   - Resolved Dependabot alert: XSS vulnerability in frontend deps
+   
+   All fixes tested and validated.
+   
+   Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+   
+   # Tag the hotfix
+   git tag -a v3.0.0-hotfix -m "v3.0.0-hotfix: Security fixes for v3.0.0 release
+   
+   Addresses all Dependabot and CodeQL security alerts."
+   
+   # Push immediately
+   git push origin main
+   git push origin v3.0.0-hotfix
+   
+   # Create GitHub release
+   gh release create v3.0.0-hotfix \
+     --title "v3.0.0-hotfix: Security Fixes" \
+     --notes "Security hotfix for v3.0.0 release.
+   
+   **Fixed:**
+   - Updated vulnerable dependency X (CVE-2026-XXXX)
+   - Fixed CodeQL alert: SQL injection vulnerability
+   - Resolved Dependabot alerts in frontend dependencies
+   
+   All security alerts addressed."
+   ```
+
+5. **Update CHANGELOG.md:**
+   ```markdown
+   ## [v3.0.0-hotfix] - 2026-XX-XX
+   
+   **Security hotfix for v3.0.0 release.**
+   
+   ### Security
+   - Updated dependency X from 1.2.3 to 1.2.4 (CVE-2026-XXXX)
+   - Fixed SQL injection vulnerability in provider service
+   - Resolved XSS vulnerability in frontend dependencies
+   ```
+
+**CRITICAL RULES:**
+- ✅ **ONE hotfix per release** (e.g., `v3.0.0-hotfix`, not `v3.0.0-hotfix1`, `v3.0.0-hotfix2`)
+- ✅ **Fix ALL security issues** in that single hotfix
+- ✅ **Test between each fix** to ensure stability
+- ✅ **Create hotfix immediately** after milestone release
+- ❌ **NEVER skip security checks** after a milestone release
+- ❌ **NEVER create multiple hotfixes** for the same release
+
+**Example Security Check Commands:**
+```bash
+# Check for security alerts via GitHub CLI
+gh api repos/FTMahringer/Synapse/dependabot/alerts
+
+# Check code scanning alerts
+gh api repos/FTMahringer/Synapse/code-scanning/alerts
+
+# Or visit the web UI:
+# https://github.com/FTMahringer/Synapse/security/dependabot
+# https://github.com/FTMahringer/Synapse/security/code-scanning
+```
+
+**Testing Workflow for Hotfix:**
+```bash
+# After each security fix, validate:
+# 1. Java backend compiles
+mvn clean compile
+
+# 2. Tests pass
+mvn test
+
+# 3. Docker Compose starts
+cd installer/compose && docker compose up -d
+
+# 4. Services are healthy
+docker compose ps
+
+# 5. Stop services
+docker compose down
+```
+
+---
+
+### 5. Commit Message Format
 
 **Rule:** Use Conventional Commits format.
 
@@ -117,6 +235,7 @@ Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 **Types:**
 - `feat`: New feature
 - `fix`: Bug fix
+- `fix(security)`: Security vulnerability fix (use for hotfixes)
 - `docs`: Documentation changes
 - `refactor`: Code refactoring
 - `test`: Adding/updating tests
@@ -128,6 +247,7 @@ Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 ```
 feat(agents): add distributed task execution framework
 fix(auth): resolve JWT token expiration edge case
+fix(security): patch SQL injection vulnerability in provider service
 docs(api): add WebSocket API documentation
 refactor(core): extract users module to top-level package
 test(providers): add integration tests for OpenAI provider
@@ -582,6 +702,18 @@ Before completing ANY milestone release, verify:
 - [ ] Tagged with `v*.x.0`
 - [ ] Pushed to origin immediately
 - [ ] GitHub release created (NOT pre-release)
+- [ ] **Security check completed** (Dependabot + CodeQL)
+- [ ] **Security hotfix created** (if alerts found) as `v*.x.0-hotfix`
+
+**After milestone release (`v*.x.0`), IMMEDIATELY:**
+
+- [ ] Visit https://github.com/FTMahringer/Synapse/security
+- [ ] Check Dependabot alerts
+- [ ] Check CodeQL code scanning alerts
+- [ ] If alerts exist, create `v*.x.0-hotfix` with ALL fixes
+- [ ] Test each fix before committing
+- [ ] Push hotfix and create GitHub release
+- [ ] Update CHANGELOG.md with security fixes
 
 ---
 
