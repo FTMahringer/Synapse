@@ -1,4 +1,4 @@
-package dev.synapse.core.users;
+package dev.synapse.users;
 
 import dev.synapse.core.dto.*;
 import jakarta.validation.Valid;
