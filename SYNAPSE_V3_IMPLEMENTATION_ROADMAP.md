@@ -234,32 +234,41 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.3.1-dev: Agent Memory System
-- Implement vector-based memory with Qdrant
-- Short-term vs long-term memory separation
-- Memory summarization and compression
-- Semantic memory search
+#### v2.3.1-dev: Roadmap & Docs Workflow Alignment (completed)
+- Enforce docs-coupled release workflow in AGENT/roadmap rules
+- Add synapse-docs version mapping policy
+- Prepare the release process guardrails required for v2.4.0 execution
 
-#### v2.3.2-dev: Agent Collaboration Framework
+#### v2.3.2-dev: Runtime Stability Hotfix (completed)
+- Fix Redis pooling runtime dependency issue
+- Restore compose stability before advanced-agent feature rollout
+- Keep release chain healthy for subsequent v2.4.0 dev steps
+
+#### v2.3.3-dev: Agent Memory System (completed)
+- Implement three-tier memory lifecycle (`SHORT_TERM`, `KNOWLEDGE`, `ARCHIVE`)
+- Add transition validation and promotion semantics
+- Add lifecycle scheduling scaffold and tier-aware API/query behavior
+
+#### v2.3.4-dev: Agent Collaboration Framework
 - Inter-agent messaging protocol
 - Task delegation between agents
 - Shared context management
 - Collaboration session tracking
 
-#### v2.3.3-dev: Reasoning & Planning
+#### v2.3.5-dev: Reasoning & Planning
 - Multi-step planning capabilities
 - Reasoning chain visualization
 - Plan refinement and adaptation
 - Goal-based agent behavior
 
-#### v2.3.4-dev: Native Java Tool Integration
+#### v2.3.6-dev: Native Java Tool Integration
 - Java-based tool interface
 - Tool discovery and registration
 - Tool execution within JVM
 - Tool result caching
 - **Note**: Foundation for Java plugin system (v2.6.0)
 
-#### v2.3.5-dev: Agent Capability Hardening
+#### v2.3.7-dev: Agent Capability Hardening
 - End-to-end validation scenarios for memory/collaboration/planning flows
 - Guardrails for runaway plans and invalid delegation loops
 - Performance/cost profiling for advanced agent workflows
