@@ -1,0 +1,1287 @@
+smoke-test	Set up job	´╗┐2026-05-10T13:21:58.4074746Z Current runner version: '2.334.0'
+smoke-test	Set up job	2026-05-10T13:21:58.4100713Z ##[group]Runner Image Provisioner
+smoke-test	Set up job	2026-05-10T13:21:58.4101556Z Hosted Compute Agent
+smoke-test	Set up job	2026-05-10T13:21:58.4102175Z Version: 20260213.493
+smoke-test	Set up job	2026-05-10T13:21:58.4102736Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+smoke-test	Set up job	2026-05-10T13:21:58.4103414Z Build Date: 2026-02-13T00:28:41Z
+smoke-test	Set up job	2026-05-10T13:21:58.4103999Z Worker ID: {e713ba31-de1f-4ef8-bfca-f60786cb8cf5}
+smoke-test	Set up job	2026-05-10T13:21:58.4104723Z Azure Region: westus
+smoke-test	Set up job	2026-05-10T13:21:58.4105219Z ##[endgroup]
+smoke-test	Set up job	2026-05-10T13:21:58.4106573Z ##[group]Operating System
+smoke-test	Set up job	2026-05-10T13:21:58.4107463Z Ubuntu
+smoke-test	Set up job	2026-05-10T13:21:58.4107933Z 24.04.4
+smoke-test	Set up job	2026-05-10T13:21:58.4108370Z LTS
+smoke-test	Set up job	2026-05-10T13:21:58.4108847Z ##[endgroup]
+smoke-test	Set up job	2026-05-10T13:21:58.4109331Z ##[group]Runner Image
+smoke-test	Set up job	2026-05-10T13:21:58.4109873Z Image: ubuntu-24.04
+smoke-test	Set up job	2026-05-10T13:21:58.4110409Z Version: 20260413.86.1
+smoke-test	Set up job	2026-05-10T13:21:58.4111336Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+smoke-test	Set up job	2026-05-10T13:21:58.4112978Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+smoke-test	Set up job	2026-05-10T13:21:58.4113889Z ##[endgroup]
+smoke-test	Set up job	2026-05-10T13:21:58.4114850Z ##[group]GITHUB_TOKEN Permissions
+smoke-test	Set up job	2026-05-10T13:21:58.4116582Z Contents: read
+smoke-test	Set up job	2026-05-10T13:21:58.4117574Z Metadata: read
+smoke-test	Set up job	2026-05-10T13:21:58.4118153Z ##[endgroup]
+smoke-test	Set up job	2026-05-10T13:21:58.4120184Z Secret source: Actions
+smoke-test	Set up job	2026-05-10T13:21:58.4120910Z Prepare workflow directory
+smoke-test	Set up job	2026-05-10T13:21:58.4442592Z Prepare all required actions
+smoke-test	Set up job	2026-05-10T13:21:58.4479195Z Getting action download info
+smoke-test	Set up job	2026-05-10T13:21:58.9100177Z Download action repository 'actions/checkout@v6' (SHA:de0fac2e4500dabe0009e67214ff5f5447ce83dd)
+smoke-test	Set up job	2026-05-10T13:21:59.1714391Z Complete job name: smoke-test
+smoke-test	Checkout code	´╗┐2026-05-10T13:21:59.2503453Z ##[group]Run actions/checkout@v6
+smoke-test	Checkout code	2026-05-10T13:21:59.2504290Z with:
+smoke-test	Checkout code	2026-05-10T13:21:59.2504686Z   repository: FTMahringer/Synapse
+smoke-test	Checkout code	2026-05-10T13:21:59.2505318Z   token: ***
+smoke-test	Checkout code	2026-05-10T13:21:59.2505703Z   ssh-strict: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2506106Z   ssh-user: git
+smoke-test	Checkout code	2026-05-10T13:21:59.2506504Z   persist-credentials: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2507236Z   clean: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2507690Z   sparse-checkout-cone-mode: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2508181Z   fetch-depth: 1
+smoke-test	Checkout code	2026-05-10T13:21:59.2508563Z   fetch-tags: false
+smoke-test	Checkout code	2026-05-10T13:21:59.2508955Z   show-progress: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2509347Z   lfs: false
+smoke-test	Checkout code	2026-05-10T13:21:59.2509708Z   submodules: false
+smoke-test	Checkout code	2026-05-10T13:21:59.2510102Z   set-safe-directory: true
+smoke-test	Checkout code	2026-05-10T13:21:59.2510840Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:21:59.3459043Z Syncing repository: FTMahringer/Synapse
+smoke-test	Checkout code	2026-05-10T13:21:59.3461375Z ##[group]Getting Git version info
+smoke-test	Checkout code	2026-05-10T13:21:59.3462142Z Working directory is '/home/runner/work/Synapse/Synapse'
+smoke-test	Checkout code	2026-05-10T13:21:59.3463075Z [command]/usr/bin/git version
+smoke-test	Checkout code	2026-05-10T13:21:59.3492554Z git version 2.53.0
+smoke-test	Checkout code	2026-05-10T13:21:59.3515104Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:21:59.3529213Z Temporarily overriding HOME='/home/runner/work/_temp/b066e470-d9ac-4499-b051-a46ab627c364' before making global git config changes
+smoke-test	Checkout code	2026-05-10T13:21:59.3531403Z Adding repository directory to the temporary git global config as a safe directory
+smoke-test	Checkout code	2026-05-10T13:21:59.3534397Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Synapse/Synapse
+smoke-test	Checkout code	2026-05-10T13:21:59.3565995Z Deleting the contents of '/home/runner/work/Synapse/Synapse'
+smoke-test	Checkout code	2026-05-10T13:21:59.3570946Z ##[group]Initializing the repository
+smoke-test	Checkout code	2026-05-10T13:21:59.3575351Z [command]/usr/bin/git init /home/runner/work/Synapse/Synapse
+smoke-test	Checkout code	2026-05-10T13:21:59.3684219Z hint: Using 'master' as the name for the initial branch. This default branch name
+smoke-test	Checkout code	2026-05-10T13:21:59.3685945Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+smoke-test	Checkout code	2026-05-10T13:21:59.3687629Z hint: to use in all of your new repositories, which will suppress this warning,
+smoke-test	Checkout code	2026-05-10T13:21:59.3688514Z hint: call:
+smoke-test	Checkout code	2026-05-10T13:21:59.3688887Z hint:
+smoke-test	Checkout code	2026-05-10T13:21:59.3689364Z hint: 	git config --global init.defaultBranch <name>
+smoke-test	Checkout code	2026-05-10T13:21:59.3689976Z hint:
+smoke-test	Checkout code	2026-05-10T13:21:59.3691082Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+smoke-test	Checkout code	2026-05-10T13:21:59.3692540Z hint: 'development'. The just-created branch can be renamed via this command:
+smoke-test	Checkout code	2026-05-10T13:21:59.3693672Z hint:
+smoke-test	Checkout code	2026-05-10T13:21:59.3694249Z hint: 	git branch -m <name>
+smoke-test	Checkout code	2026-05-10T13:21:59.3694991Z hint:
+smoke-test	Checkout code	2026-05-10T13:21:59.3695947Z hint: Disable this message with "git config set advice.defaultBranchName false"
+smoke-test	Checkout code	2026-05-10T13:21:59.3697208Z Initialized empty Git repository in /home/runner/work/Synapse/Synapse/.git/
+smoke-test	Checkout code	2026-05-10T13:21:59.3698822Z [command]/usr/bin/git remote add origin https://github.com/FTMahringer/Synapse
+smoke-test	Checkout code	2026-05-10T13:21:59.3725553Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:21:59.3726256Z ##[group]Disabling automatic garbage collection
+smoke-test	Checkout code	2026-05-10T13:21:59.3730815Z [command]/usr/bin/git config --local gc.auto 0
+smoke-test	Checkout code	2026-05-10T13:21:59.3760393Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:21:59.3761612Z ##[group]Setting up auth
+smoke-test	Checkout code	2026-05-10T13:21:59.3762511Z Removing SSH command configuration
+smoke-test	Checkout code	2026-05-10T13:21:59.3768105Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke-test	Checkout code	2026-05-10T13:21:59.3801662Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke-test	Checkout code	2026-05-10T13:21:59.4119548Z Removing HTTP extra header
+smoke-test	Checkout code	2026-05-10T13:21:59.4125218Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+smoke-test	Checkout code	2026-05-10T13:21:59.4155880Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+smoke-test	Checkout code	2026-05-10T13:21:59.4363204Z Removing includeIf entries pointing to credentials config files
+smoke-test	Checkout code	2026-05-10T13:21:59.4368714Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+smoke-test	Checkout code	2026-05-10T13:21:59.4400343Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+smoke-test	Checkout code	2026-05-10T13:21:59.4623113Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-449702cf-bd0a-4b3f-b142-d42e315c7539.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+smoke-test	Checkout code	2026-05-10T13:21:59.4664664Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Synapse/Synapse/.git.path /home/runner/work/_temp/git-credentials-449702cf-bd0a-4b3f-b142-d42e315c7539.config
+smoke-test	Checkout code	2026-05-10T13:21:59.4698154Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/Synapse/Synapse/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-449702cf-bd0a-4b3f-b142-d42e315c7539.config
+smoke-test	Checkout code	2026-05-10T13:21:59.4732358Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-449702cf-bd0a-4b3f-b142-d42e315c7539.config
+smoke-test	Checkout code	2026-05-10T13:21:59.4765575Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-449702cf-bd0a-4b3f-b142-d42e315c7539.config
+smoke-test	Checkout code	2026-05-10T13:21:59.4795329Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:21:59.4796496Z ##[group]Fetching the repository
+smoke-test	Checkout code	2026-05-10T13:21:59.4808359Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +e3cb5d74a0945ba7624d0c3efcb8ef1562d45fd3:refs/remotes/origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.0878539Z From https://github.com/FTMahringer/Synapse
+smoke-test	Checkout code	2026-05-10T13:22:00.0879792Z  * [new ref]         e3cb5d74a0945ba7624d0c3efcb8ef1562d45fd3 -> origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.0911020Z [command]/usr/bin/git branch --list --remote origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.0933641Z   origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.0941724Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.0963520Z e3cb5d74a0945ba7624d0c3efcb8ef1562d45fd3
+smoke-test	Checkout code	2026-05-10T13:22:00.0967785Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:22:00.0968834Z ##[group]Determining the checkout info
+smoke-test	Checkout code	2026-05-10T13:22:00.0970011Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:22:00.0972711Z [command]/usr/bin/git sparse-checkout disable
+smoke-test	Checkout code	2026-05-10T13:22:00.1074154Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+smoke-test	Checkout code	2026-05-10T13:22:00.1077477Z ##[group]Checking out the ref
+smoke-test	Checkout code	2026-05-10T13:22:00.1078850Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+smoke-test	Checkout code	2026-05-10T13:22:00.1281509Z Switched to a new branch 'main'
+smoke-test	Checkout code	2026-05-10T13:22:00.1283818Z branch 'main' set up to track 'origin/main'.
+smoke-test	Checkout code	2026-05-10T13:22:00.1290993Z ##[endgroup]
+smoke-test	Checkout code	2026-05-10T13:22:00.1332617Z [command]/usr/bin/git log -1 --format=%H
+smoke-test	Checkout code	2026-05-10T13:22:00.1356316Z e3cb5d74a0945ba7624d0c3efcb8ef1562d45fd3
+smoke-test	Start Docker Compose stack	´╗┐2026-05-10T13:22:00.1580495Z ##[group]Run docker compose up -d
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.1581841Z ^[[36;1mdocker compose up -d^[[0m
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.1607413Z shell: /usr/bin/bash -e {0}
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.1608471Z ##[endgroup]
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.8958471Z  postgres Pulling 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.8960053Z  redis Pulling 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:00.8965417Z  qdrant Pulling 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0258573Z  57fb71246055 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0265305Z  6e38a999e99d Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0266101Z  0337286b2934 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0267260Z  c52cb585fd05 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0268712Z  631436d0d0b7 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0269331Z  2c71b11837a2 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0269677Z  31e4e3208450 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0270934Z  d9019a56de83 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0271231Z  550df04ae070 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0271496Z  ef9aa5783c64 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0271762Z  81a21d8601fa Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0272143Z  7572aa056bba Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0272417Z  479918537f59 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0272680Z  c52cb585fd05 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0272955Z  631436d0d0b7 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0273235Z  2c71b11837a2 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0273464Z  31e4e3208450 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0273707Z  d9019a56de83 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0273923Z  550df04ae070 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0274197Z  ef9aa5783c64 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0274417Z  479918537f59 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0274649Z  81a21d8601fa Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0274868Z  7572aa056bba Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0441391Z  57fb71246055 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0442185Z  66c3033571c5 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0443024Z  39932f0416f7 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0443435Z  188c6fff82e6 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0444252Z  0e422956e4a5 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0444678Z  4f4fb700ef54 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0445477Z  c3fb1988805d Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0446075Z  39932f0416f7 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0446641Z  188c6fff82e6 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0447327Z  0e422956e4a5 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0447717Z  4f4fb700ef54 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0448047Z  c3fb1988805d Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0448674Z  66c3033571c5 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0530050Z  61320b01ae5e Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0530643Z  119903d19bd2 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0531052Z  4f4fb700ef54 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0531436Z  38d2df23d388 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0531807Z  20ccf4c531ee Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0532186Z  2c796c27f525 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0532567Z  182cf741f2d7 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0532975Z  db48f6d698f2 Pulling fs layer 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0533368Z  61320b01ae5e Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0533697Z  119903d19bd2 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0534039Z  4f4fb700ef54 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0534392Z  38d2df23d388 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0534779Z  20ccf4c531ee Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0535101Z  2c796c27f525 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0535595Z  182cf741f2d7 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.0535926Z  db48f6d698f2 Waiting 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2616135Z  6e38a999e99d Downloading [================>                                  ]     393B/1.168kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2617868Z  6e38a999e99d Downloading [==================================================>]  1.168kB/1.168kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2618587Z  6e38a999e99d Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2619018Z  6e38a999e99d Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2812561Z  57fb71246055 Downloading [>                                                  ]  298.2kB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2813137Z  57fb71246055 Downloading [>                                                  ]  298.2kB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.2835499Z  0337286b2934 Downloading [>                                                  ]   66.6kB/6.441MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3117414Z  0337286b2934 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3118763Z  0337286b2934 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3826176Z  57fb71246055 Downloading [================================================>  ]  28.91MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3827937Z  57fb71246055 Downloading [================================================>  ]  28.91MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3949040Z  57fb71246055 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3950153Z  57fb71246055 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3952895Z  57fb71246055 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.3953986Z  57fb71246055 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.4331845Z  57fb71246055 Extracting [>                                                  ]  327.7kB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.4335781Z  57fb71246055 Extracting [>                                                  ]  327.7kB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5061858Z  c52cb585fd05 Downloading [>                                                  ]  12.86kB/1.257MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5207721Z  c52cb585fd05 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5210611Z  c52cb585fd05 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5380677Z  57fb71246055 Extracting [===========>                                       ]  6.881MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5382102Z  57fb71246055 Extracting [===========>                                       ]  6.881MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.5659800Z  631436d0d0b7 Downloading [>                                                  ]  83.53kB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6130987Z  631436d0d0b7 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6131762Z  631436d0d0b7 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6426044Z  57fb71246055 Extracting [==================>                                ]  10.81MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6427190Z  57fb71246055 Extracting [==================>                                ]  10.81MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6527692Z  2c71b11837a2 Downloading [>                                                  ]  14.06kB/1.312MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6742639Z  2c71b11837a2 Downloading [==================================================>]  1.312MB/1.312MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6743500Z  2c71b11837a2 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.6743921Z  2c71b11837a2 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.7455552Z  57fb71246055 Extracting [===========================>                       ]  16.38MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.7458069Z  57fb71246055 Extracting [===========================>                       ]  16.38MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.7804433Z  31e4e3208450 Downloading [==================================================>]     116B/116B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.7805148Z  31e4e3208450 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.7805546Z  31e4e3208450 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.8447567Z  d9019a56de83 Downloading [=====>                                             ]     374B/3.141kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.8449969Z  d9019a56de83 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.8474987Z  57fb71246055 Extracting [=========================================>         ]  24.58MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.8476045Z  57fb71246055 Extracting [=========================================>         ]  24.58MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:02.9316039Z  550df04ae070 Downloading [>                                                  ]  540.7kB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0018738Z  ef9aa5783c64 Downloading [>                                                  ]     374B/19.33kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0021919Z  ef9aa5783c64 Downloading [==================================================>]  19.33kB/19.33kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0028303Z  ef9aa5783c64 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0029485Z  ef9aa5783c64 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0324013Z  550df04ae070 Downloading [============>                                      ]  28.86MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0379572Z  57fb71246055 Extracting [============================================>      ]  26.21MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0380624Z  57fb71246055 Extracting [============================================>      ]  26.21MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0746368Z  81a21d8601fa Downloading [==================================================>]     128B/128B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0750211Z  81a21d8601fa Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.0758964Z  81a21d8601fa Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.1329453Z  550df04ae070 Downloading [=========================>                         ]  59.91MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.1707844Z  57fb71246055 Extracting [===============================================>   ]  28.51MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.1709332Z  57fb71246055 Extracting [===============================================>   ]  28.51MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.2344963Z  550df04ae070 Downloading [=======================================>           ]  90.33MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.2403095Z  7572aa056bba Downloading [===>                                               ]     373B/6.097kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.2405080Z  7572aa056bba Downloading [==================================================>]  6.097kB/6.097kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.2406412Z  7572aa056bba Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.2407360Z  7572aa056bba Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3160692Z  550df04ae070 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3161922Z  550df04ae070 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3533993Z  479918537f59 Downloading [==================================================>]     185B/185B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3535030Z  479918537f59 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3535971Z  479918537f59 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3673082Z  57fb71246055 Extracting [================================================>  ]  29.16MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.3673823Z  57fb71246055 Extracting [================================================>  ]  29.16MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4559013Z  57fb71246055 Extracting [==================================================>]  29.78MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4559950Z  57fb71246055 Extracting [==================================================>]  29.78MB/29.78MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4790581Z  57fb71246055 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4791110Z  57fb71246055 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4814173Z  6e38a999e99d Extracting [==================================================>]  1.168kB/1.168kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4819263Z  6e38a999e99d Extracting [==================================================>]  1.168kB/1.168kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4936705Z  66c3033571c5 Downloading [================>                                  ]     373B/1.105kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4938197Z  66c3033571c5 Downloading [==================================================>]  1.105kB/1.105kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4939285Z  66c3033571c5 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4960025Z  66c3033571c5 Extracting [==================================================>]  1.105kB/1.105kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.4961213Z  66c3033571c5 Extracting [==================================================>]  1.105kB/1.105kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.5729029Z  188c6fff82e6 Downloading [>                                                  ]  238.9kB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.5765700Z  39932f0416f7 Downloading [======================>                            ]     374B/827B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7308759Z  39932f0416f7 Downloading [==================================================>]     827B/827B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7309583Z  39932f0416f7 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7309972Z  39932f0416f7 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7310944Z  188c6fff82e6 Downloading [=======>                                           ]  3.658MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7473403Z  0e422956e4a5 Downloading [==================================================>]      97B/97B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7474313Z  0e422956e4a5 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7479253Z  0e422956e4a5 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7917929Z  188c6fff82e6 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.7918439Z  188c6fff82e6 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8004823Z  4f4fb700ef54 Downloading [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8010780Z  4f4fb700ef54 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8011649Z  4f4fb700ef54 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8305615Z  6e38a999e99d Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8307618Z  66c3033571c5 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8329114Z  0337286b2934 Extracting [>                                                  ]  65.54kB/6.441MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8338190Z  39932f0416f7 Extracting [==================================================>]     827B/827B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8341170Z  39932f0416f7 Extracting [==================================================>]     827B/827B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8500479Z  39932f0416f7 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.8618373Z  188c6fff82e6 Extracting [>                                                  ]  262.1kB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9334382Z  0337286b2934 Extracting [======================================>            ]  4.915MB/6.441MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9634127Z  188c6fff82e6 Extracting [=============>                                     ]  6.554MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9723172Z  c3fb1988805d Downloading [========>                                          ]     373B/2.11kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9725365Z  c3fb1988805d Downloading [==================================================>]   2.11kB/2.11kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9726374Z  c3fb1988805d Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9727527Z  c3fb1988805d Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:03.9865872Z  0337286b2934 Extracting [==================================================>]  6.441MB/6.441MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.0306213Z  61320b01ae5e Downloading [>                                                  ]  294.9kB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.0444172Z  119903d19bd2 Downloading [>                                                  ]  155.3kB/15.17MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.0676848Z  188c6fff82e6 Extracting [==========================>                        ]  12.58MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.0861190Z  0337286b2934 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.0875969Z  c52cb585fd05 Extracting [=>                                                 ]  32.77kB/1.257MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1272101Z  119903d19bd2 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1273210Z  119903d19bd2 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1315888Z  61320b01ae5e Downloading [=======================================>           ]  22.47MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1390194Z  c52cb585fd05 Extracting [==================================================>]  1.257MB/1.257MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1539576Z  61320b01ae5e Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1539880Z  61320b01ae5e Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1720484Z  188c6fff82e6 Extracting [================================>                  ]   15.2MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1721201Z  c52cb585fd05 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.1758385Z  631436d0d0b7 Extracting [>                                                  ]   98.3kB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2029041Z  61320b01ae5e Extracting [>                                                  ]  294.9kB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2195288Z  4f4fb700ef54 Downloading [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2197950Z  4f4fb700ef54 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2198965Z  4f4fb700ef54 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2725502Z  188c6fff82e6 Extracting [===========================================>       ]  20.45MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.2867932Z  631436d0d0b7 Extracting [=================>                                 ]  2.949MB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3113923Z  61320b01ae5e Extracting [======>                                            ]  3.834MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3314410Z  188c6fff82e6 Extracting [==================================================>]   23.5MB/23.5MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3586725Z  38d2df23d388 Downloading [>                                                  ]   36.9kB/3.577MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3851316Z  188c6fff82e6 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3860984Z  20ccf4c531ee Downloading [>                                                  ]  300.2kB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3878941Z  38d2df23d388 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3880820Z  38d2df23d388 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3885152Z  0e422956e4a5 Extracting [==================================================>]      97B/97B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3886166Z  0e422956e4a5 Extracting [==================================================>]      97B/97B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.3910379Z  631436d0d0b7 Extracting [========================>                          ]   4.03MB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4055677Z  0e422956e4a5 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4086269Z  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4094989Z  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4187404Z  61320b01ae5e Extracting [============>                                      ]  7.078MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4279363Z  4f4fb700ef54 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4366174Z  c3fb1988805d Extracting [==================================================>]   2.11kB/2.11kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4369035Z  c3fb1988805d Extracting [==================================================>]   2.11kB/2.11kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4594322Z  c3fb1988805d Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4701454Z  redis Pulled 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4786411Z  2c796c27f525 Downloading [===>                                               ]     361B/5.299kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4787293Z  2c796c27f525 Downloading [==================================================>]  5.299kB/5.299kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4790587Z  2c796c27f525 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4799119Z  2c796c27f525 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.4870301Z  20ccf4c531ee Downloading [====================================>              ]  21.29MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.5017611Z  631436d0d0b7 Extracting [=============================>                     ]  4.817MB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.5203298Z  20ccf4c531ee Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.5203770Z  20ccf4c531ee Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.5293307Z  61320b01ae5e Extracting [================>                                  ]  9.142MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.6043796Z  631436d0d0b7 Extracting [======================================>            ]  6.291MB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.6146011Z  182cf741f2d7 Downloading [====================>                              ]     374B/909B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.6146658Z  182cf741f2d7 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.6386294Z  61320b01ae5e Extracting [===================>                               ]  11.21MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.6678526Z  631436d0d0b7 Extracting [==================================================>]  8.204MB/8.204MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7201908Z  db48f6d698f2 Downloading [>                                                  ]  22.22kB/2.137MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7241518Z  631436d0d0b7 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7256767Z  2c71b11837a2 Extracting [=>                                                 ]  32.77kB/1.312MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7397127Z  61320b01ae5e Extracting [==============================>                    ]   17.1MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7501669Z  db48f6d698f2 Verifying Checksum 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.7517400Z  db48f6d698f2 Download complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8001903Z  2c71b11837a2 Extracting [==================================================>]  1.312MB/1.312MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8455121Z  2c71b11837a2 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8469142Z  31e4e3208450 Extracting [==================================================>]     116B/116B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8474826Z  31e4e3208450 Extracting [==================================================>]     116B/116B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8581165Z  31e4e3208450 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8594768Z  d9019a56de83 Extracting [==================================================>]  3.141kB/3.141kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8600362Z  d9019a56de83 Extracting [==================================================>]  3.141kB/3.141kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8609730Z  61320b01ae5e Extracting [=========================================>         ]   23.3MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.8711333Z  d9019a56de83 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:04.9580807Z  550df04ae070 Extracting [>                                                  ]  557.1kB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.0423301Z  61320b01ae5e Extracting [==========================================>        ]  23.89MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.0614305Z  550df04ae070 Extracting [==>                                                ]  6.128MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.1817142Z  550df04ae070 Extracting [====>                                              ]   9.47MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.2028406Z  61320b01ae5e Extracting [===============================================>   ]  26.84MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.2908002Z  550df04ae070 Extracting [=====>                                             ]  12.81MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.4094229Z  550df04ae070 Extracting [=======>                                           ]  16.71MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.5139292Z  550df04ae070 Extracting [========>                                          ]  20.05MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.5456571Z  61320b01ae5e Extracting [================================================>  ]  27.43MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.6195078Z  550df04ae070 Extracting [==========>                                        ]  24.51MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.6921973Z  61320b01ae5e Extracting [==================================================>]  28.23MB/28.23MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.7176466Z  61320b01ae5e Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.7202397Z  119903d19bd2 Extracting [>                                                  ]  163.8kB/15.17MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.7281400Z  550df04ae070 Extracting [=============>                                     ]  31.75MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.8203496Z  119903d19bd2 Extracting [==============================>                    ]  9.339MB/15.17MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.8329872Z  550df04ae070 Extracting [=================>                                 ]  39.55MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.8863363Z  119903d19bd2 Extracting [==================================================>]  15.17MB/15.17MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.8979034Z  119903d19bd2 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.8995017Z  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.9002949Z  4f4fb700ef54 Extracting [==================================================>]      32B/32B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:05.9388677Z  550df04ae070 Extracting [===================>                               ]  45.68MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.0264109Z  4f4fb700ef54 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.0298262Z  38d2df23d388 Extracting [>                                                  ]  65.54kB/3.577MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.0413856Z  550df04ae070 Extracting [======================>                            ]  51.25MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.1309178Z  38d2df23d388 Extracting [===========================>                       ]  1.966MB/3.577MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.1454186Z  550df04ae070 Extracting [========================>                          ]  56.26MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.2152936Z  38d2df23d388 Extracting [==================================================>]  3.577MB/3.577MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.2555128Z  550df04ae070 Extracting [==========================>                        ]  60.72MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.2613489Z  38d2df23d388 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.3123956Z  20ccf4c531ee Extracting [>                                                  ]  294.9kB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.3600842Z  550df04ae070 Extracting [============================>                      ]  66.29MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.4159499Z  20ccf4c531ee Extracting [============>                                      ]  7.373MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.4650106Z  550df04ae070 Extracting [================================>                  ]  74.09MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.5190673Z  20ccf4c531ee Extracting [=======================>                           ]  13.57MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.5715459Z  550df04ae070 Extracting [===================================>               ]  81.33MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.6233845Z  20ccf4c531ee Extracting [==================================>                ]  19.76MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.6727805Z  550df04ae070 Extracting [======================================>            ]  88.57MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.7268852Z  20ccf4c531ee Extracting [=============================================>     ]  26.54MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.7745093Z  550df04ae070 Extracting [=========================================>         ]  95.81MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.7854554Z  20ccf4c531ee Extracting [==================================================>]  28.91MB/28.91MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.8752788Z  550df04ae070 Extracting [==========================================>        ]  98.04MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9399779Z  20ccf4c531ee Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9414523Z  2c796c27f525 Extracting [==================================================>]  5.299kB/5.299kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9419582Z  2c796c27f525 Extracting [==================================================>]  5.299kB/5.299kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9869757Z  2c796c27f525 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9882129Z  182cf741f2d7 Extracting [==================================================>]     909B/909B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:06.9893500Z  182cf741f2d7 Extracting [==================================================>]     909B/909B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.0007207Z  182cf741f2d7 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.0020344Z  db48f6d698f2 Extracting [>                                                  ]  32.77kB/2.137MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.0457040Z  550df04ae070 Extracting [============================================>      ]  101.9MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.0705882Z  db48f6d698f2 Extracting [==================================================>]  2.137MB/2.137MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.0881246Z  db48f6d698f2 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.1156756Z  qdrant Pulled 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.1574969Z  550df04ae070 Extracting [=============================================>     ]  104.7MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.2641772Z  550df04ae070 Extracting [===============================================>   ]  108.6MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.3834944Z  550df04ae070 Extracting [===============================================>   ]  110.3MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.5274118Z  550df04ae070 Extracting [================================================>  ]    112MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.7067010Z  550df04ae070 Extracting [=================================================> ]  113.6MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.8389392Z  550df04ae070 Extracting [=================================================> ]  114.8MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.8831679Z  550df04ae070 Extracting [==================================================>]  115.3MB/115.3MB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9696724Z  550df04ae070 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9709329Z  ef9aa5783c64 Extracting [==================================================>]  19.33kB/19.33kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9713212Z  ef9aa5783c64 Extracting [==================================================>]  19.33kB/19.33kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9851001Z  ef9aa5783c64 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9861020Z  81a21d8601fa Extracting [==================================================>]     128B/128B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9865171Z  81a21d8601fa Extracting [==================================================>]     128B/128B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9941707Z  81a21d8601fa Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9953851Z  7572aa056bba Extracting [==================================================>]  6.097kB/6.097kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:07.9956100Z  7572aa056bba Extracting [==================================================>]  6.097kB/6.097kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.0049815Z  7572aa056bba Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.0062232Z  479918537f59 Extracting [==================================================>]     185B/185B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.0065183Z  479918537f59 Extracting [==================================================>]     185B/185B
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.0132172Z  479918537f59 Pull complete 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.0189457Z  postgres Pulled 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:08.7906317Z #1 [internal] load local bake definitions
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0178550Z #1 reading from stdin 747B done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0178867Z #1 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0178986Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0179142Z #2 [dashboard internal] load build definition from Dockerfile
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0179510Z #2 transferring dockerfile: 289B done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0179733Z #2 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0179831Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0179976Z #3 [backend internal] load build definition from Dockerfile
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0180282Z #3 transferring dockerfile: 334B done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0180507Z #3 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0180602Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.0180781Z #4 [dashboard internal] load metadata for docker.io/library/node:24-alpine
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2430149Z #4 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2430382Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2430580Z #5 [auth] library/node:pull token for registry-1.docker.io
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2430968Z #5 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2431116Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2431359Z #6 [auth] library/eclipse-temurin:pull token for registry-1.docker.io
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2431801Z #6 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2431925Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2432097Z #7 [auth] library/nginx:pull token for registry-1.docker.io
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2432487Z #7 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2432609Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2432784Z #8 [auth] library/maven:pull token for registry-1.docker.io
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.2433164Z #8 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.3933793Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.3934250Z #9 [dashboard internal] load metadata for docker.io/library/nginx:1.27-alpine
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.7098118Z #9 DONE 0.8s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.7098298Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.7098542Z #10 [backend internal] load metadata for docker.io/library/eclipse-temurin:25-jre
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8081878Z #10 DONE 0.9s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8082182Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8082840Z #11 [backend internal] load metadata for docker.io/library/maven:3.9-eclipse-temurin-25
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8083547Z #11 DONE 0.9s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8083750Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8084078Z #4 [dashboard internal] load metadata for docker.io/library/node:24-alpine
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8084711Z #4 DONE 0.9s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8084886Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8085042Z #12 [dashboard internal] load .dockerignore
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8085500Z #12 transferring context: 2B done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8085876Z #12 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8086051Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8086199Z #13 [backend internal] load .dockerignore
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8086641Z #13 transferring context: 2B done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8087279Z #13 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8087470Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8087627Z #14 [dashboard internal] load build context
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8088073Z #14 transferring context: 57.73kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8088486Z #14 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8088654Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8088811Z #15 [backend internal] load build context
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8089265Z #15 transferring context: 397.61kB 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8089680Z #15 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8089862Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8090677Z #16 [dashboard stage-1 1/3] FROM docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.8092222Z #16 resolve docker.io/library/nginx:1.27-alpine@sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.9775257Z #16 sha256:6769dc3a703c719c1d2756bda113659be28ae16cf0da58dd5fd823d6b9a050ea 10.79kB / 10.79kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.9777943Z #16 sha256:62223d644fa234c3a1cc785ee14242ec47a77364226f1c811d2f669f96dc2ac8 2.50kB / 2.50kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:09.9779231Z #16 sha256:65645c7bb6a0661892a8b03b89d0743208a18dd2f3f17a54ef4b76fb8e2f2a10 10.33kB / 10.33kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.1875524Z #16 sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674 0B / 1.79MB 1.4s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.1877958Z #16 sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB 1.4s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.1879813Z #16 extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.1881972Z #16 sha256:b464cfdf2a6319875aeb27359ec549790ce14d8214fcb16ef915e4530e5ed235 0B / 629B 1.4s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.1883406Z #16 sha256:d7e5070240863957ebb0b5a44a5729963c3462666baa2947d00628cb5f2d5773 0B / 955B 1.4s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.3459126Z #16 sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674 1.79MB / 1.79MB 1.4s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.3460774Z #16 sha256:81bd8ed7ec6789b0cb7f1b47ee731c522f6dba83201ec73cd6bca1350f582948 0B / 402B 1.5s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4784569Z #16 extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 0.2s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4786673Z #16 sha256:b464cfdf2a6319875aeb27359ec549790ce14d8214fcb16ef915e4530e5ed235 629B / 629B 1.5s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4789146Z #16 sha256:d7e5070240863957ebb0b5a44a5729963c3462666baa2947d00628cb5f2d5773 955B / 955B 1.5s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4790268Z #16 sha256:81bd8ed7ec6789b0cb7f1b47ee731c522f6dba83201ec73cd6bca1350f582948 402B / 402B 1.5s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4791360Z #16 sha256:197eb75867ef4fcecd4724f17b0972ab0489436860a594a9445f8eaff8155053 0B / 1.21kB 1.6s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4792363Z #16 sha256:34a64644b756511a2e217f0508e11d1a572085d66cd6dc9a555a082ad49a3102 0B / 1.40kB 1.6s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4793413Z #16 sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d 0B / 15.52MB 1.6s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.4794460Z #16 extracting sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.5804342Z #16 sha256:197eb75867ef4fcecd4724f17b0972ab0489436860a594a9445f8eaff8155053 1.21kB / 1.21kB 1.6s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.5805758Z #16 sha256:34a64644b756511a2e217f0508e11d1a572085d66cd6dc9a555a082ad49a3102 1.40kB / 1.40kB 1.6s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.5807256Z #16 sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d 15.52MB / 15.52MB 1.7s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:11.5808648Z #16 extracting sha256:61ca4f733c802afd9e05a32f0de0361b6d713b8b53292dc15fb093229f648674 0.1s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.2494337Z #16 extracting sha256:b464cfdf2a6319875aeb27359ec549790ce14d8214fcb16ef915e4530e5ed235 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.3577565Z #16 extracting sha256:d7e5070240863957ebb0b5a44a5729963c3462666baa2947d00628cb5f2d5773 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.3578221Z #16 extracting sha256:81bd8ed7ec6789b0cb7f1b47ee731c522f6dba83201ec73cd6bca1350f582948 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.5644049Z #16 extracting sha256:197eb75867ef4fcecd4724f17b0972ab0489436860a594a9445f8eaff8155053 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.5645448Z #16 extracting sha256:34a64644b756511a2e217f0508e11d1a572085d66cd6dc9a555a082ad49a3102 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:12.5647257Z #16 extracting sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.0355897Z #16 extracting sha256:39c2ddfd6010082a4a646e7ca44e95aca9bf3eaebc00f17f7ccc2954004f2a7d 0.6s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2586400Z #16 DONE 3.5s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2587155Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2588120Z #17 [backend build 1/5] FROM docker.io/library/maven:3.9-eclipse-temurin-25@sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2597157Z #17 resolve docker.io/library/maven:3.9-eclipse-temurin-25@sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2598576Z #17 sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2 6.65kB / 6.65kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2599924Z #17 sha256:f7a001464b6701e5f9f3ec790d80ee7ed9fb19cefe7f71fd9b4180d711ce9f94 2.73kB / 2.73kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2601004Z #17 sha256:c486b6282ee3b0b28b9580b917fd45959d6b88932b4ae1a87dc75549af411486 9.52kB / 9.52kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2602085Z #17 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 0.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2603225Z #17 sha256:b40150c1c2717d324cdb17278c8efdfa4dfcd2ffe083e976f0bcedf31115f081 29.73MB / 29.73MB 0.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2604388Z #17 sha256:97c47a5c1a2f55ee2696423e5c0582023889a363dd5a3ec51a2633d6d340d973 17.46MB / 17.46MB 1.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2605774Z #17 sha256:b38893372039c6251d8c3f63d95d127b0ce85aa0cd7250e1c5da23898f264e01 92.71MB / 92.71MB 1.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2607171Z #17 extracting sha256:b40150c1c2717d324cdb17278c8efdfa4dfcd2ffe083e976f0bcedf31115f081 1.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2608302Z #17 sha256:d92a694d8aa025f026ea647e2324c8daccda22c915159e8672c4a5f3e6861c91 2.28kB / 2.28kB 1.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2609477Z #17 sha256:6f814b02e7b3455732fb531eb8112cfc2c6e9c47f0928e35ae2619557e079592 24.52MB / 24.52MB 1.1s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2610633Z #17 sha256:519c1bec89d417c0e723d914ccc4d2084851d1e9793b97462b2640d283b98af7 9.31MB / 9.31MB 1.2s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2611765Z #17 sha256:ae17143cc8a11054bf33dd75df211ad5fed109e60bcf98fa94c0876018ca8a5b 851B / 851B 1.2s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2612870Z #17 sha256:a9c0cc03c596e5022bb0adf59b2f9feb98e7e5e0598c38621dcd0cdd61d9a8af 156B / 156B 1.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.2613953Z #17 extracting sha256:97c47a5c1a2f55ee2696423e5c0582023889a363dd5a3ec51a2633d6d340d973 0.3s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3589736Z #17 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3590119Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3591640Z #18 [dashboard build 1/6] FROM docker.io/library/node:24-alpine@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3593223Z #18 resolve docker.io/library/node:24-alpine@sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3594558Z #18 sha256:d1b3b4da11eefd5941e7f0b9cf17783fc99d9c6fc34884a665f40a06dbdfc94f 3.87kB / 3.87kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3595656Z #18 sha256:8e2c930fda481a6ec141fe5a88e8c249c69f8102fe98af505f38c081649ea749 1.72kB / 1.72kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3596735Z #18 sha256:edd927012c1ea203e392a59f0ae655a9e50a67bf3a5cb42dc1c638889a03a3b0 6.52kB / 6.52kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3598070Z #18 sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 3.86MB / 3.86MB 0.5s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3598864Z #18 extracting sha256:6a0ac1617861a677b045b7ff88545213ec31c0ff08763195a70a4a5adda577bb 0.1s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3600050Z #18 sha256:d7319775d025f51b0d7ee7f1224231b07f98b38a21909b5a7e2572e083dcb50a 51.51MB / 51.51MB 0.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3601406Z #18 sha256:3eebacc30b80dca2db4fba20ee2c2562ae69dbbdc307fcee75b49cf859cf63e4 1.26MB / 1.26MB 0.6s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3602286Z #18 sha256:1ba15d4bb83a5da0244b0ca03df5cac1a19a914c5b876543cb1065d7fddbc9d5 446B / 446B 0.7s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3603353Z #18 extracting sha256:d7319775d025f51b0d7ee7f1224231b07f98b38a21909b5a7e2572e083dcb50a 2.4s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3604070Z #18 extracting sha256:3eebacc30b80dca2db4fba20ee2c2562ae69dbbdc307fcee75b49cf859cf63e4 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3604951Z #18 extracting sha256:1ba15d4bb83a5da0244b0ca03df5cac1a19a914c5b876543cb1065d7fddbc9d5 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3605623Z #18 DONE 3.6s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3605737Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.3606220Z #17 [backend build 1/5] FROM docker.io/library/maven:3.9-eclipse-temurin-25@sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5093595Z #17 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5094603Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5094797Z #19 [dashboard build 2/6] WORKDIR /workspace
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5095273Z #19 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5095456Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5095704Z #20 [dashboard build 3/6] COPY package*.json ./
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5096153Z #20 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5096694Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:13.5097729Z #17 [backend build 1/5] FROM docker.io/library/maven:3.9-eclipse-temurin-25@sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:14.0176114Z #17 extracting sha256:97c47a5c1a2f55ee2696423e5c0582023889a363dd5a3ec51a2633d6d340d973 1.2s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:14.1306686Z #17 extracting sha256:b38893372039c6251d8c3f63d95d127b0ce85aa0cd7250e1c5da23898f264e01
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:16.1018028Z #17 extracting sha256:b38893372039c6251d8c3f63d95d127b0ce85aa0cd7250e1c5da23898f264e01 1.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:16.2328838Z #17 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:16.2330338Z #17 extracting sha256:d92a694d8aa025f026ea647e2324c8daccda22c915159e8672c4a5f3e6861c91
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:16.3577925Z #17 extracting sha256:d92a694d8aa025f026ea647e2324c8daccda22c915159e8672c4a5f3e6861c91 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:16.3579106Z #17 extracting sha256:6f814b02e7b3455732fb531eb8112cfc2c6e9c47f0928e35ae2619557e079592
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7779644Z #17 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7780287Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7781364Z #21 [backend stage-1 1/3] FROM docker.io/library/eclipse-temurin:25-jre@sha256:9c9e7c4f5f3840e5254be62ea9a7de56b2d0af23864032a8a3654bf63c31cd5b
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7783238Z #21 resolve docker.io/library/eclipse-temurin:25-jre@sha256:9c9e7c4f5f3840e5254be62ea9a7de56b2d0af23864032a8a3654bf63c31cd5b 0.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7784979Z #21 sha256:5ace8b741561b00e1b416e0ee7df6fd2a969a2f977fae2253fed4e3a628f29da 12.19MB / 12.19MB 0.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7786195Z #21 sha256:9c9e7c4f5f3840e5254be62ea9a7de56b2d0af23864032a8a3654bf63c31cd5b 5.91kB / 5.91kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7790375Z #21 sha256:db3011b348ad87ced055afe5145238d87a3d8f0e8f23eb4d0cd8cecb4659b085 2.13kB / 2.13kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7800805Z #21 sha256:1c24335ddd46023ff99bd665bd8ea6798464f7bbf501718edcf2eb4696e5f408 387B / 387B 0.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7807374Z #21 sha256:8b38c9b7ad612c36bc9377d069cef8cae22896ba0aec9c0f2b727cf7d0409cf4 9.27kB / 9.27kB done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7813401Z #21 sha256:6f5c5aa4e145204b113f983c003ff8ad6489394294ef95ec030bc94e3daded54 41.55MB / 41.55MB 0.3s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7824734Z #21 sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B 0.4s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7827229Z #21 sha256:554f95b8494711963b43a44fb49cb547ac663994b8eab1df1c8f83adc364790f 2.28kB / 2.28kB 0.4s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7833249Z #21 sha256:c77744225e9988c5b332d64b4d6eaf5d5607184bbdd2a976d8bfb0481122dd9f 63.05MB / 63.05MB 0.6s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7834418Z #21 extracting sha256:6f5c5aa4e145204b113f983c003ff8ad6489394294ef95ec030bc94e3daded54 4.0s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7841157Z #21 extracting sha256:1c24335ddd46023ff99bd665bd8ea6798464f7bbf501718edcf2eb4696e5f408 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7841893Z #21 extracting sha256:5ace8b741561b00e1b416e0ee7df6fd2a969a2f977fae2253fed4e3a628f29da 0.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7842582Z #21 extracting sha256:c77744225e9988c5b332d64b4d6eaf5d5607184bbdd2a976d8bfb0481122dd9f 1.9s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7845354Z #21 extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7846046Z #21 extracting sha256:554f95b8494711963b43a44fb49cb547ac663994b8eab1df1c8f83adc364790f done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7846545Z #21 DONE 8.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7846736Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7847116Z #22 [backend stage-1 2/3] WORKDIR /app
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7853493Z #22 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7854391Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7861169Z #17 [backend build 1/5] FROM docker.io/library/maven:3.9-eclipse-temurin-25@sha256:1c3a703ab39fee7ac0880f46e6ccd22c0d701f17f0616e6e66a258ddc1c637d2
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.7866180Z #17 extracting sha256:6f814b02e7b3455732fb531eb8112cfc2c6e9c47f0928e35ae2619557e079592 1.5s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:17.9101713Z #17 extracting sha256:519c1bec89d417c0e723d914ccc4d2084851d1e9793b97462b2640d283b98af7 0.1s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0476449Z #17 extracting sha256:519c1bec89d417c0e723d914ccc4d2084851d1e9793b97462b2640d283b98af7 0.1s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0478890Z #17 extracting sha256:ae17143cc8a11054bf33dd75df211ad5fed109e60bcf98fa94c0876018ca8a5b done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0480125Z #17 extracting sha256:a9c0cc03c596e5022bb0adf59b2f9feb98e7e5e0598c38621dcd0cdd61d9a8af done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0480877Z #17 DONE 8.2s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0481061Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0481226Z #23 [backend build 2/5] WORKDIR /workspace
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0481666Z #23 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0481840Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0481990Z #24 [backend build 3/5] COPY pom.xml .
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0482402Z #24 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0482571Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0482723Z #25 [backend build 4/5] COPY src ./src
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0483490Z #25 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0483661Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:18.0483827Z #26 [dashboard build 4/6] RUN npm install
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:19.7005849Z #26 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:19.7006757Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:19.7007564Z #27 [backend build 5/5] RUN mvn -q -Dmaven.test.skip=true package
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4234171Z #27 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4234756Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4235031Z #26 [dashboard build 4/6] RUN npm install
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4235488Z #26 7.870 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4236152Z #26 7.870 added 48 packages, and audited 49 packages in 8s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4236687Z #26 7.870 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4237247Z #26 7.870 9 packages are looking for funding
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4237789Z #26 7.871   run `npm fund` for details
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4238232Z #26 7.872 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4238559Z #26 7.872 found 0 vulnerabilities
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4238962Z #26 7.874 npm notice
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4239508Z #26 7.874 npm notice New minor version of npm available! 11.12.1 -> 11.14.1
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4240458Z #26 7.874 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.14.1
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4241345Z #26 7.874 npm notice To update run: npm install -g npm@11.14.1
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4241898Z #26 7.874 npm notice
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.4242240Z #26 DONE 8.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.5909152Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.5909968Z #28 [dashboard build 5/6] COPY . .
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.5910776Z #28 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.5911221Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.5911421Z #29 [dashboard build 6/6] RUN npm run build
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.7224131Z #29 0.282 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.7224566Z #29 0.282 > @synapse/dashboard@1.0.0 build
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.7225091Z #29 0.282 > vue-tsc --noEmit && vite build
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:21.7225492Z #29 0.282 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:27.7343641Z #29 6.295 vite v7.3.3 building client environment for production...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:27.9298625Z #29 6.490 transforming...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.5097096Z #29 8.070 Ô£ô 53 modules transformed.
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.6339495Z #29 8.191 rendering chunks...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8697258Z #29 8.268 computing gzip size...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8702822Z #29 8.276 dist/index.html                              0.40 kB Ôöé gzip:  0.27 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8704165Z #29 8.276 dist/assets/index-BgacWl64.css               5.92 kB Ôöé gzip:  1.66 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8705405Z #29 8.276 dist/assets/appStore-BdR_aIe3.js             0.25 kB Ôöé gzip:  0.19 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8706615Z #29 8.277 dist/assets/RoutingView-BqQDSzZW.js          0.98 kB Ôöé gzip:  0.61 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8708376Z #29 8.277 dist/assets/api-DQB1Guol.js                  1.12 kB Ôöé gzip:  0.51 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8709519Z #29 8.277 dist/assets/StoreView-BNVOLjuG.js            1.45 kB Ôöé gzip:  0.79 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8710857Z #29 8.277 dist/assets/OverviewView-BgECU3Tq.js         2.03 kB Ôöé gzip:  1.00 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8712221Z #29 8.277 dist/assets/LogsView-BL2bTKXo.js             2.66 kB Ôöé gzip:  1.18 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8713388Z #29 8.277 dist/assets/ProvidersView-JyttrXuj.js        3.39 kB Ôöé gzip:  1.56 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8714575Z #29 8.277 dist/assets/ConversationsView-Dg_lFh4R.js    3.71 kB Ôöé gzip:  1.63 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8715766Z #29 8.277 dist/assets/PluginsView-5iA69tbS.js          3.92 kB Ôöé gzip:  1.75 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8718149Z #29 8.277 dist/assets/SettingsView-CBpJ-L2z.js         4.35 kB Ôöé gzip:  1.84 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8719726Z #29 8.277 dist/assets/AgentsView-DXfE2Zag.js           4.53 kB Ôöé gzip:  1.85 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8720954Z #29 8.277 dist/assets/index-BMGPlo2S.js              102.94 kB Ôöé gzip: 40.09 kB
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8721857Z #29 8.280 Ô£ô built in 1.93s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8751377Z #29 DONE 8.4s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8751728Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:29.8752414Z #27 [backend build 5/5] RUN mvn -q -Dmaven.test.skip=true package
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0988882Z #27 ...
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0989157Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0989754Z #30 [dashboard stage-1 2/3] COPY --from=build /workspace/dist /usr/share/nginx/html
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0990633Z #30 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0991385Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0992330Z #31 [dashboard stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0993490Z #31 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0993792Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0994249Z #32 [dashboard] exporting to image
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0994813Z #32 exporting layers
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.0999019Z #32 exporting layers 0.2s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2800571Z #32 writing image sha256:159605c7d7935bed9c5f1738a1db0b63bdd391f012102d938a56905150833efe done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2801552Z #32 naming to docker.io/library/synapse-dashboard done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2802091Z #32 DONE 0.2s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2802284Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2802515Z #33 [dashboard] resolving provenance for metadata file
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2803059Z #33 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2803247Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:30.2803541Z #27 [backend build 5/5] RUN mvn -q -Dmaven.test.skip=true package
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:34.9782083Z #27 DONE 16.9s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.2481916Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.2482573Z #34 [backend stage-1 3/3] COPY --from=build /workspace/target/synapse-core-*.jar app.jar
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.4663669Z #34 DONE 0.1s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.4664161Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.4664419Z #35 [backend] exporting to image
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:35.4664866Z #35 exporting layers
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0069118Z #35 exporting layers 0.7s done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0292158Z #35 writing image sha256:efb0a55091a5824948d0595d09fc7f4e28d0e91b9f7b10ba7b42a7cf40a42566 done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0293043Z #35 naming to docker.io/library/synapse-backend done
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0293522Z #35 DONE 0.7s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0293682Z 
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0293884Z #36 [backend] resolving provenance for metadata file
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0294347Z #36 DONE 0.0s
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0296377Z  backend  Built
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0296701Z  dashboard  Built
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0307454Z  Network synapse_default  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0650742Z  Network synapse_default  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0654148Z  Volume "synapse_qdrant-data"  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0670834Z  Volume "synapse_qdrant-data"  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0674400Z  Volume "synapse_postgres18-data"  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0683430Z  Volume "synapse_postgres18-data"  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0686614Z  Volume "synapse_redis-data"  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0694547Z  Volume "synapse_redis-data"  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0699054Z  Container synapse-qdrant-1  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0700891Z  Container synapse-postgres-1  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0701363Z  Container synapse-redis-1  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0954598Z  Container synapse-qdrant-1  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0960928Z  Container synapse-postgres-1  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0963248Z  Container synapse-redis-1  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.0963770Z  Container synapse-backend-1  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1070192Z  Container synapse-backend-1  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1070873Z  Container synapse-dashboard-1  Creating
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1169632Z  Container synapse-dashboard-1  Created
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1183146Z  Container synapse-redis-1  Starting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1183835Z  Container synapse-postgres-1  Starting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.1184312Z  Container synapse-qdrant-1  Starting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.3963270Z  Container synapse-redis-1  Started
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.4107895Z  Container synapse-postgres-1  Started
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.4110426Z  Container synapse-postgres-1  Waiting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.4111108Z  Container synapse-redis-1  Waiting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:36.4118538Z  Container synapse-qdrant-1  Started
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:41.9128345Z  Container synapse-postgres-1  Healthy
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:41.9128936Z  Container synapse-redis-1  Healthy
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:41.9129309Z  Container synapse-backend-1  Starting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:42.0429406Z  Container synapse-backend-1  Started
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:42.0430006Z  Container synapse-dashboard-1  Starting
+smoke-test	Start Docker Compose stack	2026-05-10T13:22:42.2032004Z  Container synapse-dashboard-1  Started
+smoke-test	Wait for services to be healthy	´╗┐2026-05-10T13:22:42.2124579Z ##[group]Run echo "Waiting for backend to be ready..."
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2125290Z ^[[36;1mecho "Waiting for backend to be ready..."^[[0m
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2126135Z ^[[36;1mtimeout 120 bash -c 'until curl -f http://localhost:8080/api/health; do sleep 2; done'^[[0m
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2158427Z shell: /usr/bin/bash -e {0}
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2158836Z ##[endgroup]
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2229897Z Waiting for backend to be ready...
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2342186Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2343469Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2344167Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2349278Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2350096Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:42.2350833Z curl: (56) Recv failure: Connection reset by peer
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2468340Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2470329Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2470741Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2498469Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2513244Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:44.2514334Z curl: (56) Recv failure: Connection reset by peer
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2596477Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2609934Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2612995Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2613455Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2623203Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:46.2623987Z curl: (56) Recv failure: Connection reset by peer
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2708751Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2709559Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2709983Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2722278Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2723031Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:48.2723576Z curl: (52) Empty reply from server
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2791441Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2792265Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2792541Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2793301Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2793905Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:50.2794637Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2865607Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2866153Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2866416Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2868049Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2869275Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:52.2870109Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2941829Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2942597Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2942994Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2943538Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2945062Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:54.2945797Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3017530Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3018291Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3018727Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3019095Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3019779Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:56.3020642Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3093174Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3094287Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3094754Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3095011Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3097655Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:22:58.3098672Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3169197Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3169766Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3170034Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3171357Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3171970Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:00.3172539Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3243594Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3244148Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3244423Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3245452Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3246090Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:02.3246708Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3318134Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3318684Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3318951Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3320131Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3320919Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:04.3321803Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3393619Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3394375Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3394808Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3395494Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3396451Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:06.3397479Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3469824Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3470402Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3470688Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3471399Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3472010Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:08.3473048Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3545590Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3546374Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3547050Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3547466Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3548099Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:10.3548862Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3619335Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3620081Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3620358Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3621018Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3621638Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:12.3622387Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3693358Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3694135Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3694414Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3695135Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3695632Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:14.3696335Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3769057Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3769780Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3770061Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3771280Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3771872Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:16.3772638Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3845223Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3845954Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3846403Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3847479Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3849505Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:18.3850223Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3921101Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3921848Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3922224Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3922989Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3924113Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:20.3925519Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3995820Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3996586Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3997220Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3997962Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3998537Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:22.3999708Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4071830Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4072584Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4073024Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4074074Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4074662Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:24.4075417Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4147283Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4148349Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4148741Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4149333Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4149951Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:26.4150813Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4221416Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4222072Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4222405Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4223392Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4224088Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:28.4224693Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4297933Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4298662Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4298957Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4300654Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4301434Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:30.4302298Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4375120Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4375886Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4376271Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4377252Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4377857Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:32.4378607Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4449818Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4450581Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4451011Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4451677Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4452237Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:34.4453350Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4525257Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4526029Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4526602Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4526895Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4527809Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:36.4529088Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4602474Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4603253Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4603637Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4604273Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4604875Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:38.4605819Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4676542Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4677431Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4677732Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4678474Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4679108Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:40.4679944Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4751596Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4752390Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4752765Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4753432Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4754003Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:42.4754841Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4828012Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4828658Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4828967Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4830141Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4830741Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:44.4831310Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4900941Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4901614Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4901910Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4903090Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4903730Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:46.4904511Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4976172Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4977014Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4977332Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4978180Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4979894Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:48.4981049Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5052455Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5053037Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5053319Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5054538Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5055298Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:50.5056758Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5127179Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5127817Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5128099Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5129714Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5130367Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:52.5131172Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5200984Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5201736Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5202114Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5202869Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5203480Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:54.5204238Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5275867Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5276646Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5277353Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5277758Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5278326Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:56.5279163Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5351624Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5352183Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5352462Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5353425Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5354015Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:23:58.5354703Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5426098Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5427125Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5427523Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5428143Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5428714Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:00.5429552Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5497570Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5498341Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5498638Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5499333Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5499944Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:02.5500854Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5573829Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5574575Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5574950Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5575682Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5576277Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:04.5577354Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5647902Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5648625Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5649025Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5650320Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5650942Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:06.5651704Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5723058Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5723646Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5723923Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5724892Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5725567Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:08.5726277Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5799586Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5800127Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5800410Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5801130Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5801710Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:10.5802859Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5874845Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5875607Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5876002Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5876724Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5877652Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:12.5878421Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5949163Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5949737Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5949991Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5951367Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5952075Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:14.5952926Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6025456Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6026245Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6026620Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6027377Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6027961Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:16.6029104Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6101929Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6102712Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6103111Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6103694Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6104256Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:18.6104994Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6178151Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6178780Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6179053Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6179516Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6180134Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:20.6180886Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6251972Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6252729Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6253090Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6253861Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6254428Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:22.6255231Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6329542Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6330308Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6330610Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6331208Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6331811Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:24.6332613Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6404788Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6405584Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6405857Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6406528Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6407293Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:26.6408065Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6480195Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6480894Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6481182Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6482115Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6482706Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:28.6483486Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6555888Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6556683Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6557165Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6557935Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6558531Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:30.6559284Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6628656Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6629381Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6629683Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6630548Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6631332Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:32.6632097Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6702587Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6703336Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6703608Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6704312Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6722912Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:34.6723712Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6776384Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6777421Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6777715Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6778303Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6778930Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:36.6779759Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6853641Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6854446Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6854878Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6855189Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6855767Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:38.6856520Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6929517Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6930075Z                                  Dload  Upload   Total   Spent    Left  Speed
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6930340Z 
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6931563Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6932176Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:40.6932716Z curl: (7) Failed to connect to localhost port 8080 after 0 ms: Couldn't connect to server
+smoke-test	Wait for services to be healthy	2026-05-10T13:24:42.2269431Z ##[error]Process completed with exit code 124.
+smoke-test	Show logs on failure	´╗┐2026-05-10T13:24:42.2328231Z ##[group]Run echo "=== Backend logs ==="
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2328550Z ^[[36;1mecho "=== Backend logs ==="^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2328794Z ^[[36;1mdocker compose logs backend^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2329041Z ^[[36;1mecho "=== PostgreSQL logs ==="^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2329294Z ^[[36;1mdocker compose logs postgres^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2329537Z ^[[36;1mecho "=== Container status ==="^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2329784Z ^[[36;1mdocker compose ps^[[0m
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2350721Z shell: /usr/bin/bash -e {0}
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2350951Z ##[endgroup]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.2390065Z === Backend logs ===
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3068524Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3077655Z backend-1  |   .   ____          _            __ _ _
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3078248Z backend-1  |  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3078743Z backend-1  | ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3079063Z backend-1  |  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3079360Z backend-1  |   '  |____| .__|_| |_|_| |_\__, | / / / /
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3079984Z backend-1  |  =========|_|==============|___/=/_/_/_/
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3080251Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3084840Z backend-1  |  :: Spring Boot ::                (v4.0.0)
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3085167Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3086025Z backend-1  | 2026-05-10T13:22:43.279Z  INFO 1 --- [synapse-core] [           main] dev.synapse.core.SynapseApplication      : Starting SynapseApplication v1.4.3-dev using Java 25.0.3 with PID 1 (/app/app.jar started by root in /app)
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3088146Z backend-1  | 2026-05-10T13:22:43.285Z  INFO 1 --- [synapse-core] [           main] dev.synapse.core.SynapseApplication      : No active profile set, falling back to 1 default profile: "default"
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3090275Z backend-1  | 2026-05-10T13:22:44.554Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3092454Z backend-1  | 2026-05-10T13:22:44.555Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3094482Z backend-1  | 2026-05-10T13:22:44.760Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 194 ms. Found 20 JPA repository interfaces.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3096614Z backend-1  | 2026-05-10T13:22:44.822Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3098903Z backend-1  | 2026-05-10T13:22:44.823Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3102964Z backend-1  | 2026-05-10T13:22:44.843Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.AgentHeartbeatRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3107554Z backend-1  | 2026-05-10T13:22:44.844Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.AgentMemoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3111792Z backend-1  | 2026-05-10T13:22:44.845Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.AgentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3115773Z backend-1  | 2026-05-10T13:22:44.845Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.AgentRuntimeRegistryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3120232Z backend-1  | 2026-05-10T13:22:44.845Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.AgentTeamRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3124198Z backend-1  | 2026-05-10T13:22:44.845Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.ConversationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3128380Z backend-1  | 2026-05-10T13:22:44.845Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.FirmProjectRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3132334Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.MessageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3136318Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.ModelProviderRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3141726Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.PluginRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3146317Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.PluginStatsRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3151581Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.ProjectRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3156181Z backend-1  | 2026-05-10T13:22:44.846Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.ProviderUsageLogRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3160655Z backend-1  | 2026-05-10T13:22:44.847Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.RoutingLogRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3165202Z backend-1  | 2026-05-10T13:22:44.847Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.StoreEntryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3173155Z backend-1  | 2026-05-10T13:22:44.847Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.SystemMetadataRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3181168Z backend-1  | 2026-05-10T13:22:44.847Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.TaskLogRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3189190Z backend-1  | 2026-05-10T13:22:44.847Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.TaskRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3195751Z backend-1  | 2026-05-10T13:22:44.848Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.TeamMembershipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3202382Z backend-1  | 2026-05-10T13:22:44.848Z  INFO 1 --- [synapse-core] [           main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface dev.synapse.core.common.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3207595Z backend-1  | 2026-05-10T13:22:44.848Z  INFO 1 --- [synapse-core] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3209659Z backend-1  | 2026-05-10T13:22:45.700Z  INFO 1 --- [synapse-core] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3211347Z backend-1  | 2026-05-10T13:22:45.718Z  INFO 1 --- [synapse-core] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3212333Z backend-1  | 2026-05-10T13:22:45.718Z  INFO 1 --- [synapse-core] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.14]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3214111Z backend-1  | 2026-05-10T13:22:45.746Z  INFO 1 --- [synapse-core] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2355 ms
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3215446Z backend-1  | 2026-05-10T13:22:46.353Z  INFO 1 --- [synapse-core] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3216451Z backend-1  | 2026-05-10T13:22:46.423Z  INFO 1 --- [synapse-core] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 7.1.8.Final
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3217839Z backend-1  | 2026-05-10T13:22:47.065Z  INFO 1 --- [synapse-core] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3219007Z backend-1  | 2026-05-10T13:22:47.102Z  INFO 1 --- [synapse-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3220024Z backend-1  | 2026-05-10T13:22:47.313Z  INFO 1 --- [synapse-core] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@4cd7128
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3221229Z backend-1  | 2026-05-10T13:22:47.315Z  INFO 1 --- [synapse-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3222145Z backend-1  | 2026-05-10T13:22:47.399Z  INFO 1 --- [synapse-core] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3222851Z backend-1  | 	Database JDBC URL [jdbc:postgresql://postgres:5432/synapse]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3223270Z backend-1  | 	Database driver: PostgreSQL JDBC Driver
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3223585Z backend-1  | 	Database dialect: PostgreSQLDialect
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3223856Z backend-1  | 	Database version: 18.3
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3224131Z backend-1  | 	Default catalog/schema: synapse/public
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3224427Z backend-1  | 	Autocommit mode: undefined/unknown
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3224807Z backend-1  | 	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3225233Z backend-1  | 	JDBC fetch size: none
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3225504Z backend-1  | 	Pool: DatasourceConnectionProviderImpl
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3225814Z backend-1  | 	Minimum pool size: undefined/unknown
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3226097Z backend-1  | 	Maximum pool size: undefined/unknown
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3227440Z backend-1  | 2026-05-10T13:22:48.575Z  INFO 1 --- [synapse-core] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3229880Z backend-1  | 2026-05-10T13:22:48.583Z  INFO 1 --- [synapse-core] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3232106Z backend-1  | 2026-05-10T13:22:48.718Z  INFO 1 --- [synapse-core] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3240208Z backend-1  | 2026-05-10T13:22:49.565Z  WARN 1 --- [synapse-core] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'conversationController' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/dev/synapse/core/conversation/ConversationController.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'messageService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/dev/synapse/core/conversation/MessageService.class]: Unsatisfied dependency expressed through constructor parameter 4: No qualifying bean of type 'dev.synapse.agents.service.MainAgentPromptService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3248972Z backend-1  | 2026-05-10T13:22:49.566Z  INFO 1 --- [synapse-core] [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3251557Z backend-1  | 2026-05-10T13:22:49.569Z  INFO 1 --- [synapse-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3253767Z backend-1  | 2026-05-10T13:22:49.574Z  INFO 1 --- [synapse-core] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3256432Z backend-1  | 2026-05-10T13:22:49.577Z  INFO 1 --- [synapse-core] [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3262262Z backend-1  | 2026-05-10T13:22:49.589Z  INFO 1 --- [synapse-core] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3263758Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3264854Z backend-1  | Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3266539Z backend-1  | 2026-05-10T13:22:49.613Z ERROR 1 --- [synapse-core] [           main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3267558Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3267859Z backend-1  | ***************************
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3268295Z backend-1  | APPLICATION FAILED TO START
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3268716Z backend-1  | ***************************
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3269107Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3269400Z backend-1  | Description:
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3269738Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3270972Z backend-1  | Parameter 4 of constructor in dev.synapse.core.conversation.MessageService required a bean of type 'dev.synapse.agents.service.MainAgentPromptService' that could not be found.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3272310Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3272581Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3272839Z backend-1  | Action:
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3273127Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3273910Z backend-1  | Consider defining a bean of type 'dev.synapse.agents.service.MainAgentPromptService' in your configuration.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3274816Z backend-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3275118Z === PostgreSQL logs ===
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3916873Z postgres-1  | The files belonging to this database system will be owned by user "postgres".
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3918066Z postgres-1  | This user must also own the server process.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3918378Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3918801Z postgres-1  | The database cluster will be initialized with locale "en_US.utf8".
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3919601Z postgres-1  | The default database encoding has accordingly been set to "UTF8".
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3920076Z postgres-1  | The default text search configuration will be set to "english".
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3920414Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3920624Z postgres-1  | Data page checksums are enabled.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3920888Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3921219Z postgres-1  | fixing permissions on existing directory /var/lib/postgresql/18/docker ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3921699Z postgres-1  | creating subdirectories ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3922052Z postgres-1  | selecting dynamic shared memory implementation ... posix
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3922441Z postgres-1  | selecting default "max_connections" ... 100
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3922777Z postgres-1  | selecting default "shared_buffers" ... 128MB
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3923108Z postgres-1  | selecting default time zone ... Etc/UTC
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3923409Z postgres-1  | creating configuration files ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3923702Z postgres-1  | running bootstrap script ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3924036Z postgres-1  | performing post-bootstrap initialization ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3924357Z postgres-1  | syncing data to disk ... ok
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3924594Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3924755Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3925008Z postgres-1  | Success. You can now start the database server using:
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3925598Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3925893Z postgres-1  |     pg_ctl -D /var/lib/postgresql/18/docker -l logfile start
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3926223Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3926529Z postgres-1  | initdb: warning: enabling "trust" authentication for local connections
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3927544Z postgres-1  | initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3928649Z postgres-1  | waiting for server to start....2026-05-10 13:22:37.086 UTC [53] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3929560Z postgres-1  | 2026-05-10 13:22:37.086 UTC [53] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3930166Z postgres-1  | 2026-05-10 13:22:37.090 UTC [59] LOG:  database system was shut down at 2026-05-10 13:22:37 UTC
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3930910Z postgres-1  | 2026-05-10 13:22:37.093 UTC [53] LOG:  database system is ready to accept connections
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3931294Z postgres-1  |  done
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3931479Z postgres-1  | server started
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3931694Z postgres-1  | CREATE DATABASE
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3931892Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3932055Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3932385Z postgres-1  | /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3932788Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3933062Z postgres-1  | 2026-05-10 13:22:37.286 UTC [53] LOG:  received fast shutdown request
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3933628Z postgres-1  | waiting for server to shut down....2026-05-10 13:22:37.287 UTC [53] LOG:  aborting any active transactions
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3934350Z postgres-1  | 2026-05-10 13:22:37.289 UTC [53] LOG:  background worker "logical replication launcher" (PID 62) exited with exit code 1
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3934920Z postgres-1  | 2026-05-10 13:22:37.290 UTC [57] LOG:  shutting down
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3935357Z postgres-1  | 2026-05-10 13:22:37.290 UTC [57] LOG:  checkpoint starting: shutdown immediate
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3936555Z postgres-1  | 2026-05-10 13:22:37.306 UTC [57] LOG:  checkpoint complete: wrote 943 buffers (5.8%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.013 s, sync=0.002 s, total=0.016 s; sync files=303, longest=0.001 s, average=0.001 s; distance=4352 kB, estimate=4352 kB; lsn=0/1B9FBA0, redo lsn=0/1B9FBA0
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3954035Z postgres-1  | 2026-05-10 13:22:37.316 UTC [53] LOG:  database system is shut down
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3954423Z postgres-1  |  done
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3954632Z postgres-1  | server stopped
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3954842Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3955108Z postgres-1  | PostgreSQL init process complete; ready for start up.
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3955434Z postgres-1  | 
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3955997Z postgres-1  | 2026-05-10 13:22:37.407 UTC [1] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3956953Z postgres-1  | 2026-05-10 13:22:37.407 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3957583Z postgres-1  | 2026-05-10 13:22:37.407 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3958146Z postgres-1  | 2026-05-10 13:22:37.408 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3958771Z postgres-1  | 2026-05-10 13:22:37.412 UTC [75] LOG:  database system was shut down at 2026-05-10 13:22:37 UTC
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3959333Z postgres-1  | 2026-05-10 13:22:37.415 UTC [1] LOG:  database system is ready to accept connections
+smoke-test	Show logs on failure	2026-05-10T13:24:42.3972770Z === Container status ===
+smoke-test	Show logs on failure	2026-05-10T13:24:42.4675734Z NAME                  IMAGE                   COMMAND                  SERVICE     CREATED         STATUS                   PORTS
+smoke-test	Show logs on failure	2026-05-10T13:24:42.4677918Z synapse-dashboard-1   synapse-dashboard       "/docker-entrypoint.ÔÇª"   dashboard   2 minutes ago   Up 2 minutes             0.0.0.0:3000->80/tcp, [::]:3000->80/tcp
+smoke-test	Show logs on failure	2026-05-10T13:24:42.4679508Z synapse-postgres-1    postgres:18             "docker-entrypoint.sÔÇª"   postgres    2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+smoke-test	Show logs on failure	2026-05-10T13:24:42.4680520Z synapse-qdrant-1      qdrant/qdrant:v1.14.1   "./entrypoint.sh"        qdrant      2 minutes ago   Up 2 minutes             0.0.0.0:6333->6333/tcp, [::]:6333->6333/tcp, 6334/tcp
+smoke-test	Show logs on failure	2026-05-10T13:24:42.4681643Z synapse-redis-1       redis:8                 "docker-entrypoint.sÔÇª"   redis       2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp
+smoke-test	Cleanup	´╗┐2026-05-10T13:24:42.4741659Z ##[group]Run docker compose down -v
+smoke-test	Cleanup	2026-05-10T13:24:42.4741967Z ^[[36;1mdocker compose down -v^[[0m
+smoke-test	Cleanup	2026-05-10T13:24:42.4763272Z shell: /usr/bin/bash -e {0}
+smoke-test	Cleanup	2026-05-10T13:24:42.4763510Z ##[endgroup]
+smoke-test	Cleanup	2026-05-10T13:24:42.5459043Z  Container synapse-dashboard-1  Stopping
+smoke-test	Cleanup	2026-05-10T13:24:42.5459784Z  Container synapse-qdrant-1  Stopping
+smoke-test	Cleanup	2026-05-10T13:24:42.6578205Z  Container synapse-qdrant-1  Stopped
+smoke-test	Cleanup	2026-05-10T13:24:42.6583551Z  Container synapse-qdrant-1  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.6665847Z  Container synapse-qdrant-1  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.6770263Z  Container synapse-dashboard-1  Stopped
+smoke-test	Cleanup	2026-05-10T13:24:42.6771319Z  Container synapse-dashboard-1  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.6823199Z  Container synapse-dashboard-1  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.6824231Z  Container synapse-backend-1  Stopping
+smoke-test	Cleanup	2026-05-10T13:24:42.6825417Z  Container synapse-backend-1  Stopped
+smoke-test	Cleanup	2026-05-10T13:24:42.6826208Z  Container synapse-backend-1  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.6873333Z  Container synapse-backend-1  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.6874270Z  Container synapse-redis-1  Stopping
+smoke-test	Cleanup	2026-05-10T13:24:42.6875218Z  Container synapse-postgres-1  Stopping
+smoke-test	Cleanup	2026-05-10T13:24:42.8037963Z  Container synapse-postgres-1  Stopped
+smoke-test	Cleanup	2026-05-10T13:24:42.8040641Z  Container synapse-postgres-1  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.8138735Z  Container synapse-postgres-1  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.8810202Z  Container synapse-redis-1  Stopped
+smoke-test	Cleanup	2026-05-10T13:24:42.8817267Z  Container synapse-redis-1  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.8851451Z  Container synapse-redis-1  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.8861453Z  Volume synapse_redis-data  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.8867556Z  Volume synapse_postgres18-data  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.8873012Z  Network synapse_default  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.8882020Z  Volume synapse_redis-data  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.8885786Z  Volume synapse_qdrant-data  Removing
+smoke-test	Cleanup	2026-05-10T13:24:42.9232495Z  Volume synapse_postgres18-data  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.9237933Z  Volume synapse_qdrant-data  Removed
+smoke-test	Cleanup	2026-05-10T13:24:42.9920488Z  Network synapse_default  Removed
+smoke-test	Post Checkout code	´╗┐2026-05-10T13:24:43.0031471Z Post job cleanup.
+smoke-test	Post Checkout code	2026-05-10T13:24:43.0896122Z [command]/usr/bin/git version
+smoke-test	Post Checkout code	2026-05-10T13:24:43.0931968Z git version 2.53.0
+smoke-test	Post Checkout code	2026-05-10T13:24:43.0973132Z Temporarily overriding HOME='/home/runner/work/_temp/b2577652-3cc6-4544-9e33-e6784a07f277' before making global git config changes
+smoke-test	Post Checkout code	2026-05-10T13:24:43.0974471Z Adding repository directory to the temporary git global config as a safe directory
+smoke-test	Post Checkout code	2026-05-10T13:24:43.0979410Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Synapse/Synapse
+smoke-test	Post Checkout code	2026-05-10T13:24:43.1009591Z Removing SSH command configuration
+smoke-test	Post Checkout code	2026-05-10T13:24:43.1015874Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+smoke-test	Post Checkout code	2026-05-10T13:24:43.1049515Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+smoke-test	Post Checkout code	2026-05-10T13:24:43.1256468Z fatal: No url found for submodule path 'synapse-docs' in .gitmodules
+smoke-test	Post Checkout code	2026-05-10T13:24:43.1294733Z ##[warning]The process '/usr/bin/git' failed with exit code 128
+smoke-test	Complete job	´╗┐2026-05-10T13:24:43.1400680Z Cleaning up orphan processes
