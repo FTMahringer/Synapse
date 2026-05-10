@@ -224,7 +224,7 @@ dev/synapse/
 
 ---
 
-## v2.1.0 - Advanced Agent Capabilities
+## v2.4.0 - Advanced Agent Capabilities
 
 **Goal**: Enhanced agent collaboration, memory, and reasoning.
 
@@ -248,17 +248,18 @@ dev/synapse/
 - Plan refinement and adaptation
 - Goal-based agent behavior
 
-#### v2.4.4-dev: Tool Integration
-- Plugin-based tool system
+#### v2.4.4-dev: Native Java Tool Integration
+- Java-based tool interface
 - Tool discovery and registration
-- Tool execution sandboxing
+- Tool execution within JVM
 - Tool result caching
+- **Note**: Foundation for Java plugin system (v2.6.0)
 
-#### v2.1.0: Tag Advanced Agents Release
+#### v2.4.0: Tag Advanced Agents Release
 
 ---
 
-## v2.1.0 - Security Hardening
+## v2.5.0 - Security Hardening
 
 **Goal**: Production-grade security, compliance, and audit logging.
 
@@ -289,73 +290,118 @@ dev/synapse/
 - Right to deletion
 - Data anonymization
 
-#### v2.1.0: Tag Security Release
+#### v2.5.0: Tag Security Release
 
 ---
 
-## v2.1.0 - Plugin Ecosystem
+## v2.6.0 - Plugin Ecosystem (Java-First)
 
-**Goal**: Robust plugin system with marketplace and community contributions.
+**Goal**: Robust Java plugin system with marketplace and community contributions.
+
+**Architecture**: Following SYNAPSE's [Java-First Plugin Strategy](./ideas/plugin-language-strategy.md):
+- Native Java plugins (.jar) with direct JVM integration
+- Spring Boot-based plugin framework
+- ClassLoader isolation for security
+- Future external runtime for multi-language support
 
 ### Implementation Steps
 
-#### v2.6.1-dev: Plugin Marketplace
-- Plugin discovery UI
-- Plugin ratings and reviews
-- Plugin screenshots and demos
-- Plugin versioning
+#### v2.6.1-dev: Java Plugin API & Framework
+- Define `SynapsePlugin` interface
+- Plugin lifecycle hooks (onLoad, onEnable, onDisable)
+- Plugin manifest format (plugin.yml)
+- ClassLoader-based plugin loading
+- Spring Boot integration for plugins
+- Plugin dependency injection
+- **Exit**: Core plugin API functional, example plugins working
 
-#### v2.6.2-dev: Plugin SDK
+#### v2.6.2-dev: Plugin SDK & Tooling
+- ✅ Java plugin template repository (Gradle-based)
+- Plugin validation tool (`synapse plugin validate`)
+- Plugin testing utilities
+- Plugin packaging tool (`synapse plugin package`)
+- Plugin publishing workflow
 - Developer documentation
-- Plugin templates
-- Testing framework
-- Publishing workflow
+- **Exit**: Developers can create, test, and package Java plugins
 
-#### v2.6.3-dev: Plugin Sandboxing
-- Resource limits (CPU, memory)
-- Network isolation
-- File system restrictions
+#### v2.6.3-dev: Plugin Sandboxing & Security
+- Java Security Manager integration
+- Resource limits (CPU, memory, time)
+- API access control
 - Plugin permissions model
+- ClassLoader isolation
+- Security auditing
+- **Exit**: Plugins run with controlled permissions and limits
 
-#### v2.6.4-dev: Plugin Analytics
-- Usage tracking
-- Performance metrics
-- Error reporting
-- User feedback collection
+#### v2.6.4-dev: Plugin Marketplace
+- Plugin discovery UI
+- Plugin installation/uninstallation
+- Plugin ratings and reviews
+- Plugin versioning and updates
+- Usage analytics (opt-in)
+- **Exit**: Users can discover and install community plugins
 
-#### v2.1.0: Tag Plugin Ecosystem Release
+#### v2.6.0: Tag Plugin Ecosystem Release
 
 ---
 
-## v2.1.0 - Multi-Tenancy
+## v2.7.0 - Plugin Ecosystem Advanced Features
+
+#### v2.7.1-dev: Plugin Registry Service
+- Central plugin registry API
+- Plugin metadata management
+- Dependency resolution
+- Version compatibility checking
+- Plugin search and filtering
+
+#### v2.7.2-dev: Official Plugin Library
+- Web search plugin (Java)
+- File operations plugin (Java)
+- Code execution plugin (Java)
+- API client plugin (Java)
+- Database connectors
+- **Exit**: 5+ official Java plugins available
+
+#### v2.7.3-dev: External Plugin Runtime (Foundation)
+- Process manager for external plugins
+- gRPC-based IPC mechanism
+- Plugin lifecycle for external processes
+- Error handling and recovery
+- **Exit**: Foundation for Python/Node.js plugins ready
+
+#### v2.7.0: Tag Plugin Advanced Features Release
+
+---
+
+## v2.8.0 - Multi-Tenancy
 
 **Goal**: Support multiple organizations with data isolation.
 
 ### Implementation Steps
 
-#### v2.7.1-dev: Tenant Model
+#### v2.8.1-dev: Tenant Model
 - Organization entity
 - Tenant isolation in database
 - Tenant-specific configuration
 - Tenant onboarding flow
 
-#### v2.7.2-dev: Resource Quotas
+#### v2.8.2-dev: Resource Quotas
 - Per-tenant limits (agents, conversations, storage)
 - Usage tracking
 - Billing integration hooks
 - Quota enforcement
 
-#### v2.7.3-dev: Tenant Admin Portal
+#### v2.8.3-dev: Tenant Admin Portal
 - Organization management UI
 - User management per tenant
 - Billing dashboard
 - Usage analytics
 
-#### v2.1.0: Tag Multi-Tenancy Release
+#### v2.8.0: Tag Multi-Tenancy Release
 
 ---
 
-## v2.1.0 - Infrastructure & Deployment Platform
+## v2.9.0 - Infrastructure & Deployment Platform
 
 **Goal**: Production-ready deployment infrastructure with Docker-first philosophy, optional Kubernetes orchestration, and distributed execution capabilities.
 
@@ -367,7 +413,7 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.8.1-dev: Docker & Bare-Metal Hardening
+#### v2.9.1-dev: Docker & Bare-Metal Hardening
 **Production-ready single-node deployments**
 - Enhanced Docker Compose for production (healthchecks, restart policies, resource limits)
 - Multi-node Docker Swarm deployment guide
