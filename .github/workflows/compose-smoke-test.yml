@@ -13,6 +13,9 @@ on:
       - 'packages/**'
       - 'installer/compose/**'
 
+permissions:
+  contents: read
+
 jobs:
   smoke-test:
     runs-on: ubuntu-latest

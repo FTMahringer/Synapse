@@ -11,6 +11,9 @@ on:
     paths:
       - 'packages/core/src/main/resources/db/migration/**'
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
