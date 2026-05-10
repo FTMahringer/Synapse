@@ -1,8 +1,10 @@
-# {SYSTEM_NAME}
+# SYNAPSE
 
 > **Your AI. Your Rules. Your Stack.**
 
-{SYSTEM_NAME} is a self-hosted, fully extensible AI platform that puts you in complete control of your AI environment. Run it on your own infrastructure, connect any model provider, build custom agent teams, and extend everything through a powerful plugin system — without ever depending on a third-party cloud.
+**Current Release**: v2.0.0 (Production Ready)
+
+SYNAPSE is a self-hosted, fully extensible AI platform that puts you in complete control of your AI environment. Run it on your own infrastructure, connect any model provider, build custom agent teams, and extend everything through a powerful plugin system — without ever depending on a third-party cloud.
 
 ---
 
@@ -24,50 +26,81 @@
 
 ### Prerequisites
 
-- Docker & Docker Compose (recommended) **or** a local JDK 25+, Maven 3.9+, Node 22+, Go 1.24+, PostgreSQL 18+, and Redis
-- A supported OS: Linux, macOS, or Windows (WSL2 recommended for CLI)
+- **Docker & Docker Compose** (recommended) **or** local development tools:
+  - JDK 25+
+  - Maven 3.9+
+  - Node.js 22+
+  - Go 1.26+
+  - PostgreSQL 18+
+  - Redis 8+
+- Supported OS: Linux, macOS, or Windows (WSL2 recommended)
 
-### One-Line Installer
-
-```bash
-./install.sh
-```
-
-The installer will:
-
-1. Check and validate all dependencies
-2. Generate a default configuration at `config/synapse.yml`
-3. Pull required Docker images (or build from source with `--build`)
-4. Initialize the PostgreSQL database and run migrations
-5. Start all services (backend, frontend, CLI agent bridge)
-6. Print the dashboard URL and initial admin credentials
-
-### Manual Setup
+### Docker Compose Setup (Recommended)
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/synapse.git
-cd synapse
+git clone https://github.com/FTMahringer/Synapse.git
+cd Synapse/installer/compose
 
-# Copy and edit the environment file
-cp .env.example .env
-$EDITOR .env
-
-# Start all services via Docker Compose
+# Start all services
 docker compose up -d
 
-# Or start each service individually for development:
-# Backend
-cd packages/core && mvn spring-boot:run
+# Check service health
+docker compose ps
 
-# Frontend
-cd packages/dashboard/frontend && npm install && npm run dev
-
-# CLI
-cd packages/cli && go run . connect --host localhost:8080
+# View logs
+docker compose logs -f backend
 ```
 
-The web dashboard is available at `http://localhost:3000` by default.
+Services will be available at:
+- **Backend API**: http://localhost:8080
+- **Dashboard**: http://localhost:3000
+- **PostgreSQL**: localhost:5432
+- **Redis**: localhost:6379
+- **Qdrant**: localhost:6333
+
+First-time setup will automatically:
+1. Create PostgreSQL database
+2. Run all 11 Flyway migrations
+3. Initialize system metadata
+4. Sync plugin store registry
+5. Start backend and dashboard
+
+### Environment Configuration
+
+Key environment variables (set in `docker-compose.yml` or `.env`):
+
+```bash
+# Required for production
+JWT_SECRET=your-256-bit-secret-here
+SECRETS_ENCRYPTION_KEY=your-32-byte-key-here
+
+# Optional
+SYNAPSE_VERSION=v2.0.0
+POSTGRES_PASSWORD=your-secure-password
+ECHO_ENABLED=false
+```
+
+### Manual Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/FTMahringer/Synapse.git
+cd Synapse
+
+# Backend (requires PostgreSQL and Redis running)
+cd packages/core
+mvn spring-boot:run
+
+# Frontend
+cd packages/dashboard/frontend
+npm install
+npm run dev
+
+# CLI
+cd packages/cli
+go run main.go health
+```
 
 ---
 
