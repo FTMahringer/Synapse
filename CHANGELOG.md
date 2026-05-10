@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.0.0-hotfix] - 2026-05-10
+
+**Security hotfix for v2.0.0 release.**
+
+### Security
+- Updated `org.bouncycastle:bcprov-jdk18on` from 1.78.1 to 1.84
+  - Fixed CVE-2026-5598 (HIGH): Covert timing channel vulnerability
+  - Fixed CVE-2026-0636 (MEDIUM): LDAP injection vulnerability
+- Enabled CSRF protection with `CookieCsrfTokenRepository`
+  - Added `CsrfTokenRequestAttributeHandler` for SPA support
+  - Exempted public endpoints from CSRF requirements
+  - Configured for stateless JWT + SPA architecture
+- Added `permissions: contents: read` to all GitHub Actions workflows
+  - frontend-ci.yml
+  - compose-smoke-test.yml
+  - migration-ci.yml
+
+---
+
 ## [v2.0.0] - 2026-05-10
 
 **Milestone:** SYNAPSE v2 - Operational AI Platform
@@ -525,6 +544,7 @@ Project foundation and development infrastructure.
 See individual milestone sections for complete development version (v*.*.x-dev) history.
 
 ### Hotfixes
+- v2.0.0-hotfix
 - v1.9.7-hotfix, v1.9.6-hotfix
 - v1.8.8-hotfix, v1.8.7-hotfix
 - v1.7.9-hotfix
@@ -535,6 +555,7 @@ See individual milestone sections for complete development version (v*.*.x-dev) 
 
 ---
 
+[v2.0.0-hotfix]: https://github.com/FTMahringer/Synapse/releases/tag/v2.0.0-hotfix
 [v2.0.0]: https://github.com/FTMahringer/Synapse/releases/tag/v2.0.0
 [v1.10.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.10.0
 [v1.9.0]: https://github.com/FTMahringer/Synapse/releases/tag/v1.9.0
