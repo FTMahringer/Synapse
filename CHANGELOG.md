@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.0.1-dev] - 2026-05-10
+
+**Development version: Docusaurus documentation platform setup.**
+
+### Added
+- Initialized Docusaurus v3.10.1 documentation platform in `/synapse-docs/` (separate git repository)
+- Custom SYNAPSE branding and theme configuration
+- Multi-sidebar documentation structure:
+  - Getting Started (Introduction, Quick Start, Installation, First Agent)
+  - Core Concepts (Architecture, Agents, Conversations, Memory System, Plugins, Teams)
+  - User Guides (Agent Management, Team Collaboration, Plugin Development, Memory Configuration)
+  - API Reference (REST API, WebSocket API, Authentication, Error Handling)
+  - Deployment (Docker Compose, Bare-Metal, Kubernetes, Environment Variables, Reverse Proxy, Backup/Restore, Troubleshooting)
+  - Administration (Configuration, Security, Monitoring, Upgrades)
+  - Development (Contributing, Environment Setup, Architecture Deep Dive, Database Schema, Testing, Release Process)
+- Comprehensive Getting Started documentation with Quick Start guide
+- Complete Core Concepts documentation (Architecture, Agents, Conversations, Memory, Plugins, Teams)
+- Versioned documentation support (v2.x, v3.x dropdown)
+- Syntax highlighting for Java, Bash, YAML, JSON, Docker, TypeScript
+- Edit-on-GitHub links for all documentation pages
+- GitHub Pages deployment configuration
+
+### Documentation
+- `/synapse-docs/` added to `.gitignore` (separate repository for independent versioning)
+- Placeholder files created for all planned documentation sections
+- Docker-first deployment philosophy documented
+
+---
+
 ## [v2.0.0-hotfix] - 2026-05-10
 
 **Security hotfix for v2.0.0 release.**
