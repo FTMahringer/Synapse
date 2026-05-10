@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="synapse-core"/>
+
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                          "level":"%level",
+                          "logger":"%logger{36}",
+                          "thread":"%thread",
+                          "message":"%message",
+                          "application":"${appName}",
+                          "traceId":"%X{traceId:-}",
+                          "spanId":"%X{spanId:-}",
+                          "correlationId":"%X{correlationId:-}"
+                        }
+                    </pattern>
+                </pattern>
+                <mdc/>
+                <stackTrace>
+                    <fieldName>stack_trace</fieldName>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="JSON_CONSOLE"/>
+    </root>
+</configuration>
