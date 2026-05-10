@@ -12,6 +12,29 @@ V3 focuses on **architectural excellence** and **production readiness** through:
 
 ---
 
+## Important Development Rules
+
+⚠️ **READ FIRST:** See [AGENT.md](./AGENT.md) for complete workflow rules.
+
+**For every development version (`v*.*.x-dev`):**
+1. ✅ Implement feature/changes
+2. ✅ **Update documentation** to reflect changes
+3. ✅ Commit code + documentation together
+4. ✅ Create annotated tag
+5. ✅ Push immediately (don't batch)
+6. ✅ Create GitHub pre-release
+
+**For every milestone release (`v*.x.0`):**
+1. ✅ Review all documentation for accuracy
+2. ✅ Create comprehensive release notes file
+3. ✅ Update README if needed
+4. ✅ Create GitHub release (NOT pre-release)
+5. ✅ Update version selector in Docusaurus
+
+**Documentation updates are MANDATORY at each step.**
+
+---
+
 ## v2.1.0 - Documentation Platform
 
 **Goal**: Establish comprehensive, professional documentation with Docusaurus to support all future development and user onboarding.
@@ -35,6 +58,10 @@ V3 focuses on **architectural excellence** and **production readiness** through:
 - Configure Algolia DocSearch for search functionality
 - Set up versioned documentation (v2.x, v3.x)
 - Custom branding and theme matching SYNAPSE identity
+- **📝 Commit:** Code + initial documentation structure
+- **🏷️ Tag:** `v2.0.1-dev`
+- **🚀 Push:** Immediately after commit
+- **📦 Release:** GitHub pre-release
 
 #### v2.0.2-dev: Migrate & Enhance Existing Docs
 **Convert markdown docs from /docs to Docusaurus**
@@ -104,6 +131,10 @@ V3 focuses on **architectural excellence** and **production readiness** through:
 - Deployed and publicly accessible
 - Search functionality working
 - Versioned documentation structure
+- **📝 Documentation:** Comprehensive release notes (`RELEASE_NOTES_V2.1.0.md`)
+- **🏷️ Tag:** `v2.1.0` (milestone release)
+- **📦 Release:** GitHub release (NOT pre-release)
+- **📚 Update:** Version selector to include v2.1.0
 
 ---
 
@@ -146,6 +177,8 @@ dev/synapse/
 - Move `health/`, bootstrap config → `core/bootstrap/`
 - Update imports
 - **Exit**: All infrastructure in `core/infrastructure`, bootstrap in `core/bootstrap`
+- **📝 Documentation:** Update architecture diagrams, developer guide
+- **🏷️ Tag:** `v2.1.1-dev` | **🚀 Push** | **📦 Pre-release**
 
 #### v2.1.2-dev: Create Common Layer
 - Move `domain/` → `core/common/domain/`
@@ -221,6 +254,8 @@ dev/synapse/
 - Create metrics configuration
 - Instrument key services (agents, conversations, providers)
 - Expose `/actuator/prometheus` endpoint
+- **📝 Documentation:** Monitoring guide, Prometheus setup
+- **🏷️ Tag:** `v2.2.1-dev` | **🚀 Push** | **📦 Pre-release**
 
 #### v2.2.2-dev: Distributed Tracing
 - Add Spring Cloud Sleuth
@@ -242,6 +277,12 @@ dev/synapse/
 - Log aggregation ready
 
 #### v2.3.0: Tag Observability Release
+
+**📝 Documentation requirements:**
+- Update monitoring and operations guides
+- Add Prometheus/Grafana dashboard examples
+- Document trace correlation patterns
+- Health check endpoint documentation
 
 ---
 
@@ -488,6 +529,10 @@ dev/synapse/
 - Optional Kubernetes orchestration
 - Infrastructure management UI
 - Distributed worker system
+- **📝 Documentation:** Complete deployment guides overhaul
+- **🏷️ Tag:** `v2.9.0` (major milestone)
+- **📦 Release:** Comprehensive infrastructure release notes
+- **📚 Update:** Installation, runner setup, Traefik guides
 
 ---
 
@@ -578,7 +623,16 @@ dev/synapse/
 - Upgrade instructions
 
 #### v2.12.0: Pre-release Testing
+- Final QA and testing
+- Documentation completeness audit
+- Migration guides finalized
+- **📝 Documentation:** Complete v2 → v3 migration guide
+
 #### v3.0.0: Production Release 🎉
+- **🏷️ Tag:** `v3.0.0` (MAJOR RELEASE)
+- **📦 Release:** Full production release with `RELEASE_NOTES_V3.md`
+- **📚 Documentation:** Launch v3.0.0 docs site
+- **🎉 Announcement:** Blog post, social media, community announcement
 
 ---
 
