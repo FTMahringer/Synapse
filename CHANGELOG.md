@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.2.4-dev] - 2026-05-10
+
+### Performance
+- Tuned HikariCP defaults and environment-driven pool settings
+- Tuned Redis Lettuce pool settings and timeouts
+- Added pooled outbound HTTP client configuration for provider services
+
+### Documentation
+- Updated release and workflow guidance for milestone sequencing and docs-coupled releases
+
+---
+
 ## [v2.0.0-hotfix] - 2026-05-10
 
 **Security hotfix for v2.0.0 release.**

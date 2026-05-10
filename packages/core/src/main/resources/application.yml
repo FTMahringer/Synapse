@@ -12,6 +12,13 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/synapse}
     username: ${SPRING_DATASOURCE_USERNAME:synapse}
     password: ${SPRING_DATASOURCE_PASSWORD:synapse_dev_password}
+    hikari:
+      minimum-idle: ${SPRING_DATASOURCE_HIKARI_MINIMUM_IDLE:5}
+      maximum-pool-size: ${SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE:25}
+      idle-timeout: ${SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT:300000}
+      max-lifetime: ${SPRING_DATASOURCE_HIKARI_MAX_LIFETIME:1800000}
+      connection-timeout: ${SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT:30000}
+      validation-timeout: ${SPRING_DATASOURCE_HIKARI_VALIDATION_TIMEOUT:5000}
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -23,6 +30,14 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      timeout: ${SPRING_DATA_REDIS_TIMEOUT:3s}
+      lettuce:
+        pool:
+          enabled: true
+          max-active: ${SPRING_DATA_REDIS_LETTUCE_POOL_MAX_ACTIVE:32}
+          max-idle: ${SPRING_DATA_REDIS_LETTUCE_POOL_MAX_IDLE:16}
+          min-idle: ${SPRING_DATA_REDIS_LETTUCE_POOL_MIN_IDLE:4}
+          max-wait: ${SPRING_DATA_REDIS_LETTUCE_POOL_MAX_WAIT:2s}
   cache:
     type: redis
     redis:
@@ -72,3 +87,7 @@ synapse:
     enabled: ${ECHO_ENABLED:true}
     debug-only: true
     activation: manual
+  http:
+    connect-timeout-seconds: ${SYNAPSE_HTTP_CONNECT_TIMEOUT_SECONDS:10}
+    pool:
+      max-threads: ${SYNAPSE_HTTP_POOL_MAX_THREADS:64}

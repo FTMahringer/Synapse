@@ -26,13 +26,14 @@ public class OpenAIProviderService {
         ModelProviderService providerService,
         SystemLogService logService,
         ProviderUsageLogService usageLogService,
-        ObjectMapper objectMapper
+        ObjectMapper objectMapper,
+        RestClient restClient
     ) {
         this.providerService = providerService;
         this.logService = logService;
         this.usageLogService = usageLogService;
         this.objectMapper = objectMapper;
-        this.restClient = RestClient.builder().build();
+        this.restClient = restClient;
     }
 
     public boolean checkHealth(ModelProvider provider) {
