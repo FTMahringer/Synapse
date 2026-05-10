@@ -38,12 +38,21 @@ jobs:
                 return [context.ref.replace('refs/tags/', '')];
               }
 
-              const directory = await github.rest.repos.getContent({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                path: 'docs/release-notes',
-                ref: defaultBranch,
-              });
+              let directory;
+              try {
+                directory = await github.rest.repos.getContent({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: 'docs/release-notes',
+                  ref: defaultBranch,
+                });
+              } catch (error) {
+                if (error.status === 404) {
+                  core.info('docs/release-notes does not exist on the default branch; nothing to release.');
+                  return [];
+                }
+                throw error;
+              }
 
               if (!Array.isArray(directory.data)) {
                 throw new Error('docs/release-notes must be a directory.');
@@ -86,12 +95,21 @@ jobs:
               const notesPath = `docs/release-notes/${tag}.md`;
               const ref = context.ref.startsWith('refs/tags/') ? tag : defaultBranch;
 
-              const file = await github.rest.repos.getContent({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                path: notesPath,
-                ref,
-              });
+              let file;
+              try {
+                file = await github.rest.repos.getContent({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  path: notesPath,
+                  ref,
+                });
+              } catch (error) {
+                if (error.status === 404) {
+                  core.info(`Skipping ${tag}; ${notesPath} was not found at ref ${ref}.`);
+                  return { tag, status: 'missing-notes' };
+                }
+                throw error;
+              }
 
               if (!file.data || !file.data.content) {
                 throw new Error(`Unable to read ${notesPath} at ref ${ref}`);
