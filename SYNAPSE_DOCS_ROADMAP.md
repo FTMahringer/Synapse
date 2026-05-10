@@ -25,9 +25,11 @@ Documentation versions track SYNAPSE features but use independent numbering:
 
 ---
 
-## v0.1.0 - Initial Documentation Platform
+## v0.1.0 - Initial Documentation Platform ✅
 
-**Status**: In Progress (v0.0.3-dev complete)  
+**Status**: ✅ **COMPLETE**  
+**Released**: 2026-05-10  
+**GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.1.0  
 **Target**: Aligns with SYNAPSE v2.1.0  
 **Goal**: Establish comprehensive documentation foundation
 
@@ -59,9 +61,37 @@ Documentation versions track SYNAPSE features but use independent numbering:
 - Kubernetes deployment (optional)
 - **GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.0.3-dev
 
-### 🔄 In Progress
+#### v0.0.4-dev: Plugin Documentation ✅
+- Java-first plugin architecture established
+- Plugin template repository created (Java 21 + Spring Boot + Gradle)
+- Complete plugin development guides
+- Plugin ecosystem documentation (official/community/template)
+- **GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.0.4-dev
 
-#### v0.0.4-dev: API Documentation & Examples
+#### v0.0.5-dev: Navigation & Organization ✅
+- Sidebar cleanup and reorganization
+- Removed blog and next-steps sections
+- Fixed edit URLs to point to synapse-docs repository
+- Improved navigation structure
+- **GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.0.5-dev
+
+#### v0.0.6-dev: Java-First Plugin Architecture ✅
+- Updated all plugin documentation to Java examples
+- Replaced Python code with Java 21 + Spring Boot
+- Plugin architecture diagrams updated
+- Getting started guide rewritten for Java/Gradle workflow
+- **GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.0.6-dev
+
+#### v0.0.7-dev: GitHub Actions CI/CD ✅
+- Automated deployment to GitHub Pages
+- CI pipeline with build verification
+- Link integrity checking with linkinator
+- Pull request validation
+- **GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.0.7-dev
+
+### 🔄 Deferred to Future Releases
+
+#### v0.0.4-dev: API Documentation & Examples (Future: v0.2.0)
 - REST API documentation
   - Authentication endpoints (/api/auth/*)
   - Agent endpoints (/api/agents/*)
@@ -95,7 +125,7 @@ Documentation versions track SYNAPSE features but use independent numbering:
 - ✅ Code examples for all major endpoints
 - ✅ Interactive API explorer
 
-#### v0.0.5-dev: Developer & Contributor Docs
+#### v0.0.5-dev: Developer & Contributor Docs (Future: v0.2.0)
 - Contributing guide
   - Code of conduct
   - How to contribute
@@ -125,7 +155,7 @@ Documentation versions track SYNAPSE features but use independent numbering:
 - ✅ Database schema fully documented
 - ✅ Testing guide complete
 
-#### v0.0.6-dev: Deployment & Hosting
+#### v0.0.6-dev: Deployment & Hosting (Future: v0.2.0)
 - GitHub Pages deployment automation
 - Custom domain configuration
 - Versioned documentation
@@ -146,16 +176,19 @@ Documentation versions track SYNAPSE features but use independent numbering:
 - ✅ Versioned docs for v2.x and v3.x
 - ✅ Search functionality working
 
-### 🎯 v0.1.0 Release
+### 🎯 v0.1.0 Release - ✅ COMPLETE
 
-**Target Date**: Aligns with SYNAPSE v2.1.0  
+**Released**: 2026-05-10  
+**GitHub Release**: https://github.com/FTMahringer/Synapse-docs/releases/tag/v0.1.0  
+**Live Documentation**: https://ftmahringer.github.io/Synapse/
+
 **Deliverables**:
-- Complete documentation platform
-- All core sections documented
-- API reference complete
-- Deployment guides for all methods
-- Search functionality
-- Versioned documentation support
+- ✅ Complete documentation platform with Docusaurus
+- ✅ All core sections documented (concepts, guides, architecture)
+- ✅ Plugin development guides (Java-first)
+- ✅ Deployment guides for Docker, Kubernetes, bare-metal
+- ✅ GitHub Actions CI/CD automation
+- ✅ Automated GitHub Pages deployment
 
 **Success Criteria**:
 - ✅ All planned documentation sections complete
