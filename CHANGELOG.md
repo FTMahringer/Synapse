@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.0] - 2026-05-10
+
+**Milestone:** Performance & Caching
+
+### Added
+- Query optimization and pagination for high-volume API surfaces
+- Redis-backed cache layer for conversation, provider, user, and plugin/store metadata
+- HTTP response compression and JSON serialization optimizations
+- Connection pooling for PostgreSQL, Redis, and outbound provider HTTP calls
+
+### Development Versions
+- v2.2.1-dev: Query Optimization
+- v2.2.2-dev: Redis Caching Layer
+- v2.2.3-dev: Response Compression
+- v2.2.4-dev: Connection Pooling
+
+---
+
 ## [v2.2.4-dev] - 2026-05-10
 
 ### Performance
