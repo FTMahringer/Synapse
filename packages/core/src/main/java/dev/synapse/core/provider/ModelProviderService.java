@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.provider;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

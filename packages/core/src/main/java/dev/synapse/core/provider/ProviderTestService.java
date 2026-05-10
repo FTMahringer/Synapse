@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.provider;
 
 import dev.synapse.core.domain.ModelProvider;
 import dev.synapse.core.dto.TestProviderRequest;

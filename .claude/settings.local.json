@@ -16,7 +16,11 @@
       "Bash(mkdir -p D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users)",
       "Bash(git mv *)",
       "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.tasks;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks/TaskController.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks/TaskService.java)",
-      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.users;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserController.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserService.java)"
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.users;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserController.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserService.java)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.conversation;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/conversation/ConversationService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/conversation/MessageService.java)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.provider;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ModelProviderService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ProviderTestService.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/provider/ProviderUsageLogService.java)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.config;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/config/SystemMetadataService.java)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.plugin;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/plugin/PluginService.java)"
     ]
   }
 }

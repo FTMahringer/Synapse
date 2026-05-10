@@ -2,7 +2,6 @@ package dev.synapse.core.config;
 
 import dev.synapse.core.dto.SystemMetadataDTO;
 import dev.synapse.core.dto.UpdateSystemMetadataRequest;
-import dev.synapse.core.service.SystemMetadataService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

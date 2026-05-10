@@ -4,8 +4,6 @@ import dev.synapse.core.domain.Conversation;
 import dev.synapse.core.domain.Message;
 import dev.synapse.core.dto.CreateConversationRequest;
 import dev.synapse.core.dto.SendMessageRequest;
-import dev.synapse.core.service.ConversationService;
-import dev.synapse.core.service.MessageService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

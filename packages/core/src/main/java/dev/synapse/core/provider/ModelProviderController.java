@@ -1,7 +1,7 @@
 package dev.synapse.core.provider;
 
 import dev.synapse.core.dto.*;
-import dev.synapse.core.service.ModelProviderService;
+import dev.synapse.core.provider.ModelProviderService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

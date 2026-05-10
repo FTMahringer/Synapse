@@ -1,7 +1,7 @@
 package dev.synapse.core.provider.ollama;
 
 import dev.synapse.core.domain.ModelProvider;
-import dev.synapse.core.service.ModelProviderService;
+import dev.synapse.core.provider.ModelProviderService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 

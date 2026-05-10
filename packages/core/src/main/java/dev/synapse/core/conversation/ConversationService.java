@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.conversation;
 
 import dev.synapse.core.domain.Conversation;
 import dev.synapse.core.exception.ResourceNotFoundException;

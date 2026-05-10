@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.config;
 
 import dev.synapse.core.domain.SystemMetadata;
 import dev.synapse.core.logging.LogCategory;

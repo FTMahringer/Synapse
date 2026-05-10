@@ -5,8 +5,8 @@ import dev.synapse.core.domain.ModelProvider;
 import dev.synapse.core.logging.LogCategory;
 import dev.synapse.core.logging.LogLevel;
 import dev.synapse.core.logging.SystemLogService;
-import dev.synapse.core.service.ModelProviderService;
-import dev.synapse.core.service.ProviderUsageLogService;
+import dev.synapse.core.provider.ModelProviderService;
+import dev.synapse.core.provider.ProviderUsageLogService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 

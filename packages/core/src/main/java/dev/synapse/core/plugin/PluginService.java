@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.plugin;
 
 import dev.synapse.core.domain.Plugin;
 import dev.synapse.core.exception.ResourceNotFoundException;
