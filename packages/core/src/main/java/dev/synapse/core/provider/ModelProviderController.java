@@ -55,9 +55,9 @@ public class ModelProviderController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ModelProviderDTO createProvider(@Valid @RequestBody CreateModelProviderRequest request) {
-        var provider = new dev.synapse.core.domain.ModelProvider();
+        var provider = new dev.synapse.core.common.domain.ModelProvider();
         provider.setName(request.name());
-        provider.setType(dev.synapse.core.domain.ModelProvider.ProviderType.valueOf(request.type()));
+        provider.setType(dev.synapse.core.common.domain.ModelProvider.ProviderType.valueOf(request.type()));
         provider.setConfig(request.config());
         provider.setEnabled(request.enabled() != null ? request.enabled() : true);
         
@@ -79,10 +79,10 @@ public class ModelProviderController {
         @PathVariable UUID id,
         @Valid @RequestBody UpdateModelProviderRequest request
     ) {
-        var updates = new dev.synapse.core.domain.ModelProvider();
+        var updates = new dev.synapse.core.common.domain.ModelProvider();
         updates.setName(request.name());
         if (request.type() != null) {
-            updates.setType(dev.synapse.core.domain.ModelProvider.ProviderType.valueOf(request.type()));
+            updates.setType(dev.synapse.core.common.domain.ModelProvider.ProviderType.valueOf(request.type()));
         }
         updates.setConfig(request.config());
         updates.setEnabled(request.enabled());

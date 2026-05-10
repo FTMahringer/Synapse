@@ -49,7 +49,7 @@ public class UserController {
             existing.setEmail(request.email());
         }
         if (request.role() != null) {
-            existing.setRole(dev.synapse.core.domain.User.UserRole.valueOf(request.role()));
+            existing.setRole(dev.synapse.core.common.domain.User.UserRole.valueOf(request.role()));
         }
         
         var updated = userService.update(id, existing);

@@ -51,13 +51,13 @@ public class TaskController {
             existing.setTitle(request.title());
         }
         if (request.status() != null) {
-            existing.setStatus(dev.synapse.core.domain.Task.TaskStatus.valueOf(request.status()));
+            existing.setStatus(dev.synapse.core.common.domain.Task.TaskStatus.valueOf(request.status()));
         }
         if (request.assignedAgentId() != null) {
             existing.setAssignedAgentId(request.assignedAgentId());
         }
         if (request.size() != null) {
-            existing.setSize(dev.synapse.core.domain.Task.TaskSize.valueOf(request.size()));
+            existing.setSize(dev.synapse.core.common.domain.Task.TaskSize.valueOf(request.size()));
         }
         
         var updated = taskService.update(id, existing);
