@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.0.2-dev] - 2026-05-10
+
+**Development version: Documentation migration and enhancement with Docusaurus features.**
+
+### Documentation
+- **Architecture Deep Dive** enhanced with comprehensive technical documentation
+  - System layers explained with Mermaid diagrams
+  - Message flow and plugin lifecycle diagrams
+  - Domain-driven package structure
+  - Configuration-driven design examples
+  - Security architecture with authentication flow
+  - Performance and observability information
+- **Plugin Development Guide** created with complete tutorial
+  - All plugin types documented (Channel, Model, Skill, MCP)
+  - Step-by-step plugin creation walkthrough
+  - Python and Java implementation examples
+  - manifest.yml specification with detailed examples
+  - Testing guide (unit and integration tests)
+  - Publishing workflow and best practices
+  - Security considerations and sandboxing details
+  - Plugin SDK reference
+- **Team Collaboration Guide** created with comprehensive workflows
+  - Team structure and configuration
+  - Mermaid diagrams for sequential, parallel, and hierarchical workflows
+  - Team routing rules and permissions
+  - Creation methods (Dashboard, CLI, manual)
+  - Full-stack development team example
+  - Best practices and troubleshooting
+  - Logging and observability
+
+### Added
+- Mermaid diagram support for documentation (`@docusaurus/theme-mermaid`)
+- Docusaurus admonitions (info, tip, warning, danger, note) throughout docs
+- Visual diagrams for complex architectural concepts
+- Interactive code examples with syntax highlighting
+- Step-by-step tutorials for key workflows
+
+### Enhanced
+- Documentation now includes interactive examples
+- Clear call-outs and warnings for important information
+- Best practices sections in all major guides
+- Structured navigation with improved headings
+
+---
+
 ## [v2.0.1-dev] - 2026-05-10
 
 **Development version: Docusaurus documentation platform setup.**
