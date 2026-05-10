@@ -1,6 +1,6 @@
 package dev.synapse.core.dto;
 
-import dev.synapse.core.domain.Message;
+import dev.synapse.core.common.domain.Message;
 
 import java.time.Instant;
 import java.util.UUID;

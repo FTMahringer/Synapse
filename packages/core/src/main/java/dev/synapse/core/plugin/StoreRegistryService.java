@@ -1,10 +1,10 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.StoreEntry;
+import dev.synapse.core.common.domain.StoreEntry;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.StoreEntryRepository;
+import dev.synapse.core.common.repository.StoreEntryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;

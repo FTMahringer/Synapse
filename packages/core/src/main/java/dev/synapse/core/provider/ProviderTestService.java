@@ -1,6 +1,6 @@
 package dev.synapse.core.provider;
 
-import dev.synapse.core.domain.ModelProvider;
+import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.dto.TestProviderRequest;
 import dev.synapse.core.dto.TestProviderResponse;
 import dev.synapse.core.infrastructure.logging.LogCategory;

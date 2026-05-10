@@ -1,7 +1,7 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.Plugin;
-import dev.synapse.core.domain.StoreEntry;
+import dev.synapse.core.common.domain.Plugin;
+import dev.synapse.core.common.domain.StoreEntry;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;

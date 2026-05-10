@@ -1,11 +1,11 @@
 package dev.synapse.core.agents.service;
 
-import dev.synapse.core.domain.FirmProject;
+import dev.synapse.core.common.domain.FirmProject;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.FirmProjectRepository;
+import dev.synapse.core.common.repository.FirmProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

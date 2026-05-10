@@ -1,8 +1,8 @@
 package dev.synapse.core.agents.service;
 
-import dev.synapse.core.domain.AgentActivationState;
-import dev.synapse.core.domain.AgentRuntimeRegistry;
-import dev.synapse.core.repository.AgentRuntimeRegistryRepository;
+import dev.synapse.core.common.domain.AgentActivationState;
+import dev.synapse.core.common.domain.AgentRuntimeRegistry;
+import dev.synapse.core.common.repository.AgentRuntimeRegistryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

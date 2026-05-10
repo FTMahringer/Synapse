@@ -1,15 +1,15 @@
 package dev.synapse.core.conversation;
 
-import dev.synapse.core.domain.Conversation;
-import dev.synapse.core.domain.Message;
-import dev.synapse.core.domain.ModelProvider;
+import dev.synapse.core.common.domain.Conversation;
+import dev.synapse.core.common.domain.Message;
+import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.provider.ollama.OllamaChat;
 import dev.synapse.core.provider.ollama.OllamaProviderService;
 import dev.synapse.core.agents.service.MainAgentPromptService;
 import dev.synapse.core.provider.ModelProviderService;
-import dev.synapse.core.repository.ConversationRepository;
-import dev.synapse.core.repository.MessageRepository;
+import dev.synapse.core.common.repository.ConversationRepository;
+import dev.synapse.core.common.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,6 @@
 package dev.synapse.core.dto;
 
-import dev.synapse.core.domain.*;
+import dev.synapse.core.common.domain.*;
 
 import java.util.UUID;
 

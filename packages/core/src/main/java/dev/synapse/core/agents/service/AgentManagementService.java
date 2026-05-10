@@ -2,13 +2,13 @@ package dev.synapse.core.agents.service;
 
 import dev.synapse.core.agents.AgentDefinition;
 import dev.synapse.core.agents.AgentDefinitionLoader;
-import dev.synapse.core.domain.Agent;
-import dev.synapse.core.domain.Agent.AgentType;
+import dev.synapse.core.common.domain.Agent;
+import dev.synapse.core.common.domain.Agent.AgentType;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.AgentRepository;
+import dev.synapse.core.common.repository.AgentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

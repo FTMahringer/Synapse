@@ -1,10 +1,10 @@
 package dev.synapse.core.infrastructure.security;
 
-import dev.synapse.core.domain.User;
+import dev.synapse.core.common.domain.User;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.UserRepository;
+import dev.synapse.core.common.repository.UserRepository;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

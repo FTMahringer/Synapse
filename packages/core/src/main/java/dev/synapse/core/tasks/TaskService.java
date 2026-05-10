@@ -1,13 +1,13 @@
 package dev.synapse.core.tasks;
 
-import dev.synapse.core.domain.Task;
-import dev.synapse.core.domain.TaskLog;
+import dev.synapse.core.common.domain.Task;
+import dev.synapse.core.common.domain.TaskLog;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.TaskLogRepository;
-import dev.synapse.core.repository.TaskRepository;
+import dev.synapse.core.common.repository.TaskLogRepository;
+import dev.synapse.core.common.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

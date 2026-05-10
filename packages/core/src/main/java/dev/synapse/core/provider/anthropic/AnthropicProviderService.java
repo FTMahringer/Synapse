@@ -1,7 +1,7 @@
 package dev.synapse.core.provider.anthropic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.synapse.core.domain.ModelProvider;
+import dev.synapse.core.common.domain.ModelProvider;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;

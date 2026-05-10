@@ -1,10 +1,10 @@
 package dev.synapse.core.agents.service;
 
-import dev.synapse.core.domain.AgentMemoryEntry;
+import dev.synapse.core.common.domain.AgentMemoryEntry;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.AgentMemoryRepository;
+import dev.synapse.core.common.repository.AgentMemoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,6 +1,6 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.StoreEntry;
+import dev.synapse.core.common.domain.StoreEntry;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package dev.synapse.core.agents.service;
 
-import dev.synapse.core.domain.TeamMembership;
-import dev.synapse.core.repository.TeamMembershipRepository;
+import dev.synapse.core.common.domain.TeamMembership;
+import dev.synapse.core.common.repository.TeamMembershipRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

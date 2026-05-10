@@ -1,7 +1,7 @@
 package dev.synapse.core.conversation;
 
-import dev.synapse.core.domain.Conversation;
-import dev.synapse.core.domain.Message;
+import dev.synapse.core.common.domain.Conversation;
+import dev.synapse.core.common.domain.Message;
 import dev.synapse.core.dto.CreateConversationRequest;
 import dev.synapse.core.dto.SendMessageRequest;
 import jakarta.validation.Valid;

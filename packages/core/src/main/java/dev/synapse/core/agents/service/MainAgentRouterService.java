@@ -1,8 +1,8 @@
 package dev.synapse.core.agents.service;
 
-import dev.synapse.core.domain.RoutingDecision;
-import dev.synapse.core.domain.RoutingLog;
-import dev.synapse.core.repository.RoutingLogRepository;
+import dev.synapse.core.common.domain.RoutingDecision;
+import dev.synapse.core.common.domain.RoutingLog;
+import dev.synapse.core.common.repository.RoutingLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

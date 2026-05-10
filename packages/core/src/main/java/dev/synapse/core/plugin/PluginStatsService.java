@@ -1,7 +1,7 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.PluginStats;
-import dev.synapse.core.repository.PluginStatsRepository;
+import dev.synapse.core.common.domain.PluginStats;
+import dev.synapse.core.common.repository.PluginStatsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,8 +1,8 @@
 package dev.synapse.core.agents;
 
-import dev.synapse.core.domain.AgentHeartbeat;
-import dev.synapse.core.domain.AgentRuntimeRegistry;
-import dev.synapse.core.domain.RoutingLog;
+import dev.synapse.core.common.domain.AgentHeartbeat;
+import dev.synapse.core.common.domain.AgentRuntimeRegistry;
+import dev.synapse.core.common.domain.RoutingLog;
 import dev.synapse.core.agents.service.AgentHeartbeatService;
 import dev.synapse.core.agents.service.AgentRuntimeService;
 import dev.synapse.core.agents.service.MainAgentRouterService;

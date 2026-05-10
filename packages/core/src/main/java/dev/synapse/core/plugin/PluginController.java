@@ -1,6 +1,6 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.PluginStats;
+import dev.synapse.core.common.domain.PluginStats;
 import dev.synapse.core.dto.DtoMapper;
 import dev.synapse.core.dto.PluginDTO;
 import org.springframework.http.HttpStatus;

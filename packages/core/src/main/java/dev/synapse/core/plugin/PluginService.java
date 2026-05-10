@@ -1,8 +1,8 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.Plugin;
+import dev.synapse.core.common.domain.Plugin;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
-import dev.synapse.core.repository.PluginRepository;
+import dev.synapse.core.common.repository.PluginRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,8 +1,8 @@
 package dev.synapse.core.provider;
 
-import dev.synapse.core.domain.ModelProvider;
-import dev.synapse.core.domain.ProviderUsageLog;
-import dev.synapse.core.repository.ProviderUsageLogRepository;
+import dev.synapse.core.common.domain.ModelProvider;
+import dev.synapse.core.common.domain.ProviderUsageLog;
+import dev.synapse.core.common.repository.ProviderUsageLogRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

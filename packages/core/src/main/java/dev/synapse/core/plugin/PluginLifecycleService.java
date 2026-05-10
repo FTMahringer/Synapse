@@ -1,6 +1,6 @@
 package dev.synapse.core.plugin;
 
-import dev.synapse.core.domain.Plugin;
+import dev.synapse.core.common.domain.Plugin;
 import dev.synapse.core.infrastructure.event.EventPublisher;
 import dev.synapse.core.infrastructure.event.SynapseEvent;
 import dev.synapse.core.infrastructure.event.SynapseEventType;
@@ -8,7 +8,7 @@ import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.repository.PluginRepository;
+import dev.synapse.core.common.repository.PluginRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
