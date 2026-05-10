@@ -7,6 +7,113 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.0.3-dev] - 2026-05-10
+
+**Development version: Comprehensive deployment guides and production-ready configuration documentation.**
+
+### Documentation
+- **Docker Compose Deployment Guide** created with complete production setup
+  - Development and production Docker Compose configurations
+  - Quick start guide (5 steps)
+  - Production deployment checklist
+  - Environment variables configuration
+  - Health checks and resource limits
+  - Persistent volumes and data management
+  - Ollama local models setup
+  - Networking configuration (isolated networks)
+  - Horizontal and vertical scaling guides
+  - Upgrading procedures and version management
+  - Troubleshooting section
+  - Monitoring and observability
+  - Backup and restore procedures
+  - Production architecture diagram
+- **Environment Variables Reference** created with complete configuration options
+  - 50+ environment variables documented
+  - Core system configuration (APP_URL, FRONTEND_URL, etc.)
+  - Database configuration (PostgreSQL connection pool, timeouts)
+  - Redis configuration (cache, sessions, TTL)
+  - Qdrant configuration (vector search, collections)
+  - Security variables (JWT_SECRET, SECRETS_ENCRYPTION_KEY, CORS)
+  - Agent runtime settings
+  - Store and file system configuration
+  - Logging and performance tuning
+  - Security warnings and best practices
+  - Example .env files for development and production
+  - Secrets management guide (Docker secrets, Vault, Kubernetes)
+  - Validation script examples
+- **Reverse Proxy Setup Guide** created with multiple reverse proxy options
+  - Traefik configuration (automatic service discovery, Let's Encrypt)
+  - Nginx Proxy Manager setup (web UI, homelab-friendly)
+  - Manual Nginx configuration
+  - SSL/TLS configuration and modern security
+  - Load balancing setup
+  - Rate limiting and firewall rules
+  - WebSocket proxy configuration
+  - Security headers and CORS
+  - Troubleshooting common issues
+- **Troubleshooting Guide** created with comprehensive problem-solving
+  - Deployment issues (services won't start, port conflicts)
+  - Database connection problems
+  - Redis connection issues
+  - Runtime performance problems
+  - Authentication failures
+  - WebSocket connection issues
+  - Data loss prevention and recovery
+  - Database migration failures
+  - Network and firewall issues
+  - Diagnostic script for collecting system information
+- **Backup & Restore Guide** created with complete disaster recovery procedures
+  - Comprehensive backup script for all services
+  - PostgreSQL backup and restore (pg_dump, point-in-time recovery)
+  - Qdrant snapshots and collection backups
+  - Redis RDB and AOF backups
+  - File system volume backups
+  - Automated backup scheduling (cron, systemd timers, Docker)
+  - Disaster recovery procedures
+  - Remote backup storage (AWS S3, rsync)
+  - 3-2-1 backup rule implementation
+  - Backup validation and testing
+  - Migration between environments
+  - Troubleshooting backup/restore issues
+- **Bare-Metal Installation Guide** created for non-Docker deployments
+  - Ubuntu/Debian installation (complete step-by-step)
+  - Windows installation guide
+  - macOS installation with Homebrew
+  - Java 25, PostgreSQL 18, Redis 8, Qdrant 1.14 setup
+  - Node.js 24 installation
+  - systemd service configuration
+  - Build and run instructions
+  - Verification steps
+- **Kubernetes Deployment Guide** created (optional, emphasizing Docker-first)
+  - Complete Kubernetes manifests
+  - StatefulSet configurations for PostgreSQL and Qdrant
+  - Deployment configurations for Redis, backend, dashboard
+  - Secrets management
+  - Ingress configuration with Traefik
+  - Horizontal Pod Autoscaler setup
+  - High availability considerations
+  - Monitoring with Prometheus ServiceMonitor
+  - Clear emphasis on Docker Compose as recommended deployment
+
+### Added
+- Production-ready deployment configurations
+- Complete environment variable reference
+- Multiple deployment method documentation
+- Security best practices throughout
+- Troubleshooting for common deployment issues
+- Comprehensive backup and disaster recovery procedures
+- Docker-first deployment philosophy clearly documented
+
+### Enhanced
+- All deployment guides emphasize Docker Compose as primary method
+- Bare-metal and Kubernetes positioned as alternatives for specific use cases
+- Security warnings with Docusaurus danger admonitions
+- Production checklists and verification steps
+- Copy-paste ready configuration examples
+- Visual organization with Docusaurus admonitions
+
+---
+
 ## [v2.0.2-dev] - 2026-05-10
 
 **Development version: Documentation migration and enhancement with Docusaurus features.**
