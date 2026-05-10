@@ -1,4 +1,4 @@
-package dev.synapse.core.realtime;
+package dev.synapse.conversation.realtime;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

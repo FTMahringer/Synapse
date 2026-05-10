@@ -1,4 +1,4 @@
-package dev.synapse.core.realtime;
+package dev.synapse.conversation.realtime;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

@@ -1,4 +1,4 @@
-package dev.synapse.core.realtime;
+package dev.synapse.conversation.realtime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.synapse.core.infrastructure.event.SynapseEvent;
