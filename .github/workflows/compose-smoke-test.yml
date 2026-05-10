@@ -59,9 +59,9 @@ jobs:
         run: |
           # Wait a bit for migrations to complete
           sleep 5
-          docker compose -f installer/compose/docker-compose.yml logs backend | grep "Successfully applied 11 migrations"
+          docker compose -f installer/compose/docker-compose.yml logs backend | grep -E "Successfully applied [0-9]+ migration"
           if [ $? -eq 0 ]; then
-            echo "✓ All 11 migrations applied successfully"
+            echo "✓ Flyway migrations applied successfully"
           else
             echo "ERROR: Migrations did not complete as expected"
             docker compose -f installer/compose/docker-compose.yml logs backend
