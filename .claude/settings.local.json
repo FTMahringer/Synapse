@@ -9,7 +9,14 @@
       "Bash(git commit *)",
       "Bash(git tag *)",
       "Bash(git push *)",
-      "Bash(gh release *)"
+      "Bash(gh release *)",
+      "Bash(Get-ChildItem -Path \"D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core\" -Directory -Recurse)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "Bash(mkdir -p D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users)",
+      "Bash(git mv *)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.tasks;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks/TaskController.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/tasks/TaskService.java)",
+      "Bash(sed -i 's/^package dev\\\\.synapse\\\\.core\\\\.service;$/package dev.synapse.core.users;/' D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserController.java D:/projects/Agents-Umgeung-planning/Synapse/packages/core/src/main/java/dev/synapse/core/users/UserService.java)"
     ]
   }
 }

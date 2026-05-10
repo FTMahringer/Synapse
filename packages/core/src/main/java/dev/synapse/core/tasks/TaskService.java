@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.tasks;
 
 import dev.synapse.core.domain.Task;
 import dev.synapse.core.domain.TaskLog;

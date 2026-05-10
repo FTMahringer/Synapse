@@ -1,4 +1,4 @@
-package dev.synapse.core.service;
+package dev.synapse.core.users;
 
 import dev.synapse.core.domain.User;
 import dev.synapse.core.exception.ResourceNotFoundException;
