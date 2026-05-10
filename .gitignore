@@ -18,3 +18,7 @@ Thumbs.db
 
 # Documentation site (separate git repo)
 /synapse-docs/
+
+# Plugin repositories (separate git repos)
+/synapse-plugins/
+/synapse-plugins-community/
