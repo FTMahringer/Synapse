@@ -6,14 +6,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Order(Integer.MIN_VALUE + 1)
@@ -25,7 +24,9 @@ public class RateLimitingFilter extends OncePerRequestFilter {
 
     public RateLimitingFilter(
         @Value("${rate-limiting.requests-per-minute:60}") int requestsPerMinute,
-        @Value("${rate-limiting.login-requests-per-minute:10}") int loginRequestsPerMinute
+        @Value(
+            "${rate-limiting.login-requests-per-minute:10}"
+        ) int loginRequestsPerMinute
     ) {
         this.requestsPerMinute = requestsPerMinute;
         this.loginRequestsPerMinute = loginRequestsPerMinute;
@@ -37,31 +38,40 @@ public class RateLimitingFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
-        return path.startsWith("/actuator/")
-            || path.startsWith("/api/health")
-            || path.equals("/api/health")
-            || path.startsWith("/static/")
-            || path.equals("/favicon.ico");
+        return (
+            path.startsWith("/actuator/") ||
+            path.startsWith("/api/health") ||
+            path.equals("/api/health") ||
+            path.startsWith("/static/") ||
+            path.equals("/favicon.ico")
+        );
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
-
+    protected void doFilterInternal(
+        HttpServletRequest request,
+        HttpServletResponse response,
+        FilterChain filterChain
+    ) throws ServletException, IOException {
         String clientIp = getClientIp(request);
-        int limit = isLoginRequest(request) ? loginRequestsPerMinute : requestsPerMinute;
+        int limit = isLoginRequest(request)
+            ? loginRequestsPerMinute
+            : requestsPerMinute;
 
-        AtomicInteger counter = requestCounts.get(clientIp, k -> new AtomicInteger(0));
+        AtomicInteger counter = requestCounts.get(clientIp, k ->
+            new AtomicInteger(0)
+        );
         int currentCount = counter.incrementAndGet();
 
         if (currentCount > limit) {
-            response.setStatus(HttpServletResponse.SC_TOO_MANY_REQUESTS);
+            response.setStatus(429);
             response.setHeader("Retry-After", "60");
             response.setContentType("application/json");
-            response.getWriter().write(
-                "{\"error\":\"Too Many Requests\",\"message\":\"Rate limit exceeded. Please try again later.\"}");
+            response
+                .getWriter()
+                .write(
+                    "{\"error\":\"Too Many Requests\",\"message\":\"Rate limit exceeded. Please try again later.\"}"
+                );
             return;
         }
 
