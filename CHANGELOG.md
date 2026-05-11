@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.8-hotfix] - 2026-05-11
+
+### Fixed
+- Corrected runtime version metadata defaults so startup/health no longer report legacy `v1.x` values.
+- Updated backend artifact version to the current `v2.3.x-hotfix` line for release-consistent runtime reporting.
+- Removed hardcoded `SYNAPSE_VERSION` defaults from Compose manifests so runtime version follows application build metadata by default.
+
+---
+
 ## [v2.3.7-dev] - 2026-05-11
 
 ### Added

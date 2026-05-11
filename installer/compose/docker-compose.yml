@@ -46,7 +46,6 @@ services:
     environment:
       SERVER_PORT: 8080
       SYSTEM_NAME: ${SYSTEM_NAME:-SYNAPSE}
-      SYNAPSE_VERSION: ${SYNAPSE_VERSION:-v1.0.0}
       SYNAPSE_AGENTS_PATH: /app/agents
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB:-synapse}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-synapse}
