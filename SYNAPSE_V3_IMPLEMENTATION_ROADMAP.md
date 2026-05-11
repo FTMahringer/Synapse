@@ -266,12 +266,15 @@ dev/synapse/
 - Tool discovery and registration
 - Tool execution within JVM
 - Tool result caching
+- Built-in skill runtime classes (`CORE_BUILTIN`, `OPTIONAL_BUILTIN`, `USER_INSTALLED`)
+- First-run TUI activation flow for optional built-ins (activation-only, no install path)
 - **Note**: Foundation for Java plugin system (v2.6.0)
 
 #### v2.3.7-dev: Agent Capability Hardening
 - End-to-end validation scenarios for memory/collaboration/planning flows
 - Guardrails for runaway plans and invalid delegation loops
 - Performance/cost profiling for advanced agent workflows
+- Token-budget guardrails and concise-mode interoperability checks for built-in skills
 - Documentation refresh for advanced agent operations
 
 #### v2.4.0: Tag Advanced Agents Release
@@ -323,7 +326,7 @@ dev/synapse/
 
 **Goal**: Robust Java plugin system with marketplace and community contributions.
 
-**Architecture**: Following SYNAPSE's [Java-First Plugin Strategy](./ideas/plugin-language-strategy.md):
+**Architecture**: Following SYNAPSE's [Java-First Plugin Strategy](./ideas/PLATFORM_AND_ECOSYSTEM.md):
 - Native Java plugins (.jar) with direct JVM integration
 - Spring Boot-based plugin framework
 - ClassLoader isolation for security

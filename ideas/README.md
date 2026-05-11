@@ -5,21 +5,19 @@ This folder contains ideas, future features, and architectural proposals for SYN
 ## Documents
 
 ### [IDEAS.md](./IDEAS.md)
-General future features and ideas across all areas of SYNAPSE including:
-- Plugin & Bundle Repositories
-- Infrastructure improvements
-- AI capabilities enhancements
-- Platform features
-- Integrations
-- Developer experience
+Compact index and roadmap-promotion notes for all active idea domains.
 
-### [PLUGIN_ECOSYSTEM.md](./PLUGIN_ECOSYSTEM.md)
-Detailed plan for the plugin ecosystem structure including:
-- Repository architecture (official, community, template)
-- Plugin development workflow
-- Plugin submission and review process
-- Plugin tooling and CLI commands
-- Future plugin registry and marketplace
+### [AGENT_AND_MEMORY.md](./AGENT_AND_MEMORY.md)
+Agent orchestration, memory lifecycle, learning-loop direction, and related token-efficiency strategy.
+
+### [RUNTIME_AND_INTEGRATIONS.md](./RUNTIME_AND_INTEGRATIONS.md)
+Runtime/API delivery, observability evolution, and integration strategy (MCP/ACP/Git/skills).
+
+### [PLATFORM_AND_ECOSYSTEM.md](./PLATFORM_AND_ECOSYSTEM.md)
+Platform feature direction, plugin ecosystem strategy, and long-term product backlog.
+
+### [BUILTIN_SKILLS_STRATEGY.md](./BUILTIN_SKILLS_STRATEGY.md)
+Hybrid built-in skill model (forced core + TUI-selectable optional built-ins).
 
 ## Status
 
