@@ -287,32 +287,32 @@ dev/synapse/
 
 ### Implementation Steps
 
-#### v2.4.1-dev: API Security
+#### v2.4.2-dev: API Security
 - Rate limiting per user/endpoint
 - Request throttling
 - API key rotation
 - CORS configuration hardening
 
-#### v2.4.2-dev: Secrets Management
+#### v2.4.3-dev: Secrets Management
 - Integrate with HashiCorp Vault
 - Encrypt secrets at rest
 - Secret rotation automation
 - Environment-based secret injection
 
-#### v2.4.3-dev: Audit Logging
+#### v2.4.4-dev: Audit Logging
 - Comprehensive audit trail
 - User action logging
 - Admin action logging
 - Security event logging
 - Audit log retention policy
 
-#### v2.4.4-dev: Compliance
+#### v2.4.5-dev: Compliance
 - GDPR data handling
 - User data export
 - Right to deletion
 - Data anonymization
 
-#### v2.4.5-dev: Security Validation & Runbooks
+#### v2.4.6-dev: Security Validation & Runbooks
 - Pen-test style verification for auth and secret boundaries
 - Hardened incident-response playbooks
 - Security-focused deployment checklist validation
