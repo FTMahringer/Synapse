@@ -33,6 +33,16 @@ This file is a compact index for active idea domains. Detailed content is mainta
    - user→admin privileged request lifecycle
    - centralized approval notifications and auditability
 
+7. [DEVICE_TRUST_AND_FIRST_BOOT_SECURITY.md](./DEVICE_TRUST_AND_FIRST_BOOT_SECURITY.md)
+   - first-boot admin hardening and default-credential warning
+   - admin-approved device trust gate for Web UI access
+   - first local (TUI/sudo) approval, then admin-UI approvals
+
+8. [ADMIN_DEBUG_COMMAND_FAMILY.md](./ADMIN_DEBUG_COMMAND_FAMILY.md)
+   - admin-only debug command namespace (`/debug ...`)
+   - approval-gated recovery actions (including password reset workflows)
+   - optional Redis/Postgres inspection integrations
+
 ---
 
 ## Roadmap Promotion Notes

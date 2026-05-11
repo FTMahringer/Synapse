@@ -50,13 +50,13 @@ ON CONFLICT (id) DO UPDATE SET
 -- Default OWNER user
 -- ---------------------------------------------------------------------------
 -- Default password: "admin" (MUST be changed on first login)
--- Password hash generated with Argon2id: $argon2id$v=19$m=65536,t=3,p=1$...
+-- Password hash generated with Argon2id and current PasswordHashingService parameters.
 INSERT INTO users (id, username, email, password_hash, role, settings, created_at)
 VALUES (
     gen_random_uuid(),
     'admin',
     'admin@localhost',
-    '$argon2id$v=19$m=65536,t=3,p=1$WGFiY2RlZmdoaWprbG1ubw$7YJ8Kx8xZ3q5ZSQGXY/nHh7BZ2vGx3c8nQx8pF7DxYo',
+    '$argon2id$v=19$m=65536,t=3,p=1$c3luYXBzZS1hZG1pbi1zZQ$inppHcE3NSqE/UjhMycoJtpxSsTO4M4hMNSPKGA/XmU',
     'OWNER',
     '{
         "theme": "dark",
