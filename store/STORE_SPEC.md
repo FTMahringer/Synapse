@@ -569,7 +569,7 @@ Response 409:
 
 ## 11. Logging
 
-All store-related events are logged under the `STORE` category. Log entries follow the standard SYNAPSE log format (see `SYNAPSE_OPUS_PLAN.md` §4.12).
+All store-related events are logged under the `STORE` category. Log entries follow the standard SYNAPSE structured logging format.
 
 ### 11.1 Store Log Events
 

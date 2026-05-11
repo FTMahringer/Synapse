@@ -682,7 +682,7 @@ Core backend architecture and infrastructure.
 Project foundation and development infrastructure.
 
 ### Added
-- Implementation roadmap (SYNAPSE_V1_IMPLEMENTATION_ROADMAP.md)
+- Implementation roadmap (docs/roadmaps/SYNAPSE_V1_IMPLEMENTATION_ROADMAP.md)
 - GitHub Actions automation for roadmap label sync
 - Release process documentation
 - Roadmap issue and PR templates

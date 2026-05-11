@@ -21,7 +21,7 @@ SYNAPSE Documentation is maintained in a **separate repository** with independen
 
 ## Important Development Rules
 
-⚠️ **READ FIRST:** See [AGENT.md](./AGENT.md) for complete workflow rules.
+⚠️ **READ FIRST:** See [AGENT.md](../../AGENT.md) for complete workflow rules.
 
 **For every development version (`v*.*.x-dev`):**
 1. ✅ Implement feature/changes

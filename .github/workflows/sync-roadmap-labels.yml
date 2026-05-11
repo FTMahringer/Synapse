@@ -3,8 +3,8 @@ name: Sync roadmap labels
 on:
   push:
     paths:
-      - SYNAPSE_IMPLEMENTATION_ROADMAP.md
-      - SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md
+      - docs/roadmaps/SYNAPSE_IMPLEMENTATION_ROADMAP.md
+      - docs/roadmaps/SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md
       - .github/workflows/sync-roadmap-labels.yml
   workflow_dispatch:
 
@@ -23,8 +23,8 @@ jobs:
             const startToken = '<!-- ROADMAP_LABELS:BEGIN -->';
             const endToken = '<!-- ROADMAP_LABELS:END -->';
             const repoPaths = [
-              'SYNAPSE_IMPLEMENTATION_ROADMAP.md',
-              'SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md',
+              'docs/roadmaps/SYNAPSE_IMPLEMENTATION_ROADMAP.md',
+              'docs/roadmaps/SYNAPSE_V2_IMPLEMENTATION_ROADMAP.md',
             ];
 
             const labels = [];

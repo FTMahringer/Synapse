@@ -37,5 +37,5 @@ This file is a compact index for active idea domains. Detailed content is mainta
 
 ## Roadmap Promotion Notes
 
-- Items that become near-term actionable are promoted into `SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` as milestone sub-steps.
+- Items that become near-term actionable are promoted into `docs/roadmaps/SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` as milestone sub-steps.
 - Promoted items should be removed or reduced in ideas docs to avoid duplicated source-of-truth.

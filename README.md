@@ -184,7 +184,7 @@ synapse/
 
 Full documentation lives in the [`docs/`](./docs/) folder:
 
-- [Implementation Roadmap](./SYNAPSE_IMPLEMENTATION_ROADMAP.md) - Versioned implementation sequence and fixed roadmap labels
+- [Implementation Roadmap](./docs/roadmaps/SYNAPSE_IMPLEMENTATION_ROADMAP.md) - Versioned implementation sequence and fixed roadmap labels
 - [Release Process](./docs/release-process.md) - Milestone, patch, changelog, and label workflow
 - [Architecture](./docs/architecture.md) — Deep dive into all four layers and how they communicate
 - [Plugin System](./docs/plugin-system.md) - How to build and install channels, model providers, skills, and MCP servers

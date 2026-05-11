@@ -14,7 +14,7 @@ This causes:
 
 1. Reduce duplication by consolidating related files.
 2. Keep idea navigation simple and maintainable.
-3. Promote roadmap-ready ideas into `SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` with clearer sub-steps.
+3. Promote roadmap-ready ideas into `docs/roadmaps/SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` with clearer sub-steps.
 4. Preserve useful content while removing stale or repeated text.
 
 ## Non-Goals
@@ -59,7 +59,7 @@ Promotion action:
 - `ideas/RUNTIME_AND_INTEGRATIONS.md` (new)
 - `ideas/PLATFORM_AND_ECOSYSTEM.md` (new)
 - `ideas/IDEAS.md` (trim to compact index)
-- `SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` (sub-step refinements from promoted items)
+- `docs/roadmaps/SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md` (sub-step refinements from promoted items)
 
 ### Removed Files (after merge)
 
