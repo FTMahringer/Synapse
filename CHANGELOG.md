@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.6-dev] - 2026-05-11
+
+### Added
+- Native Java tool framework with extensible tool contract (`NativeJavaTool`)
+- Tool registry/discovery service with duplicate-id protection and metadata endpoints
+- Unified JVM tool execution service with timeout guardrails and structured execution logging
+- Deterministic tool-result caching with normalized cache keys and TTL controls
+- Built-in tool: `tool_registry_inspect` for runtime tool discovery and metadata inspection
+- Built-in tool: `plugin_contract_validate` for plugin manifest contract + safety policy validation
+- New API surface under `/api/tools` for tool listing, metadata, and execution
+
+### Changed
+- Extended runtime configuration with `synapse.tools.*` settings for enablement, timeout, and cache defaults
+
+---
+
 ## [v2.3.5-dev] - 2026-05-11
 
 ### Added

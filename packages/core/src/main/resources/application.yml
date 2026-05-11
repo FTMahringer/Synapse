@@ -98,3 +98,9 @@ synapse:
       knowledge-compaction-days: ${SYNAPSE_MEMORY_KNOWLEDGE_COMPACTION_DAYS:30}
       monthly-knowledge-cron: "${SYNAPSE_MEMORY_MONTHLY_KNOWLEDGE_CRON:0 0 3 1 * *}"
       bimonthly-archive-cron: "${SYNAPSE_MEMORY_BIMONTHLY_ARCHIVE_CRON:0 0 3 1 */2 *}"
+  tools:
+    enabled: ${SYNAPSE_TOOLS_ENABLED:true}
+    execution-timeout-ms: ${SYNAPSE_TOOLS_EXECUTION_TIMEOUT_MS:10000}
+    cache:
+      enabled: ${SYNAPSE_TOOLS_CACHE_ENABLED:true}
+      default-ttl-seconds: ${SYNAPSE_TOOLS_CACHE_DEFAULT_TTL_SECONDS:300}

@@ -1,6 +1,8 @@
 package dev.synapse.core.dto;
 
 import dev.synapse.core.common.domain.*;
+import dev.synapse.tools.ToolDefinition;
+import dev.synapse.tools.ToolExecutionResponse;
 
 import java.util.UUID;
 
@@ -243,6 +245,28 @@ public class DtoMapper {
             artifact.getCreatedByAgentId(),
             artifact.getCreatedAt(),
             artifact.getUpdatedAt()
+        );
+    }
+
+    public static ToolDefinitionDTO toDTO(ToolDefinition toolDefinition) {
+        return new ToolDefinitionDTO(
+            toolDefinition.toolId(),
+            toolDefinition.displayName(),
+            toolDefinition.description(),
+            toolDefinition.inputSchema(),
+            toolDefinition.cacheable(),
+            toolDefinition.defaultTtlSeconds()
+        );
+    }
+
+    public static ToolExecutionResponseDTO toDTO(ToolExecutionResponse response) {
+        return new ToolExecutionResponseDTO(
+            response.toolId(),
+            response.status(),
+            response.result(),
+            response.cached(),
+            response.cacheTtlRemainingSeconds(),
+            response.executedAt()
         );
     }
 
