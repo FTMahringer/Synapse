@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.4.0] - 2026-05-11
+
+**Milestone:** Advanced Agent Capabilities
+
+### Added
+- Team-scoped collaboration sessions with inter-agent messaging, task delegation records, and shared context state.
+- Goal-based planning system with versioned planning artifacts, reasoning-chain snapshots, and next-step retrieval.
+- Native Java tools framework with runtime tool discovery, execution, timeout guardrails, and deterministic caching.
+- Initial built-in native tools:
+  - `tool_registry_inspect`
+  - `plugin_contract_validate`
+- Central hardening policy engine with unified `ALLOW/WARN/BLOCK` decisions across delegation, planning, and tooling.
+
+### Changed
+- Advanced agent workflows now enforce centralized guardrails for delegation loops, planning runaway protection, and token-budget pressure handling.
+- Runtime and deployment configuration extended with `synapse.tools.*` and `synapse.hardening.*` controls.
+
+### Fixed
+- Runtime version metadata alignment via `v2.3.8-hotfix` (health/version reporting now follows current build metadata by default).
+
+### Development Versions
+- v2.3.1-dev: roadmap/docs workflow alignment
+- v2.3.2-dev: runtime stability hotfix
+- v2.3.3-dev: agent memory foundation
+- v2.3.4-dev: collaboration framework
+- v2.3.5-dev: reasoning & planning
+- v2.3.6-dev: native Java tools integration
+- v2.3.7-dev: capability hardening
+- v2.3.8-hotfix: release/version metadata correction
+
+---
+
 ## [v2.3.8-hotfix] - 2026-05-11
 
 ### Fixed
