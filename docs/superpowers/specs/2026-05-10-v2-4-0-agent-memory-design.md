@@ -120,6 +120,8 @@ To reduce long-term storage and quality risks, run scheduled maintenance:
 
 This cadence keeps retrieval sets cleaner and slows storage growth while preserving useful historical signal.
 
+There should be a setting then in the UI, where one can set the timing, or atleast adjust the cron-job
+
 ## API/Service Behavior
 
 Introduce tier-aware methods while preserving existing API compatibility:
