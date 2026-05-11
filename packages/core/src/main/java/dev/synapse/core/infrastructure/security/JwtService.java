@@ -3,15 +3,15 @@ package dev.synapse.core.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
@@ -19,22 +19,38 @@ public class JwtService {
     private final SecretKey secretKey;
     private final long accessTokenValidityMs;
     private final long refreshTokenValidityMs;
+    private final TokenBlacklistService tokenBlacklistService;
 
     public JwtService(
-        @Value("${jwt.secret:CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256}") String secret,
-        @Value("${jwt.access-token-validity-ms:900000}") long accessTokenValidityMs,
-        @Value("${jwt.refresh-token-validity-ms:604800000}") long refreshTokenValidityMs
+        @Value(
+            "${jwt.secret:CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256}"
+        ) String secret,
+        @Value(
+            "${jwt.access-token-validity-ms:900000}"
+        ) long accessTokenValidityMs,
+        @Value(
+            "${jwt.refresh-token-validity-ms:604800000}"
+        ) long refreshTokenValidityMs,
+        TokenBlacklistService tokenBlacklistService
     ) {
-        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.secretKey = Keys.hmacShaKeyFor(
+            secret.getBytes(StandardCharsets.UTF_8)
+        );
         this.accessTokenValidityMs = accessTokenValidityMs;
         this.refreshTokenValidityMs = refreshTokenValidityMs;
+        this.tokenBlacklistService = tokenBlacklistService;
     }
 
-    public String generateAccessToken(UUID userId, String username, String role) {
+    public String generateAccessToken(
+        UUID userId,
+        String username,
+        String role
+    ) {
         Instant now = Instant.now();
         Instant expiry = now.plusMillis(accessTokenValidityMs);
 
         return Jwts.builder()
+            .id(UUID.randomUUID().toString())
             .subject(userId.toString())
             .claim("username", username)
             .claim("role", role)
@@ -50,6 +66,7 @@ public class JwtService {
         Instant expiry = now.plusMillis(refreshTokenValidityMs);
 
         return Jwts.builder()
+            .id(UUID.randomUUID().toString())
             .subject(userId.toString())
             .claim("type", "refresh")
             .issuedAt(Date.from(now))
@@ -69,7 +86,14 @@ public class JwtService {
     public boolean isTokenValid(String token) {
         try {
             Claims claims = parseToken(token);
-            return claims.getExpiration().after(Date.from(Instant.now()));
+            boolean expired = claims
+                .getExpiration()
+                .before(Date.from(Instant.now()));
+            if (expired) {
+                return false;
+            }
+            String jti = claims.getId();
+            return jti == null || !tokenBlacklistService.isTokenRevoked(jti);
         } catch (Exception e) {
             return false;
         }
@@ -93,5 +117,26 @@ public class JwtService {
     public String extractTokenType(String token) {
         Claims claims = parseToken(token);
         return claims.get("type", String.class);
+    }
+
+    public String extractTokenId(String token) {
+        Claims claims = parseToken(token);
+        return claims.getId();
+    }
+
+    public void revokeToken(String token) {
+        Claims claims = parseToken(token);
+        String jti = claims.getId();
+        if (jti == null) {
+            return;
+        }
+        Date expiration = claims.getExpiration();
+        long remainingTtlMs = Duration.between(
+            Instant.now(),
+            expiration.toInstant()
+        ).toMillis();
+        if (remainingTtlMs > 0) {
+            tokenBlacklistService.revokeToken(jti, remainingTtlMs);
+        }
     }
 }

@@ -119,6 +119,8 @@ synapse:
         planning: ${SYNAPSE_HARDENING_TOKEN_PLANNING_BUDGET:4000}
         collaboration: ${SYNAPSE_HARDENING_TOKEN_COLLABORATION_BUDGET:4000}
         tooling: ${SYNAPSE_HARDENING_TOKEN_TOOLING_BUDGET:4000}
+  security:
+    require-secrets-override: ${SYNAPSE_REQUIRE_SECRETS_OVERRIDE:false}
 
 # Rate Limiting
 rate-limiting:

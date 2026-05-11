@@ -137,6 +137,9 @@ public class AuthenticationService {
             .findById(userId)
             .orElseThrow(() -> new BadCredentialsException("User not found"));
 
+        // Revoke the old refresh token
+        jwtService.revokeToken(refreshToken);
+
         String newAccessToken = jwtService.generateAccessToken(
             user.getId(),
             user.getUsername(),
@@ -166,6 +169,17 @@ public class AuthenticationService {
             user.getUsername(),
             user.getRole().name()
         );
+    }
+
+    public void logout(String token) {
+        if (token == null || token.isBlank()) {
+            return;
+        }
+        try {
+            jwtService.revokeToken(token);
+        } catch (Exception e) {
+            // Token is already invalid or malformed; nothing to revoke
+        }
     }
 
     private void checkAccountLockout(String username) {
