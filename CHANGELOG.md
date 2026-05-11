@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.5-dev] - 2026-05-11
+
+### Added
+- Goal-based planning persistence with team-scoped planning goals
+- Versioned planning artifacts that store compact plan summaries, step lists, and provider-generated reasoning-chain snapshots
+- Plan refinement flow that supersedes old plan versions and keeps an auditable planning history
+- Goal next-step endpoint for low-token execution (reuse stored plans instead of regenerating full plans each turn)
+- New migration: `V15__agent_reasoning_planning.sql`
+- New REST API under `/api/teams/{teamId}/planning` for goals, plans, refinement, and next-step retrieval
+
+### Changed
+- Planning data model optimized for token savings by persisting compact summaries and structured plan/reasoning artifacts for reuse
+
+---
+
 ## [v2.3.4-dev] - 2026-05-10
 
 ### Added

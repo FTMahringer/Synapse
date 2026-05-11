@@ -215,6 +215,37 @@ public class DtoMapper {
         );
     }
 
+    public static PlanningGoalDTO toDTO(PlanningGoal goal) {
+        return new PlanningGoalDTO(
+            goal.getId(),
+            goal.getTeamId(),
+            goal.getCollaborationSessionId(),
+            goal.getTitle(),
+            goal.getGoalStatement(),
+            goal.getCreatedByAgentId(),
+            goal.getStatus().name(),
+            goal.getCreatedAt(),
+            goal.getUpdatedAt()
+        );
+    }
+
+    public static PlanningArtifactDTO toDTO(PlanningArtifact artifact) {
+        return new PlanningArtifactDTO(
+            artifact.getId(),
+            artifact.getGoalId(),
+            artifact.getPlanVersion(),
+            artifact.getStatus().name(),
+            artifact.getCompactSummary(),
+            artifact.getStepsJson(),
+            artifact.getReasoningChainJson(),
+            artifact.getTotalSteps(),
+            artifact.getCompletedSteps(),
+            artifact.getCreatedByAgentId(),
+            artifact.getCreatedAt(),
+            artifact.getUpdatedAt()
+        );
+    }
+
     public static FirmProjectDTO toDTO(FirmProject project) {
         return new FirmProjectDTO(
             project.getId(),
