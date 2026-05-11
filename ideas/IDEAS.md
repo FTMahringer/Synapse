@@ -25,6 +25,14 @@ This file is a compact index for active idea domains. Detailed content is mainta
    - hybrid built-in skill model
    - forced core vs TUI-selectable built-ins
 
+5. [RULES_SYSTEM.md](./RULES_SYSTEM.md)
+   - central rules/policy precedence
+   - admin-approved override workflow
+
+6. [ADMIN_REQUEST_NOTIFICATION_CHANNEL.md](./ADMIN_REQUEST_NOTIFICATION_CHANNEL.md)
+   - user→admin privileged request lifecycle
+   - centralized approval notifications and auditability
+
 ---
 
 ## Roadmap Promotion Notes

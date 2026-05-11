@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.7-dev] - 2026-05-11
+
+### Added
+- Central hardening policy engine (`AgentHardeningPolicyService`) with unified decision model (`ALLOW`, `WARN`, `BLOCK`) and reason codes
+- Delegation guardrails for self-delegation prevention, delegation-loop detection, and max-hop enforcement
+- Planning guardrails for max-step and max-refinement enforcement
+- Token-budget guardrails with per-phase budgets and automatic concise-mode enforcement near budget limits
+- Hardening decision metadata in native tool execution responses (`hardeningReasonCode`, `enforcedMode`)
+- New ideas docs:
+  - `ideas/RULES_SYSTEM.md`
+  - `ideas/ADMIN_REQUEST_NOTIFICATION_CHANNEL.md`
+
+### Changed
+- Collaboration, planning, and native tool execution now route policy decisions through the same central hardening engine
+- Runtime configuration extended with `synapse.hardening.*` keys for delegation, planning, and token policy thresholds
+
+### Validation
+- Added policy-focused test coverage for delegation loop blocking, planning caps, and token warning/block behavior
+
+---
+
 ## [v2.3.6-dev] - 2026-05-11
 
 ### Added

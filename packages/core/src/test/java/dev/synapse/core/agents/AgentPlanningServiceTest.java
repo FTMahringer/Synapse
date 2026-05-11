@@ -1,6 +1,8 @@
 package dev.synapse.core.agents;
 
 import dev.synapse.agents.service.AgentPlanningService;
+import dev.synapse.agents.service.AgentHardeningPolicyService;
+import dev.synapse.agents.service.HardeningDecision;
 import dev.synapse.core.common.domain.PlanningArtifact;
 import dev.synapse.core.common.domain.PlanningGoal;
 import dev.synapse.core.common.domain.TeamMembership;
@@ -24,6 +26,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +41,8 @@ class AgentPlanningServiceTest {
     @Mock
     private PlanningArtifactRepository planningArtifactRepository;
     @Mock
+    private AgentHardeningPolicyService hardeningPolicyService;
+    @Mock
     private SystemLogService logService;
 
     private AgentPlanningService planningService;
@@ -49,7 +54,11 @@ class AgentPlanningServiceTest {
             teamMembershipRepository,
             planningGoalRepository,
             planningArtifactRepository,
+            hardeningPolicyService,
             logService
+        );
+        when(hardeningPolicyService.evaluatePlanning(any(), anyInt(), anyInt())).thenReturn(
+            HardeningDecision.allow(List.of("TEST"), Map.of())
         );
     }
 

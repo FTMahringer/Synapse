@@ -1,6 +1,8 @@
 package dev.synapse.core.agents;
 
 import dev.synapse.agents.service.AgentCollaborationService;
+import dev.synapse.agents.service.AgentHardeningPolicyService;
+import dev.synapse.agents.service.HardeningDecision;
 import dev.synapse.core.common.domain.CollaborationSession;
 import dev.synapse.core.common.domain.CollaborationSharedContextEntry;
 import dev.synapse.core.common.domain.TeamMembership;
@@ -46,6 +48,8 @@ class AgentCollaborationServiceTest {
     @Mock
     private TaskRepository taskRepository;
     @Mock
+    private AgentHardeningPolicyService hardeningPolicyService;
+    @Mock
     private SystemLogService logService;
 
     private AgentCollaborationService collaborationService;
@@ -60,7 +64,11 @@ class AgentCollaborationServiceTest {
             delegationRepository,
             sharedContextRepository,
             taskRepository,
+            hardeningPolicyService,
             logService
+        );
+        when(hardeningPolicyService.evaluateDelegation(any(), any(), any(), any())).thenReturn(
+            HardeningDecision.allow(List.of("TEST"), java.util.Map.of())
         );
     }
 

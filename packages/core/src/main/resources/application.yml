@@ -104,3 +104,18 @@ synapse:
     cache:
       enabled: ${SYNAPSE_TOOLS_CACHE_ENABLED:true}
       default-ttl-seconds: ${SYNAPSE_TOOLS_CACHE_DEFAULT_TTL_SECONDS:300}
+  hardening:
+    enabled: ${SYNAPSE_HARDENING_ENABLED:true}
+    delegation:
+      max-hops: ${SYNAPSE_HARDENING_DELEGATION_MAX_HOPS:6}
+    planning:
+      max-steps: ${SYNAPSE_HARDENING_PLANNING_MAX_STEPS:20}
+      max-refinements: ${SYNAPSE_HARDENING_PLANNING_MAX_REFINEMENTS:5}
+    token:
+      default-budget: ${SYNAPSE_HARDENING_TOKEN_DEFAULT_BUDGET:12000}
+      concise-threshold-ratio: ${SYNAPSE_HARDENING_TOKEN_CONCISE_THRESHOLD_RATIO:0.75}
+      scope-window-minutes: ${SYNAPSE_HARDENING_TOKEN_SCOPE_WINDOW_MINUTES:60}
+      phase-budgets:
+        planning: ${SYNAPSE_HARDENING_TOKEN_PLANNING_BUDGET:4000}
+        collaboration: ${SYNAPSE_HARDENING_TOKEN_COLLABORATION_BUDGET:4000}
+        tooling: ${SYNAPSE_HARDENING_TOKEN_TOOLING_BUDGET:4000}

@@ -266,7 +266,9 @@ public class DtoMapper {
             response.result(),
             response.cached(),
             response.cacheTtlRemainingSeconds(),
-            response.executedAt()
+            response.executedAt(),
+            response.hardeningReasonCode(),
+            response.enforcedMode()
         );
     }
 

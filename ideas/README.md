@@ -19,6 +19,12 @@ Platform feature direction, plugin ecosystem strategy, and long-term product bac
 ### [BUILTIN_SKILLS_STRATEGY.md](./BUILTIN_SKILLS_STRATEGY.md)
 Hybrid built-in skill model (forced core + TUI-selectable optional built-ins).
 
+### [RULES_SYSTEM.md](./RULES_SYSTEM.md)
+Central policy/rules architecture with global + template + admin-approved agent overrides.
+
+### [ADMIN_REQUEST_NOTIFICATION_CHANNEL.md](./ADMIN_REQUEST_NOTIFICATION_CHANNEL.md)
+User-to-admin approval and notification workflow for privileged requests.
+
 ## Status
 
 Ideas in this folder are:

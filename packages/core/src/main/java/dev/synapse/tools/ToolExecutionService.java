@@ -3,6 +3,8 @@ package dev.synapse.tools;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import dev.synapse.agents.service.AgentHardeningPolicyService;
+import dev.synapse.agents.service.HardeningDecision;
 import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
@@ -36,6 +38,7 @@ public class ToolExecutionService {
     private final CacheManager cacheManager;
     private final ObjectMapper canonicalObjectMapper;
     private final SystemLogService logService;
+    private final AgentHardeningPolicyService hardeningPolicyService;
     private final boolean cacheEnabled;
     private final long defaultCacheTtlSeconds;
     private final long executionTimeoutMs;
@@ -46,6 +49,7 @@ public class ToolExecutionService {
         CacheManager cacheManager,
         ObjectMapper objectMapper,
         SystemLogService logService,
+        AgentHardeningPolicyService hardeningPolicyService,
         @Value("${synapse.tools.cache.enabled:true}") boolean cacheEnabled,
         @Value("${synapse.tools.cache.default-ttl-seconds:300}") long defaultCacheTtlSeconds,
         @Value("${synapse.tools.execution-timeout-ms:10000}") long executionTimeoutMs
@@ -53,6 +57,7 @@ public class ToolExecutionService {
         this.toolRegistryService = toolRegistryService;
         this.cacheManager = cacheManager;
         this.logService = logService;
+        this.hardeningPolicyService = hardeningPolicyService;
         this.cacheEnabled = cacheEnabled;
         this.defaultCacheTtlSeconds = defaultCacheTtlSeconds;
         this.executionTimeoutMs = executionTimeoutMs;
@@ -71,12 +76,34 @@ public class ToolExecutionService {
         NativeJavaTool tool = toolRegistryService.getTool(toolId);
         Map<String, Object> effectiveInput = input != null ? input : Map.of();
         tool.validateInput(effectiveInput);
+        long estimatedTokens = estimateTokens(effectiveInput);
+        HardeningDecision hardeningDecision = hardeningPolicyService.evaluateTokenBudget(
+            effectiveContext.agentId(),
+            effectiveContext.teamId(),
+            "TOOLING",
+            estimatedTokens
+        );
+        if (hardeningDecision.decision() == HardeningDecision.Decision.BLOCK) {
+            throw new ValidationException("Tool execution blocked by hardening policy: " + hardeningDecision.reasonCode());
+        }
 
         String cacheKey = buildCacheKey(tool.toolId(), effectiveContext, effectiveInput);
         Cache cache = cacheEnabled && tool.isCacheable() ? cacheManager.getCache(TOOL_CACHE_NAME) : null;
         if (cache != null) {
             ToolExecutionResponse cachedResponse = resolveCached(cache, cacheKey, tool.toolId());
             if (cachedResponse != null) {
+                if (hardeningDecision.decision() == HardeningDecision.Decision.WARN) {
+                    return new ToolExecutionResponse(
+                        cachedResponse.toolId(),
+                        cachedResponse.status(),
+                        cachedResponse.result(),
+                        cachedResponse.cached(),
+                        cachedResponse.cacheTtlRemainingSeconds(),
+                        cachedResponse.executedAt(),
+                        hardeningDecision.reasonCode(),
+                        hardeningDecision.enforcedMode()
+                    );
+                }
                 return cachedResponse;
             }
         }
@@ -102,7 +129,9 @@ public class ToolExecutionService {
             result.result(),
             false,
             null,
-            executedAt
+            executedAt,
+            hardeningDecision.reasonCode(),
+            hardeningDecision.enforcedMode()
         );
 
         if (cache != null) {
@@ -168,8 +197,15 @@ public class ToolExecutionService {
             entry.result(),
             true,
             Math.max(ttlRemaining, 0),
-            Instant.now()
+            Instant.now(),
+            "OK",
+            null
         );
+    }
+
+    private long estimateTokens(Map<String, Object> input) {
+        String canonical = canonicalize(input);
+        return Math.max(1, Math.round(canonical.length() / 4.0));
     }
 
     private String buildCacheKey(String toolId, ToolExecutionContext context, Map<String, Object> input) {

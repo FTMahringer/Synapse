@@ -25,6 +25,7 @@ public class AgentPlanningService {
     private final TeamMembershipRepository teamMembershipRepository;
     private final PlanningGoalRepository planningGoalRepository;
     private final PlanningArtifactRepository planningArtifactRepository;
+    private final AgentHardeningPolicyService hardeningPolicyService;
     private final SystemLogService logService;
 
     public AgentPlanningService(
@@ -32,12 +33,14 @@ public class AgentPlanningService {
         TeamMembershipRepository teamMembershipRepository,
         PlanningGoalRepository planningGoalRepository,
         PlanningArtifactRepository planningArtifactRepository,
+        AgentHardeningPolicyService hardeningPolicyService,
         SystemLogService logService
     ) {
         this.teamRepository = teamRepository;
         this.teamMembershipRepository = teamMembershipRepository;
         this.planningGoalRepository = planningGoalRepository;
         this.planningArtifactRepository = planningArtifactRepository;
+        this.hardeningPolicyService = hardeningPolicyService;
         this.logService = logService;
     }
 
@@ -108,6 +111,10 @@ public class AgentPlanningService {
         if (!planningArtifactRepository.findByGoalIdOrderByPlanVersionDesc(goalId).isEmpty()) {
             throw new ValidationException("Goal '" + goalId + "' already has planning artifacts; use refine endpoint");
         }
+        HardeningDecision hardeningDecision = hardeningPolicyService.evaluatePlanning(goalId, steps != null ? steps.size() : 0, 0);
+        if (hardeningDecision.decision() == HardeningDecision.Decision.BLOCK) {
+            throw new ValidationException("Planning blocked by hardening policy: " + hardeningDecision.reasonCode());
+        }
         return saveNewPlan(goalId, 1, compactSummary, steps, reasoningChain, createdByAgentId);
     }
 
@@ -135,6 +142,14 @@ public class AgentPlanningService {
             .findFirst()
             .map(existing -> existing.getPlanVersion() + 1)
             .orElse(1);
+        HardeningDecision hardeningDecision = hardeningPolicyService.evaluatePlanning(
+            goalId,
+            steps != null ? steps.size() : 0,
+            nextVersion - 1
+        );
+        if (hardeningDecision.decision() == HardeningDecision.Decision.BLOCK) {
+            throw new ValidationException("Planning refinement blocked by hardening policy: " + hardeningDecision.reasonCode());
+        }
 
         basePlan.setStatus(PlanningArtifact.PlanStatus.SUPERSEDED);
         planningArtifactRepository.save(basePlan);

@@ -9,5 +9,7 @@ public record ToolExecutionResponse(
     Map<String, Object> result,
     boolean cached,
     Long cacheTtlRemainingSeconds,
-    Instant executedAt
+    Instant executedAt,
+    String hardeningReasonCode,
+    String enforcedMode
 ) {}

@@ -33,6 +33,7 @@ public class AgentCollaborationService {
     private final CollaborationDelegationRepository delegationRepository;
     private final CollaborationSharedContextRepository sharedContextRepository;
     private final TaskRepository taskRepository;
+    private final AgentHardeningPolicyService hardeningPolicyService;
     private final SystemLogService logService;
 
     public AgentCollaborationService(
@@ -43,6 +44,7 @@ public class AgentCollaborationService {
         CollaborationDelegationRepository delegationRepository,
         CollaborationSharedContextRepository sharedContextRepository,
         TaskRepository taskRepository,
+        AgentHardeningPolicyService hardeningPolicyService,
         SystemLogService logService
     ) {
         this.teamRepository = teamRepository;
@@ -52,6 +54,7 @@ public class AgentCollaborationService {
         this.delegationRepository = delegationRepository;
         this.sharedContextRepository = sharedContextRepository;
         this.taskRepository = taskRepository;
+        this.hardeningPolicyService = hardeningPolicyService;
         this.logService = logService;
     }
 
@@ -158,6 +161,15 @@ public class AgentCollaborationService {
         ensureAgentInTeam(teamId, toAgentId);
         if (taskId != null && !taskRepository.existsById(taskId)) {
             throw new ResourceNotFoundException("Task", taskId.toString());
+        }
+        HardeningDecision hardeningDecision = hardeningPolicyService.evaluateDelegation(
+            sessionId,
+            fromAgentId,
+            toAgentId,
+            delegationRepository.findBySessionIdOrderByCreatedAtAsc(sessionId)
+        );
+        if (hardeningDecision.decision() == HardeningDecision.Decision.BLOCK) {
+            throw new ValidationException("Delegation blocked by hardening policy: " + hardeningDecision.reasonCode());
         }
 
         CollaborationDelegation delegation = new CollaborationDelegation();

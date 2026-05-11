@@ -1,6 +1,8 @@
 package dev.synapse.core.tools;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dev.synapse.agents.service.AgentHardeningPolicyService;
+import dev.synapse.agents.service.HardeningDecision;
 import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.tools.NativeJavaTool;
@@ -18,7 +20,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class ToolExecutionServiceTest {
 
@@ -63,11 +69,16 @@ class ToolExecutionServiceTest {
         };
 
         ToolRegistryService registryService = new ToolRegistryService(List.of(tool), true);
+        AgentHardeningPolicyService hardeningPolicyService = mock(AgentHardeningPolicyService.class);
+        when(hardeningPolicyService.evaluateTokenBudget(any(), any(), anyString(), anyLong())).thenReturn(
+            HardeningDecision.allow(List.of("TEST"), Map.of())
+        );
         ToolExecutionService executionService = new ToolExecutionService(
             registryService,
             new ConcurrentMapCacheManager("native-tools"),
             new ObjectMapper(),
             mock(SystemLogService.class),
+            hardeningPolicyService,
             true,
             300,
             5000
@@ -92,11 +103,16 @@ class ToolExecutionServiceTest {
     @Test
     void execute_throwsValidationOnDisabledTools() {
         ToolRegistryService registryService = new ToolRegistryService(List.of(), false);
+        AgentHardeningPolicyService hardeningPolicyService = mock(AgentHardeningPolicyService.class);
+        when(hardeningPolicyService.evaluateTokenBudget(any(), any(), anyString(), anyLong())).thenReturn(
+            HardeningDecision.allow(List.of("TEST"), Map.of())
+        );
         ToolExecutionService executionService = new ToolExecutionService(
             registryService,
             new ConcurrentMapCacheManager("native-tools"),
             new ObjectMapper(),
             mock(SystemLogService.class),
+            hardeningPolicyService,
             true,
             300,
             5000
