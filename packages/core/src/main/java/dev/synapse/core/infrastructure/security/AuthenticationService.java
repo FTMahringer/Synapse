@@ -23,6 +23,7 @@ public class AuthenticationService {
     private final PasswordHashingService passwordHashingService;
     private final JwtService jwtService;
     private final SystemLogService logService;
+    private final SecurityAuditService auditService;
 
     private final int accountLockoutThreshold;
     private final int accountLockoutDurationMinutes;
@@ -36,6 +37,7 @@ public class AuthenticationService {
         PasswordHashingService passwordHashingService,
         JwtService jwtService,
         SystemLogService logService,
+        SecurityAuditService auditService,
         @Value(
             "${rate-limiting.account-lockout-threshold:5}"
         ) int accountLockoutThreshold,
@@ -47,12 +49,17 @@ public class AuthenticationService {
         this.passwordHashingService = passwordHashingService;
         this.jwtService = jwtService;
         this.logService = logService;
+        this.auditService = auditService;
         this.accountLockoutThreshold = accountLockoutThreshold;
         this.accountLockoutDurationMinutes = accountLockoutDurationMinutes;
     }
 
     @Transactional(readOnly = true)
-    public AuthenticationResponse login(String username, String password) {
+    public AuthenticationResponse login(
+        String username,
+        String password,
+        String ipAddress
+    ) {
         // Check if the account is currently locked due to too many failed attempts
         checkAccountLockout(username);
 
@@ -60,6 +67,7 @@ public class AuthenticationService {
             .findByUsername(username)
             .orElseThrow(() -> {
                 recordFailedAttempt(username);
+                auditService.logLoginAttempt(username, ipAddress, false);
                 return new BadCredentialsException(
                     "Invalid username or password"
                 );
@@ -67,6 +75,8 @@ public class AuthenticationService {
 
         if (!passwordHashingService.verify(password, user.getPasswordHash())) {
             recordFailedAttempt(username);
+
+            auditService.logLoginAttempt(username, ipAddress, false);
 
             logService.log(
                 LogLevel.WARN,
@@ -95,6 +105,8 @@ public class AuthenticationService {
         );
         String refreshToken = jwtService.generateRefreshToken(user.getId());
 
+        auditService.logLoginAttempt(username, ipAddress, true);
+
         logService.log(
             LogLevel.INFO,
             LogCategory.AUTH,
@@ -120,7 +132,10 @@ public class AuthenticationService {
     }
 
     @Transactional(readOnly = true)
-    public AuthenticationResponse refreshToken(String refreshToken) {
+    public AuthenticationResponse refreshToken(
+        String refreshToken,
+        String ipAddress
+    ) {
         if (!jwtService.isTokenValid(refreshToken)) {
             throw new BadCredentialsException(
                 "Invalid or expired refresh token"
@@ -146,6 +161,15 @@ public class AuthenticationService {
             user.getRole().name()
         );
         String newRefreshToken = jwtService.generateRefreshToken(user.getId());
+
+        auditService.logUserAction(
+            user.getId(),
+            user.getUsername(),
+            "TOKEN_REFRESH",
+            "/api/auth/refresh",
+            "Access token refreshed",
+            ipAddress
+        );
 
         logService.log(
             LogLevel.INFO,
