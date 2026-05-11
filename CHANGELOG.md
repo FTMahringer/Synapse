@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.3.4-dev] - 2026-05-10
+
+### Added
+- Agent collaboration framework with dedicated collaboration sessions scoped to teams
+- Inter-agent messaging protocol with typed message events (`DIRECTIVE`, `CONTEXT`, `STATUS`, `RESULT`)
+- Task delegation records between agents inside a collaboration session
+- Shared collaboration context store with versioned context keys for team-wide state
+- New migration: `V14__agent_collaboration_framework.sql`
+- New REST API under `/api/teams/{teamId}/collaboration` for sessions, messages, delegations, and shared context
+
+### Validation
+- Team/session ownership checks and active-session enforcement on all collaboration operations
+- Membership validation for message senders/recipients and delegation/shared-context updates
+
+---
+
 ## [v2.3.3-dev] - 2026-05-10
 
 ### Added

@@ -163,6 +163,58 @@ public class DtoMapper {
         );
     }
 
+    public static CollaborationSessionDTO toDTO(CollaborationSession session) {
+        return new CollaborationSessionDTO(
+            session.getId(),
+            session.getTeamId(),
+            session.getInitiatedByAgentId(),
+            session.getConversationId(),
+            session.getStatus().name(),
+            session.getCreatedAt(),
+            session.getUpdatedAt()
+        );
+    }
+
+    public static CollaborationMessageDTO toDTO(CollaborationMessage message) {
+        return new CollaborationMessageDTO(
+            message.getId(),
+            message.getSessionId(),
+            message.getFromAgentId(),
+            message.getToAgentId(),
+            message.getMessageType().name(),
+            message.getContent(),
+            message.getMetadata(),
+            message.getCreatedAt()
+        );
+    }
+
+    public static CollaborationDelegationDTO toDTO(CollaborationDelegation delegation) {
+        return new CollaborationDelegationDTO(
+            delegation.getId(),
+            delegation.getSessionId(),
+            delegation.getTaskId(),
+            delegation.getFromAgentId(),
+            delegation.getToAgentId(),
+            delegation.getStatus().name(),
+            delegation.getDelegationNote(),
+            delegation.getCreatedAt(),
+            delegation.getUpdatedAt()
+        );
+    }
+
+    public static SharedContextEntryDTO toDTO(CollaborationSharedContextEntry entry) {
+        return new SharedContextEntryDTO(
+            entry.getId(),
+            entry.getSessionId(),
+            entry.getContextKey(),
+            entry.getContextValue(),
+            entry.getUpdatedByAgentId(),
+            entry.getVersion(),
+            entry.getCreatedAt(),
+            entry.getUpdatedAt()
+        );
+    }
+
     public static FirmProjectDTO toDTO(FirmProject project) {
         return new FirmProjectDTO(
             project.getId(),
