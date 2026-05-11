@@ -38,7 +38,10 @@ function Write-EnvFile {
         [string]$PublicDomain,
         [string]$PrimaryModelProvider,
         [string]$EchoEnabled,
-        [string]$GitProvider
+        [string]$GitProvider,
+        [string]$PostgresPassword,
+        [string]$JwtSecret,
+        [string]$SecretsEncryptionKey
     )
 
     $envFile = Join-Path $RootDir ".env"
@@ -49,11 +52,17 @@ function Write-EnvFile {
         "PRIMARY_MODEL_PROVIDER=$PrimaryModelProvider"
         "ECHO_ENABLED=$EchoEnabled"
         "GIT_PROVIDER=$GitProvider"
+        "DASHBOARD_DEFAULT_USERNAME=admin"
+        "DASHBOARD_DEFAULT_PASSWORD=admin"
         "POSTGRES_DB=synapse"
         "POSTGRES_USER=synapse"
-        "POSTGRES_PASSWORD=synapse_dev_password"
+        "POSTGRES_PASSWORD=$PostgresPassword"
+        "JWT_SECRET=$JwtSecret"
+        "SECRETS_ENCRYPTION_KEY=$SecretsEncryptionKey"
         "REDIS_URL=redis://redis:6379"
         "QDRANT_URL=http://qdrant:6333"
+        "GRAFANA_ADMIN_USER=admin"
+        "GRAFANA_ADMIN_PASSWORD=admin"
     )
 
     Set-Content -Path $envFile -Value $content -Encoding UTF8
@@ -69,6 +78,9 @@ $publicDomain = Ask-Value "Public domain or localhost" "localhost"
 $primaryModelProvider = Ask-Value "Primary model provider" "anthropic"
 $echoEnabled = Ask-Value "Enable ECHO debug agent: true or false" "true"
 $gitProvider = Ask-Value "Git provider: none, github, gitlab, forgejo, or gitea" "none"
+$postgresPassword = Ask-Value "Postgres password" "synapse_dev_password"
+$jwtSecret = Ask-Value "JWT secret" "CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256"
+$secretsEncryptionKey = Ask-Value "Secrets encryption key" "dev_key_32_bytes_change_me_now!!"
 
 if ($installMode -notin @("quick", "dev", "production")) {
     throw "Invalid install mode: $installMode"
@@ -80,7 +92,10 @@ Write-EnvFile `
     -PublicDomain $publicDomain `
     -PrimaryModelProvider $primaryModelProvider `
     -EchoEnabled $echoEnabled `
-    -GitProvider $gitProvider
+    -GitProvider $gitProvider `
+    -PostgresPassword $postgresPassword `
+    -JwtSecret $jwtSecret `
+    -SecretsEncryptionKey $secretsEncryptionKey
 
 $composeFile = Join-Path $ComposeDir "docker-compose.yml"
 if ($installMode -eq "production") {

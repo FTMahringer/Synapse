@@ -2,7 +2,7 @@
 
 > **Your AI. Your Rules. Your Stack.**
 
-**Current Release**: v2.0.0 (Production Ready)
+**Current Release**: v2.4.0 (Advanced Agent Capabilities)
 
 SYNAPSE is a self-hosted, fully extensible AI platform that puts you in complete control of your AI environment. Run it on your own infrastructure, connect any model provider, build custom agent teams, and extend everything through a powerful plugin system — without ever depending on a third-party cloud.
 
@@ -17,6 +17,9 @@ SYNAPSE is a self-hosted, fully extensible AI platform that puts you in complete
 - **Self-Learning & Skill Publishing** — Agents learn from interactions and can publish reusable skills to the community store (always with explicit user consent).
 - **Multi-User Support** — Full role-based access control. Multiple users can interact with the platform simultaneously with isolated contexts.
 - **Plugin & Bundle Store** — Browse and install community-contributed plugins, bundles, and skill packs from the integrated store. Separate community store from the curated official store.
+- **Advanced Agent Workflows** — Collaboration sessions, inter-agent delegation, shared context, and goal-based planning with versioned plan artifacts.
+- **Native Java Tools Runtime** — Built-in tool discovery and execution (`tool_registry_inspect`, `plugin_contract_validate`) with caching and timeout controls.
+- **Central Hardening Policies** — Unified guardrails for delegation/planning/tooling with token-budget and concise-mode signaling.
 - **CLI + Web Dashboard** — A Go-based Bubble Tea TUI for power users and a full Vue 3 web dashboard for everyone else.
 - **ECHO — Offline Debug Fallback** — When all other agents are unavailable, ECHO activates (debug mode only, manual invocation). Never be left completely without assistance.
 
@@ -40,16 +43,19 @@ SYNAPSE is a self-hosted, fully extensible AI platform that puts you in complete
 ```bash
 # Clone the repository
 git clone https://github.com/FTMahringer/Synapse.git
-cd Synapse/installer/compose
+cd Synapse
+
+# Prepare environment variables
+cp .env.example .env
 
 # Start all services
-docker compose up -d
+docker compose -f installer/compose/docker-compose.yml --env-file .env up -d
 
 # Check service health
-docker compose ps
+docker compose -f installer/compose/docker-compose.yml ps
 
 # View logs
-docker compose logs -f backend
+docker compose -f installer/compose/docker-compose.yml logs -f backend
 ```
 
 Services will be available at:
@@ -61,22 +67,22 @@ Services will be available at:
 
 First-time setup will automatically:
 1. Create PostgreSQL database
-2. Run all 11 Flyway migrations
+2. Run all Flyway migrations (current schema: v15)
 3. Initialize system metadata
 4. Sync plugin store registry
 5. Start backend and dashboard
 
 ### Environment Configuration
 
-Key environment variables (set in `docker-compose.yml` or `.env`):
+Key environment variables are documented in `.env.example` (copy it to `.env` and adjust values):
 
 ```bash
 # Required for production
 JWT_SECRET=your-256-bit-secret-here
 SECRETS_ENCRYPTION_KEY=your-32-byte-key-here
 
-# Optional
-SYNAPSE_VERSION=v2.0.0
+# Optional override (defaults to current application build version)
+SYNAPSE_VERSION=v2.4.0
 POSTGRES_PASSWORD=your-secure-password
 ECHO_ENABLED=false
 ```
@@ -164,7 +170,8 @@ synapse/
 ├── backend/          # SQL schema, seed, migrations, vault spec
 ├── plugins/          # First-party plugin implementations
 ├── store/            # Store metadata and community bundle index
-├── installer/        # install.sh and setup scripts
+├── install.sh        # Linux/macOS interactive installer
+├── installer/        # compose files and setup scripts
 ├── packages/         # Shared packages and libraries
 ├── agents/           # Agent definitions and default configurations
 ├── docs/             # Full documentation
@@ -182,18 +189,16 @@ synapse/
 
 ## Documentation
 
-Full documentation lives in the [`docs/`](./docs/) folder:
+Roadmaps and release planning docs live in [`docs/roadmaps/`](./docs/roadmaps/):
 
 - [Implementation Roadmap](./docs/roadmaps/SYNAPSE_IMPLEMENTATION_ROADMAP.md) - Versioned implementation sequence and fixed roadmap labels
-- [Release Process](./docs/release-process.md) - Milestone, patch, changelog, and label workflow
-- [Architecture](./docs/architecture.md) — Deep dive into all four layers and how they communicate
-- [Plugin System](./docs/plugin-system.md) - How to build and install channels, model providers, skills, and MCP servers
-- [Agent Identity](./docs/agent-identity-system.md) - Agent identity, soul, connections, and config files
-- [Agent Teams](./docs/agent-teams-system.md) - Creating, configuring, and managing agent teams
-- [AI-Firm](./docs/ai-firm-system.md) - Project management orchestration layer
-- [ECHO](./docs/echo-debug-agent.md) - Manual-only debug agent and when to use it
-- [Store](./docs/store-concept.md) - Community and official store, bundle submission
-- [API Reference](./docs/api-reference.md) - REST, WebSocket, SSE, and CLI reference
+- [V3 Roadmap](./docs/roadmaps/SYNAPSE_V3_IMPLEMENTATION_ROADMAP.md) - Current feature-milestone execution path
+- [Docs Roadmap](./docs/roadmaps/SYNAPSE_DOCS_ROADMAP.md) - Documentation planning track
+
+Product/API/operator documentation is maintained in the separate docs repository:
+
+- **Live Docs**: https://ftmahringer.github.io/Synapse/
+- **Docs Repo**: https://github.com/FTMahringer/Synapse-docs
 
 ---
 

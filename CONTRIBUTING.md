@@ -67,13 +67,16 @@ Branch names must be lowercase and use hyphens, not underscores or spaces.
 
 ```bash
 # Backend (Java)
-cd backend && ./mvnw verify
+cd packages/core
+mvn test
 
 # Frontend (Vue)
-cd frontend && npm run test
+cd packages/dashboard/frontend
+npm run build
 
 # CLI (Go)
-cd cli && go test ./...
+cd packages/cli
+go test ./...
 ```
 
 Do not submit a PR with failing tests. If your change requires new tests, write them.
@@ -104,7 +107,7 @@ Plugins extend {SYSTEM_NAME} in four categories: channels, model providers, skil
 
 All plugins must:
 
-- Include a `plugin.json` manifest at the root of the plugin directory (see `docs/plugins.md` for the schema).
+- Include a plugin manifest at the root of the plugin directory (see `docs/roadmaps/` and existing `plugins/*/_template/manifest.yml` examples for current structure).
 - Be licensed under a permissive open-source license (MIT, Apache 2.0, or BSD).
 - Not phone home or exfiltrate user data without explicit, documented user consent.
 - Not modify core platform internals — only use the official plugin API.
@@ -117,7 +120,7 @@ Channel plugins route messages between {SYSTEM_NAME} agents and external platfor
 
 Requirements:
 
-- Implement the `ChannelPlugin` interface from `backend/plugin-api/src/main/java/synapse/plugin/channel/ChannelPlugin.java`.
+- Follow the current Java-first plugin direction and manifest/runtime conventions used by the repository templates.
 - Handle message normalization — incoming messages must be converted to the internal `AgentMessage` format.
 - Support webhook and polling modes where the platform allows both.
 - Never store message content beyond what is needed for active session context.
@@ -129,7 +132,7 @@ Model provider plugins connect {SYSTEM_NAME} to LLM backends (e.g., OpenAI, Anth
 
 Requirements:
 
-- Implement the `ModelProviderPlugin` interface from `backend/plugin-api/src/main/java/synapse/plugin/model/ModelProviderPlugin.java`.
+- Follow the current provider integration patterns in `packages/core/src/main/java/dev/synapse/providers/`.
 - Support streaming responses via the standard `ModelStream` abstraction.
 - Expose a capability map so the platform knows which features the provider supports (e.g., function calling, vision, embeddings).
 - Handle provider-specific rate limiting and retry logic internally — do not let exceptions bubble up to the agent layer.
@@ -141,7 +144,7 @@ Skill plugins add reusable callable capabilities to agents. {SYSTEM_NAME} uses t
 
 Requirements:
 
-- Follow the Claude Code Skills format exactly. The manifest, entry point, and tool schema must conform to the specification in `docs/plugins.md#skills`.
+- Follow the Claude Code Skills format exactly and align manifests with current repository template conventions.
 - Skills must be stateless where possible. If a skill requires persistent state, use the platform's key-value store API — never write to the filesystem directly.
 - Skills must declare all permissions they require in the manifest. The platform will prompt the user to grant permissions at install time.
 - Include example invocations in the README.
@@ -240,10 +243,11 @@ Unpublishing removes the skill from the store listing. Users who have already in
 - Async code must use Spring's reactive stack or virtual threads consistently — do not mix blocking and non-blocking styles in the same service.
 - Spring Boot configuration classes must use `@ConfigurationProperties` with typed records. Do not use `@Value` for anything other than simple string overrides.
 
-Run the formatter before committing:
+Run backend verification before committing:
 
 ```bash
-cd backend && ./mvnw spotless:apply
+cd packages/core
+mvn -q -DskipTests package
 ```
 
 ### Go (CLI)
@@ -256,10 +260,11 @@ cd backend && ./mvnw spotless:apply
 - Package names must be short, lowercase, and singular.
 - All exported symbols must have Go doc comments.
 
-Run linting before committing:
+Run CLI tests before committing:
 
 ```bash
-cd cli && golangci-lint run ./...
+cd packages/cli
+go test ./...
 ```
 
 ### Vue 3 (Frontend)
@@ -273,10 +278,11 @@ cd cli && golangci-lint run ./...
 - CSS: use scoped styles in components. Global styles go in `src/assets/styles/`. Use CSS custom properties for all color values — reference the platform color system (see `src/assets/styles/colors.css`).
 - All user-facing strings must go through the i18n system (`vue-i18n`). Do not hardcode display text.
 
-Run linting and type-checking before committing:
+Run frontend build/type-check before committing:
 
 ```bash
-cd frontend && npm run lint && npm run type-check
+cd packages/dashboard/frontend
+npm run build
 ```
 
 ---
@@ -314,7 +320,7 @@ Feature requests are not guaranteed to be implemented. They go into a triage que
 
 ### Security Vulnerabilities
 
-Do not open a public GitHub issue for security vulnerabilities. Report them privately by emailing the security contact listed in `SECURITY.md`. You will receive an acknowledgment within 48 hours.
+Do not open a public GitHub issue for security vulnerabilities. Use GitHub Security Advisories for private disclosure (`Security` tab in the repository) and include full reproduction details.
 
 ---
 

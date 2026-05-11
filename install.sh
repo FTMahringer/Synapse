@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 COMPOSE_DIR="$ROOT_DIR/installer/compose"
 
 ask() {
@@ -28,11 +28,17 @@ PUBLIC_DOMAIN=$PUBLIC_DOMAIN
 PRIMARY_MODEL_PROVIDER=$PRIMARY_MODEL_PROVIDER
 ECHO_ENABLED=$ECHO_ENABLED
 GIT_PROVIDER=$GIT_PROVIDER
+DASHBOARD_DEFAULT_USERNAME=admin
+DASHBOARD_DEFAULT_PASSWORD=admin
 POSTGRES_DB=synapse
 POSTGRES_USER=synapse
-POSTGRES_PASSWORD=synapse_dev_password
+POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+JWT_SECRET=$JWT_SECRET
+SECRETS_ENCRYPTION_KEY=$SECRETS_ENCRYPTION_KEY
 REDIS_URL=redis://redis:6379
 QDRANT_URL=http://qdrant:6333
+GRAFANA_ADMIN_USER=admin
+GRAFANA_ADMIN_PASSWORD=admin
 EOF
   echo "Wrote $env_file"
 }
@@ -56,6 +62,9 @@ main() {
   PRIMARY_MODEL_PROVIDER="$(ask "Primary model provider" "anthropic")"
   ECHO_ENABLED="$(ask "Enable ECHO debug agent: true or false" "true")"
   GIT_PROVIDER="$(ask "Git provider: none, github, gitlab, forgejo, or gitea" "none")"
+  POSTGRES_PASSWORD="$(ask "Postgres password" "synapse_dev_password")"
+  JWT_SECRET="$(ask "JWT secret" "CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256")"
+  SECRETS_ENCRYPTION_KEY="$(ask "Secrets encryption key" "dev_key_32_bytes_change_me_now!!")"
 
   case "$INSTALL_MODE" in
     quick|dev|production) ;;
