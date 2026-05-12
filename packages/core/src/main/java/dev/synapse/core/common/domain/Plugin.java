@@ -222,4 +222,52 @@ public class Plugin {
         this.dependencies =
             dependencies != null ? dependencies : new ArrayList<>();
     }
+
+    public Boolean getScanClean() {
+        return scanClean;
+    }
+
+    public void setScanClean(Boolean scanClean) {
+        this.scanClean = scanClean;
+    }
+
+    public Map<String, Object> getScanViolations() {
+        return scanViolations;
+    }
+
+    public void setScanViolations(Map<String, Object> scanViolations) {
+        this.scanViolations = scanViolations;
+    }
+
+    public boolean isSandboxEnabled() {
+        return sandboxEnabled;
+    }
+
+    public void setSandboxEnabled(boolean sandboxEnabled) {
+        this.sandboxEnabled = sandboxEnabled;
+    }
+
+    public Long getLifecycleTimeoutMs() {
+        return lifecycleTimeoutMs;
+    }
+
+    public void setLifecycleTimeoutMs(Long lifecycleTimeoutMs) {
+        this.lifecycleTimeoutMs = lifecycleTimeoutMs;
+    }
+
+    public Long getMessageTimeoutMs() {
+        return messageTimeoutMs;
+    }
+
+    public void setMessageTimeoutMs(Long messageTimeoutMs) {
+        this.messageTimeoutMs = messageTimeoutMs;
+    }
+
+    public Integer getMaxLogsPerMinute() {
+        return maxLogsPerMinute;
+    }
+
+    public void setMaxLogsPerMinute(Integer maxLogsPerMinute) {
+        this.maxLogsPerMinute = maxLogsPerMinute;
+    }
 }

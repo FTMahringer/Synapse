@@ -5,13 +5,12 @@ import dev.synapse.core.common.repository.PluginRepository;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import org.springframework.stereotype.Service;
 
 /**
  * Plugin sandboxing and security enforcement service.
@@ -51,18 +50,25 @@ public class PluginSandboxService {
         try {
             return bytecodeScanner.scan(jarPath);
         } catch (IOException e) {
-            logService.log(LogLevel.ERROR, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.ERROR,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginSandboxService"),
                 "SANDBOX_SCAN_FAILED",
                 Map.of("jar", jarPath.toString(), "error", e.getMessage()),
-                null, null);
-            return new BytecodeScanner.ScanResult(false, List.of(
-                new BytecodeScanner.Violation(
-                    "JAR",
-                    "Could not read JAR: " + e.getMessage(),
-                    BytecodeScanner.ViolationType.CLASS_REFERENCE
+                null,
+                null
+            );
+            return new BytecodeScanner.ScanResult(
+                false,
+                List.of(
+                    new BytecodeScanner.Violation(
+                        "JAR",
+                        "Could not read JAR: " + e.getMessage(),
+                        BytecodeScanner.ViolationType.CLASS_REFERENCE
+                    )
                 )
-            ));
+            );
         }
     }
 
@@ -80,20 +86,27 @@ public class PluginSandboxService {
 
         // Check that no core modules are readable by the plugin layer
         for (java.lang.Module module : layer.modules()) {
-            for (java.lang.Module readable : module.getLayer().configuration().modules()) {
-                String name = readable.getName();
-                if (name != null && (
-                    name.startsWith("dev.synapse.core") ||
-                    name.startsWith("org.springframework") ||
-                    name.startsWith("org.hibernate") ||
-                    name.startsWith("jakarta.persistence")
-                )) {
-                    logService.log(LogLevel.ERROR, LogCategory.PLUGIN,
+            for (java.lang.module.ResolvedModule resolved : module
+                .getLayer()
+                .configuration()
+                .modules()) {
+                String name = resolved.name();
+                if (
+                    name != null &&
+                    (name.startsWith("dev.synapse.core") ||
+                        name.startsWith("org.springframework") ||
+                        name.startsWith("org.hibernate") ||
+                        name.startsWith("jakarta.persistence"))
+                ) {
+                    logService.log(
+                        LogLevel.ERROR,
+                        LogCategory.PLUGIN,
                         Map.of("component", "PluginSandboxService"),
                         "SANDBOX_JPMS_VIOLATION",
-                        Map.of("pluginId", loaded.pluginId(),
-                               "module", name),
-                        null, null);
+                        Map.of("pluginId", loaded.pluginId(), "module", name),
+                        null,
+                        null
+                    );
                     return false;
                 }
             }
@@ -130,30 +143,46 @@ public class PluginSandboxService {
             completed = true;
         } catch (TimeoutException e) {
             future.cancel(true);
-            logService.log(LogLevel.ERROR, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.ERROR,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginSandboxService"),
-                isOnLoad ? "SANDBOX_ONLOAD_TIMEOUT" : "SANDBOX_ONUNLOAD_TIMEOUT",
+                isOnLoad
+                    ? "SANDBOX_ONLOAD_TIMEOUT"
+                    : "SANDBOX_ONUNLOAD_TIMEOUT",
                 Map.of("pluginId", pluginId, "timeoutMs", timeoutMs),
-                null, null);
+                null,
+                null
+            );
 
             if (isOnLoad) {
-                markPluginError(pluginId,
-                    "Lifecycle hook onLoad() timed out after " + timeoutMs + "ms");
+                markPluginError(
+                    pluginId,
+                    "Lifecycle hook onLoad() timed out after " +
+                        timeoutMs +
+                        "ms"
+                );
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             markPluginError(pluginId, "Lifecycle hook interrupted");
         } catch (ExecutionException e) {
             Throwable cause = e.getCause();
-            logService.log(LogLevel.ERROR, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.ERROR,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginSandboxService"),
                 isOnLoad ? "SANDBOX_ONLOAD_ERROR" : "SANDBOX_ONUNLOAD_ERROR",
                 Map.of("pluginId", pluginId, "error", cause.getMessage()),
-                null, null);
+                null,
+                null
+            );
 
             if (isOnLoad) {
-                markPluginError(pluginId,
-                    "Lifecycle hook onLoad() failed: " + cause.getMessage());
+                markPluginError(
+                    pluginId,
+                    "Lifecycle hook onLoad() failed: " + cause.getMessage()
+                );
             }
         } finally {
             executor.shutdownNow();
@@ -167,7 +196,8 @@ public class PluginSandboxService {
      */
     public long getLifecycleTimeoutMs(Plugin dbPlugin) {
         return dbPlugin.getTrustTier() == Plugin.TrustTier.OFFICIAL
-            ? 30_000L : 10_000L;
+            ? 30_000L
+            : 10_000L;
     }
 
     /**
@@ -175,7 +205,8 @@ public class PluginSandboxService {
      */
     public long getMessageHandlerTimeoutMs(Plugin dbPlugin) {
         return dbPlugin.getTrustTier() == Plugin.TrustTier.OFFICIAL
-            ? 60_000L : 30_000L;
+            ? 60_000L
+            : 30_000L;
     }
 
     /**
@@ -183,15 +214,18 @@ public class PluginSandboxService {
      */
     public int getMaxLogsPerMinute(Plugin dbPlugin) {
         return dbPlugin.getTrustTier() == Plugin.TrustTier.OFFICIAL
-            ? 1000 : 300;
+            ? 1000
+            : 300;
     }
 
     private void markPluginError(String pluginId, String message) {
-        pluginRepository.findById(pluginId).ifPresent(p -> {
-            p.setLoaderState(Plugin.LoaderState.ERROR);
-            p.setErrorMessage(message);
-            p.setStatus(Plugin.PluginStatus.ERROR);
-            pluginRepository.save(p);
-        });
+        pluginRepository
+            .findById(pluginId)
+            .ifPresent(p -> {
+                p.setLoaderState(Plugin.LoaderState.ERROR);
+                p.setErrorMessage(message);
+                p.setStatus(Plugin.PluginStatus.ERROR);
+                pluginRepository.save(p);
+            });
     }
 }
