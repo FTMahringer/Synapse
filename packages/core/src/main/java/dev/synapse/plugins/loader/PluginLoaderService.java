@@ -15,7 +15,9 @@ import java.lang.module.ModuleFinder;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -83,53 +85,57 @@ public class PluginLoaderService {
         updateLoaderState(pluginId, Plugin.LoaderState.LOADING, null);
 
         try {
-            // Validate jarPath is a local file under the plugins directory
-            // (prevent SSRF via external URLs and path traversal)
-            Path normalized = jarPath.normalize();
-            Path pluginsDir = Path.of(
+            // Validate jarPath is a local canonical file under the plugins directory
+            // (prevent SSRF/path confusion via traversal or symlink escape)
+            Path pluginsDir = Paths.get(
                 System.getenv().getOrDefault(
                     "SYNAPSE_HOME",
                     System.getProperty("user.home") + "/.synapse"
                 ),
                 "plugins"
-            ).normalize();
-            if (
-                !normalized.isAbsolute() || !normalized.startsWith(pluginsDir)
-            ) {
+            );
+            Path normalized = jarPath.normalize();
+            if (!normalized.isAbsolute()) {
                 throw new PluginLoadException(
                     pluginId,
                     "Plugin JAR path must be an absolute local file under " +
                         pluginsDir
                 );
             }
-            if (!java.nio.file.Files.exists(normalized)) {
+            if (!Files.exists(normalized)) {
                 throw new PluginLoadException(
                     pluginId,
                     "Plugin JAR not found: " + normalized
                 );
             }
 
-            // Build file:// URL directly from validated local path.
-            // CodeQL flags toUri().toURL() as SSRF-prone, so we construct
-            // the URL string manually from the already-validated path.
-            String absolutePath = normalized.toAbsolutePath().toString();
-            String fileUrl = "file://" + absolutePath.replace('\\', '/');
-
-            // Validate the URL string starts with file:// before creating URL
-            if (!fileUrl.startsWith("file://")) {
+            Path realPluginsDir;
+            Path realJarPath;
+            try {
+                realPluginsDir = pluginsDir.toRealPath();
+                realJarPath = normalized.toRealPath();
+            } catch (java.io.IOException e) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Plugin JAR URL must start with file://"
+                    "Failed to resolve canonical plugin path: " + e.getMessage(),
+                    e
+                );
+            }
+
+            if (!realJarPath.startsWith(realPluginsDir) || !Files.isRegularFile(realJarPath)) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR path must be a regular file under " + realPluginsDir
                 );
             }
 
             URL jarUrl;
             try {
-                jarUrl = new URL(fileUrl);
+                jarUrl = realJarPath.toUri().toURL();
             } catch (MalformedURLException e) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Invalid JAR URL: " + fileUrl
+                    "Invalid JAR URL: " + realJarPath
                 );
             }
 
@@ -140,7 +146,7 @@ public class PluginLoaderService {
             );
 
             // Layer 2: Create JPMS ModuleLayer
-            ModuleFinder pluginFinder = ModuleFinder.of(normalized);
+            ModuleFinder pluginFinder = ModuleFinder.of(realJarPath);
             Set<ModuleDescriptor> descriptors = pluginFinder
                 .findAll()
                 .stream()
