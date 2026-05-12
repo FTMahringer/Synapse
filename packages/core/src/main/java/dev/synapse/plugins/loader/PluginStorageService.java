@@ -146,7 +146,11 @@ public class PluginStorageService {
 
     /** Copies a JAR into the staging directory. */
     public Path stageJar(Path sourceJar) throws IOException {
-        Path target = stagingDir.resolve(sourceJar.getFileName().toString());
+        String fileName = sourceJar.getFileName().toString();
+        if (!isValidJarName(fileName)) {
+            throw new IllegalArgumentException("Invalid JAR name: " + fileName);
+        }
+        Path target = stagingDir.resolve(fileName);
         Files.copy(sourceJar, target, StandardCopyOption.REPLACE_EXISTING);
         return target;
     }

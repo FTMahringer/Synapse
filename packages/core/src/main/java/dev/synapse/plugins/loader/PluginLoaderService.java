@@ -82,6 +82,23 @@ public class PluginLoaderService {
         updateLoaderState(pluginId, Plugin.LoaderState.LOADING, null);
 
         try {
+            // Validate jarPath is a local file (prevent SSRF via external URLs)
+            if (
+                !jarPath.isAbsolute() ||
+                !jarPath.getRoot().toString().matches("^[A-Za-z]?:?[/\\\\].*")
+            ) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR path must be an absolute local file path"
+                );
+            }
+            if (!java.nio.file.Files.exists(jarPath)) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR not found: " + jarPath
+                );
+            }
+
             URL jarUrl = jarPath.toUri().toURL();
 
             // Layer 1: Create URLClassLoader (parent = platform class loader)
