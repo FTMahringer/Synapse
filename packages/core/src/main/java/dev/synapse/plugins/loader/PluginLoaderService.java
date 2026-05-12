@@ -110,6 +110,15 @@ public class PluginLoaderService {
 
             URL jarUrl = normalized.toUri().toURL();
 
+            // Verify the URL is a file:// URL (not http/https) to prevent SSRF
+            if (!"file".equalsIgnoreCase(jarUrl.getProtocol())) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR must be a local file, not " +
+                        jarUrl.getProtocol()
+                );
+            }
+
             // Layer 1: Create URLClassLoader (parent = platform class loader)
             URLClassLoader classLoader = new URLClassLoader(
                 new URL[] { jarUrl },
@@ -117,7 +126,7 @@ public class PluginLoaderService {
             );
 
             // Layer 2: Create JPMS ModuleLayer
-            ModuleFinder pluginFinder = ModuleFinder.of(jarPath);
+            ModuleFinder pluginFinder = ModuleFinder.of(normalized);
             Set<ModuleDescriptor> descriptors = pluginFinder
                 .findAll()
                 .stream()
