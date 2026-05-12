@@ -79,7 +79,7 @@ management:
 
 synapse:
   system-name: ${SYSTEM_NAME:SYNAPSE}
-  version: ${SYNAPSE_VERSION:${spring.application.version:v2.3.8-hotfix}}
+  version: ${SYNAPSE_VERSION:${spring.application.version:v2.5.6-dev}}
   agents-path: ${SYNAPSE_AGENTS_PATH:agents}
   store:
     registry-path: ${SYNAPSE_STORE_REGISTRY_PATH:store/registry.yml}

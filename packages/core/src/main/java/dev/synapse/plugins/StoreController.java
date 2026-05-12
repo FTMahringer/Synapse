@@ -1,9 +1,8 @@
 package dev.synapse.plugins;
 
 import dev.synapse.core.common.domain.StoreEntry;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/store")
@@ -12,7 +11,10 @@ public class StoreController {
     private final StoreRegistryService storeRegistryService;
     private final BundleInstallService bundleInstallService;
 
-    public StoreController(StoreRegistryService storeRegistryService, BundleInstallService bundleInstallService) {
+    public StoreController(
+        StoreRegistryService storeRegistryService,
+        BundleInstallService bundleInstallService
+    ) {
         this.storeRegistryService = storeRegistryService;
         this.bundleInstallService = bundleInstallService;
     }
@@ -25,12 +27,28 @@ public class StoreController {
     ) {
         if (type != null) {
             try {
-                return storeRegistryService.findByType(StoreEntry.StoreEntryType.valueOf(type.toUpperCase()), page, size);
+                return storeRegistryService.findByType(
+                    StoreEntry.StoreEntryType.valueOf(type.toUpperCase()),
+                    page,
+                    size
+                );
             } catch (IllegalArgumentException e) {
                 return List.of();
             }
         }
         return storeRegistryService.findAll(page, size);
+    }
+
+    @GetMapping("/{id}")
+    public StoreEntry getEntry(@PathVariable String id) {
+        StoreEntry entry = storeRegistryService.findById(id);
+        if (entry == null) {
+            throw new dev.synapse.core.infrastructure.exception.ResourceNotFoundException(
+                "StoreEntry",
+                id
+            );
+        }
+        return entry;
     }
 
     @PostMapping("/{id}/validate")
@@ -39,7 +57,9 @@ public class StoreController {
     }
 
     @PostMapping("/{id}/install")
-    public BundleInstallService.BundleInstallResult installBundle(@PathVariable String id) {
+    public BundleInstallService.BundleInstallResult installBundle(
+        @PathVariable String id
+    ) {
         return bundleInstallService.installBundle(id);
     }
 }

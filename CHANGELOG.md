@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.6-dev] - 2026-05-12
+
+**Dashboard — Marketplace UI**
+
+### Added
+- Enhanced `StoreView.vue` with full marketplace browsing experience:
+  - Search bar filtering by name, description, and tags
+  - Source filter tabs: All / Official / Community
+  - Type filter tabs: All / Plugins / Bundles
+  - Tag cloud filter with active state toggle
+  - Card-based grid layout with hover effects
+  - Detail modal with full metadata (author, license, description, tags, min Synapse version)
+  - Bundle validation button with inline result display
+  - Community source install confirmation flow with checkbox
+- New CSS styles: `.store-grid`, `.store-card`, `.store-search`, `.tag-chip`, `.modal-overlay`, `.modal-card`, `.modal-confirm`, `.modal-validation`
+- Backend `GET /api/store/{id}` endpoint for single entry lookup
+- `StoreRegistryService.findById()` with caching support
+
+### Changed
+- `StoreEntry` frontend type extended with `license` and `minSynapse` fields
+- Dashboard version bumped to `2.5.6-dev`
+- Core version bumped to `2.5.6-dev`
+
+---
+
 ## [v2.5.5-dev] - 2026-05-12
 
 **Plugin Ecosystem — CLI Tooling**

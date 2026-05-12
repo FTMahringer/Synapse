@@ -15,7 +15,7 @@
 
     <groupId>dev.synapse</groupId>
     <artifactId>synapse-core</artifactId>
-    <version>2.3.8-hotfix</version>
+    <version>2.5.6-dev</version>
     <name>synapse-core</name>
     <description>SYNAPSE Spring Boot backend</description>
 

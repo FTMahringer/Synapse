@@ -1,21 +1,10 @@
 package dev.synapse.plugins;
 
 import dev.synapse.core.common.domain.StoreEntry;
+import dev.synapse.core.common.repository.StoreEntryRepository;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.common.repository.StoreEntryRepository;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,6 +12,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * Syncs store entries from local store/registry.yml into the database.
@@ -30,12 +29,17 @@ import java.util.Map;
 @Service
 public class StoreRegistryService {
 
-    private static final Logger log = LoggerFactory.getLogger(StoreRegistryService.class);
+    private static final Logger log = LoggerFactory.getLogger(
+        StoreRegistryService.class
+    );
 
     private final StoreEntryRepository storeEntryRepository;
     private final SystemLogService logService;
 
-    public StoreRegistryService(StoreEntryRepository storeEntryRepository, SystemLogService logService) {
+    public StoreRegistryService(
+        StoreEntryRepository storeEntryRepository,
+        SystemLogService logService
+    ) {
         this.storeEntryRepository = storeEntryRepository;
         this.logService = logService;
     }
@@ -52,11 +56,15 @@ public class StoreRegistryService {
 
         storeEntryRepository.saveAll(entries);
 
-        logService.log(LogLevel.INFO, LogCategory.STORE,
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.STORE,
             Map.of("component", "StoreRegistryService"),
             "STORE_SYNCED",
             Map.of("count", entries.size(), "path", registryPath),
-            null, null);
+            null,
+            null
+        );
 
         return entries.size();
     }
@@ -68,9 +76,16 @@ public class StoreRegistryService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "plugin-metadata", key = "'all:page:' + #page + ':' + #size")
+    @Cacheable(
+        value = "plugin-metadata",
+        key = "'all:page:' + #page + ':' + #size"
+    )
     public List<StoreEntry> findAll(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        PageRequest pageRequest = PageRequest.of(
+            page,
+            size,
+            Sort.by(Sort.Direction.ASC, "name")
+        );
         return storeEntryRepository.findAll(pageRequest).getContent();
     }
 
@@ -81,10 +96,27 @@ public class StoreRegistryService {
     }
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "plugin-metadata", key = "'type:' + #type.name() + ':page:' + #page + ':' + #size")
-    public List<StoreEntry> findByType(StoreEntry.StoreEntryType type, int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+    @Cacheable(
+        value = "plugin-metadata",
+        key = "'type:' + #type.name() + ':page:' + #page + ':' + #size"
+    )
+    public List<StoreEntry> findByType(
+        StoreEntry.StoreEntryType type,
+        int page,
+        int size
+    ) {
+        PageRequest pageRequest = PageRequest.of(
+            page,
+            size,
+            Sort.by(Sort.Direction.ASC, "name")
+        );
         return storeEntryRepository.findByType(type, pageRequest);
+    }
+
+    @Transactional(readOnly = true)
+    @Cacheable(value = "plugin-metadata", key = "'id:' + #id")
+    public StoreEntry findById(String id) {
+        return storeEntryRepository.findById(id).orElse(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -96,7 +128,10 @@ public class StoreRegistryService {
         for (Object item : list) {
             if (!(item instanceof Map<?, ?> raw)) continue;
             Map<String, Object> map = (Map<String, Object>) raw;
-            StoreEntry entry = mapToEntry(map, StoreEntry.StoreEntryType.PLUGIN);
+            StoreEntry entry = mapToEntry(
+                map,
+                StoreEntry.StoreEntryType.PLUGIN
+            );
             if (entry != null) result.add(entry);
         }
         return result;
@@ -111,14 +146,20 @@ public class StoreRegistryService {
         for (Object item : list) {
             if (!(item instanceof Map<?, ?> raw)) continue;
             Map<String, Object> map = (Map<String, Object>) raw;
-            StoreEntry entry = mapToEntry(map, StoreEntry.StoreEntryType.BUNDLE);
+            StoreEntry entry = mapToEntry(
+                map,
+                StoreEntry.StoreEntryType.BUNDLE
+            );
             if (entry != null) result.add(entry);
         }
         return result;
     }
 
     @SuppressWarnings("unchecked")
-    private StoreEntry mapToEntry(Map<String, Object> map, StoreEntry.StoreEntryType type) {
+    private StoreEntry mapToEntry(
+        Map<String, Object> map,
+        StoreEntry.StoreEntryType type
+    ) {
         String id = str(map, "id");
         if (id == null) return null;
 
@@ -126,8 +167,12 @@ public class StoreRegistryService {
         entry.setId(id);
         entry.setName(str(map, "name") != null ? str(map, "name") : id);
         entry.setType(type);
-        entry.setSource(str(map, "source") != null ? str(map, "source") : "unknown");
-        entry.setVersion(str(map, "version") != null ? str(map, "version") : "0.0.0");
+        entry.setSource(
+            str(map, "source") != null ? str(map, "source") : "unknown"
+        );
+        entry.setVersion(
+            str(map, "version") != null ? str(map, "version") : "0.0.0"
+        );
         entry.setAuthor(str(map, "author"));
         entry.setLicense(str(map, "license"));
         entry.setDescription(str(map, "description"));
@@ -152,14 +197,20 @@ public class StoreRegistryService {
                 }
             }
             // fallback: classpath
-            ClassPathResource resource = new ClassPathResource("store/registry.yml");
+            ClassPathResource resource = new ClassPathResource(
+                "store/registry.yml"
+            );
             if (resource.exists()) {
                 try (InputStream is = resource.getInputStream()) {
                     return yaml.load(is);
                 }
             }
         } catch (IOException e) {
-            log.warn("Failed to load registry YAML from {}: {}", path, e.getMessage());
+            log.warn(
+                "Failed to load registry YAML from {}: {}",
+                path,
+                e.getMessage()
+            );
         }
         return null;
     }
