@@ -115,6 +115,14 @@ public class PluginLoaderService {
             String absolutePath = normalized.toAbsolutePath().toString();
             String fileUrl = "file://" + absolutePath.replace('\\', '/');
 
+            // Validate the URL string starts with file:// before creating URL
+            if (!fileUrl.startsWith("file://")) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR URL must start with file://"
+                );
+            }
+
             URL jarUrl;
             try {
                 jarUrl = new URL(fileUrl);
