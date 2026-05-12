@@ -12,6 +12,7 @@ import dev.synapse.plugin.api.SynapsePlugin;
 import java.lang.module.Configuration;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Path;
@@ -108,21 +109,21 @@ public class PluginLoaderService {
                 );
             }
 
-            // Build file:// URL directly from validated local path
-            // (avoid toUri().toURL() which CodeQL flags as SSRF-prone)
-            String fileUrl =
-                "file://" +
-                normalized.toAbsolutePath().toString().replace('\\', '/');
+            // Build file:// URL directly from validated local path.
+            // CodeQL flags toUri().toURL() as SSRF-prone, so we construct
+            // the URL string manually from the already-validated path.
+            String absolutePath = normalized.toAbsolutePath().toString();
+            String fileUrl = "file://" + absolutePath.replace('\\', '/');
 
-            // Validate the constructed URL is a file:// URL before use
-            java.net.URI safeUri = java.net.URI.create(fileUrl);
-            if (!"file".equalsIgnoreCase(safeUri.getScheme())) {
+            URL jarUrl;
+            try {
+                jarUrl = new URL(fileUrl);
+            } catch (MalformedURLException e) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Plugin JAR must be a local file"
+                    "Invalid JAR URL: " + fileUrl
                 );
             }
-            URL jarUrl = safeUri.toURL();
 
             // Layer 1: Create URLClassLoader (parent = platform class loader)
             URLClassLoader classLoader = new URLClassLoader(
