@@ -324,56 +324,96 @@ dev/synapse/
 
 ## v2.6.0 - Plugin Ecosystem (Java-First)
 
-**Goal**: Robust Java plugin system with marketplace and community contributions.
+**Goal**: Robust, secure, extensible Java plugin system. Plugins extend SYNAPSE without touching
+core code. Strong foundation that all future plugin types build on without architectural changes.
 
-**Architecture**: Following SYNAPSE's [Java-First Plugin Strategy](./ideas/PLATFORM_AND_ECOSYSTEM.md):
-- Native Java plugins (.jar) with direct JVM integration
-- Spring Boot-based plugin framework
-- ClassLoader isolation for security
-- Future external runtime for multi-language support
+**Full design spec**: [`docs/superpowers/specs/2026-05-12-v2.6.0-plugin-ecosystem-design.md`](../superpowers/specs/2026-05-12-v2.6.0-plugin-ecosystem-design.md)
+
+**Architecture decisions:**
+- `synapse-plugin-api` JAR — the only dependency plugins ever import; published to GitHub Packages
+- JPMS `ModuleLayer` per plugin — enforces API boundary at runtime, no Spring/JPA/Redis access
+- ASM bytecode scan at install time — rejects forbidden refs before any code runs
+- Staged loading: install → `staging/` → soft-reload; graceful shutdown → migrated to `system/`
+- Two trust tiers: Official (`/synapse-plugins`) + Community (`/synapse-plugins-community` with CI gates)
+- Version-aware conflict resolution: update prompt on newer version, hard block on older
+- Modrinth-style dependency system: hard deps auto-install from store; soft deps gate optional features
+- Full CLI operator set via Bubble Tea TUI in `/packages/cli`
+
+**v2.6.0 scope**: Plugin API, Loader, Lifecycle, Sandboxing, Dependency Resolver, CLI, Dashboard
+marketplace UI, **Channels** + **Model Providers** plugin types, 4 official plugins.
+Skills + MCP types deferred to v2.7.0.
 
 ### Implementation Steps
 
-#### v2.5.1-dev: Java Plugin API & Framework
-- Define `SynapsePlugin` interface
-- Plugin lifecycle hooks (onLoad, onEnable, onDisable)
-- Plugin manifest format (plugin.yml)
-- ClassLoader-based plugin loading
-- Spring Boot integration for plugins
-- Plugin dependency injection
-- **Exit**: Core plugin API functional, example plugins working
+#### v2.5.1-dev: Plugin API Module
+- Define `SynapsePlugin`, `ModelProvider` interfaces (Channel already exists — minor cleanup)
+- Define `PluginContext`, `PluginConfig`, `PluginEventBus`, `PluginLogger`
+- JPMS module descriptor (`module-info.java`) — exports only plugin API, nothing else
+- Publish `dev.synapse:synapse-plugin-api` to GitHub Packages
+- Update `/synapse-plugin-template` to depend on new API JAR
+- **Exit**: API JAR compiles, publishes, example plugin compiles against it
 
-#### v2.5.2-dev: Plugin SDK & Tooling
-- ✅ Java plugin template repository (Gradle-based)
-- Plugin validation tool (`synapse plugin validate`)
-- Plugin testing utilities
-- Plugin packaging tool (`synapse plugin package`)
-- Plugin publishing workflow
-- Developer documentation
-- **Exit**: Developers can create, test, and package Java plugins
+#### v2.5.2-dev: Plugin Loader & Storage
+- `system/` and `staging/` plugin directories under `$SYNAPSE_HOME/plugins/`
+- `URLClassLoader` per plugin + JPMS `ModuleLayer` with `requires synapse.plugin.api` only
+- Startup scan: load all JARs from `system/`, parse manifests, call `onLoad()`
+- Register loaded plugins in `ChannelRegistry` / `ModelProviderRegistry`
+- Graceful shutdown hook: migrate `staging/` → `system/`
+- Crash recovery: detect orphaned staging JARs on next start, prompt admin
+- **Exit**: Telegram channel JAR loads from `system/` at startup, unloads cleanly on shutdown
 
-#### v2.5.3-dev: Plugin Sandboxing & Security
-- Java Security Manager integration
-- Resource limits (CPU, memory, time)
-- API access control
-- Plugin permissions model
-- ClassLoader isolation
-- Security auditing
-- **Exit**: Plugins run with controlled permissions and limits
+#### v2.5.3-dev: Dependency Resolver & Conflict Detection
+- Manifest `requires.plugins[]` (hard deps) + `soft_requires[]` parsing
+- Hard dep: check installed list → auto-install from store if missing → recursive chain
+- Soft dep: load without dep present; notify via `PluginEventBus` when dep appears later
+- Directed dependency graph — cycle detection before any installs begin
+- Version-aware conflict check: same id + newer version → update prompt; older → block; slot clash → hard block
+- `synapse plugin update <id>` command — unload old, swap ClassLoader, reload new
+- Config schema migration on update: block if new required fields unfilled
+- **Exit**: Dep chain resolves; cycle blocked with full chain message; update prompt shown correctly
 
-#### v2.5.4-dev: Plugin Marketplace
-- Plugin discovery UI
-- Plugin installation/uninstallation
-- Plugin ratings and reviews
-- Plugin versioning and updates
-- Usage analytics (opt-in)
-- **Exit**: Users can discover and install community plugins
+#### v2.5.4-dev: Plugin Sandboxing & Security
+- ASM bytecode scanner — walk all classes at install time, reject forbidden refs (`sun.*`, Spring internals, etc.)
+- Validate JPMS isolation at load time — confirm plugin module cannot resolve core classes
+- `PluginContext.executor()` — bounded virtual thread pool per plugin
+- Resource limits enforced: thread count, lifecycle hook timeout, message handler timeout, log volume
+- Trust tier defaults: stricter limits for Community, relaxed for Official
+- Plugin marked `ERROR` + disabled on lifecycle hook timeout
+- Admin dashboard warning on resource throttle
+- **Exit**: Community plugin with forbidden ref rejected at install; official plugin loads clean
 
-#### v2.5.5-dev: Plugin Ecosystem Hardening
-- Plugin lifecycle regression suite
+#### v2.5.5-dev: CLI Tooling
+- Full command set in Bubble Tea: `scaffold`, `validate`, `package`, `install`, `update`, `list`,
+  `enable`, `disable`, `uninstall`, `info`, `logs`, `publish` (stub)
+- `scaffold`: interactive TUI wizard → creates GitHub repo from `/synapse-plugin-template`
+- `validate`: manifest check + bytecode scan with violation report
+- `logs`: live Bubble Tea view, last 200 lines + stream, scoped to plugin id
+- `publish` stub: prints community/official repo submission guidance
+- **Exit**: All commands functional end-to-end
+
+#### v2.5.6-dev: Dashboard Marketplace UI
+- Store browse: grid/list, filter by type + trust tier + compatibility, search by name/tag
+- Plugin detail: description, version history, dep tree, trust badge, install button
+- Install flow: dep chain preview → confirm → progress (download → validate → scan → load) → result
+- Conflict/update inline: error message + "Update available" prompt where applicable
+- Installed management: table with status, per-row enable/disable/update/uninstall/logs/info
+- Config update form: generated from `config_schema`, secrets masked, soft-reload on save
+- **Exit**: Full install flow from dashboard works; conflict shown inline; config update triggers soft-reload
+
+#### v2.5.7-dev: Official Plugin Library (v2.6.0 scope)
+- `telegram-channel` — Channel implementation
+- `anthropic-provider` — ModelProvider implementation
+- `openai-provider` — ModelProvider implementation
+- `ollama-provider` — ModelProvider implementation
+- All published to `/synapse-plugins`, installable from dashboard store
+- **Exit**: 4 official plugins install + run correctly via new loader; serve as reference implementations
+
+#### v2.5.8-dev: Hardening
+- Plugin lifecycle regression suite (load, enable, disable, uninstall, update, conflict, dep chain)
 - Marketplace abuse prevention checks
-- Performance baselines for plugin load/enable/disable flows
-- Documentation updates for plugin operators and developers
+- Performance baselines: plugin load time < 500ms, soft-reload < 1s
+- Documentation update: operator guide, developer guide, API reference
+- **Exit**: All regression tests pass, Docker build passes, performance baselines met
 
 #### v2.6.0: Tag Plugin Ecosystem Release
 
