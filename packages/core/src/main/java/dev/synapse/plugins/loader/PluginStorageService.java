@@ -5,8 +5,6 @@ import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import jakarta.annotation.PostConstruct;
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +12,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
+import org.springframework.stereotype.Service;
 
 /**
  * Manages plugin storage directories: system/ (persisted) and staging/ (runtime).
@@ -33,10 +32,15 @@ public class PluginStorageService {
     private final Path systemDir;
     private final Path stagingDir;
 
-    public PluginStorageService(SynapseProperties properties, SystemLogService logService) {
+    public PluginStorageService(
+        SynapseProperties properties,
+        SystemLogService logService
+    ) {
         this.logService = logService;
-        String synapseHome = System.getenv().getOrDefault("SYNAPSE_HOME",
-            System.getProperty("user.home") + "/.synapse");
+        String synapseHome = System.getenv().getOrDefault(
+            "SYNAPSE_HOME",
+            System.getProperty("user.home") + "/.synapse"
+        );
         this.pluginsHome = Path.of(synapseHome, "plugins");
         this.systemDir = pluginsHome.resolve("system");
         this.stagingDir = pluginsHome.resolve("staging");
@@ -47,11 +51,20 @@ public class PluginStorageService {
         Files.createDirectories(systemDir);
         Files.createDirectories(stagingDir);
 
-        logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.PLUGIN,
             Map.of("component", "PluginStorageService"),
             "PLUGIN_STORAGE_INIT",
-            Map.of("systemDir", systemDir.toString(), "stagingDir", stagingDir.toString()),
-            null, null);
+            Map.of(
+                "systemDir",
+                systemDir.toString(),
+                "stagingDir",
+                stagingDir.toString()
+            ),
+            null,
+            null
+        );
     }
 
     /** Returns the system/ directory path. */
@@ -76,15 +89,22 @@ public class PluginStorageService {
 
     /** Moves a JAR from staging/ to system/ (idempotent). */
     public Path promoteToSystem(String jarName) throws IOException {
+        if (!isValidJarName(jarName)) {
+            throw new IllegalArgumentException("Invalid JAR name: " + jarName);
+        }
         Path source = stagingDir.resolve(jarName);
         Path target = systemDir.resolve(jarName);
         if (Files.exists(source)) {
             Files.move(source, target, StandardCopyOption.REPLACE_EXISTING);
-            logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginStorageService"),
                 "PLUGIN_PROMOTED",
                 Map.of("jar", jarName),
-                null, null);
+                null,
+                null
+            );
         }
         return target;
     }
@@ -96,11 +116,15 @@ public class PluginStorageService {
             try {
                 promoteToSystem(jar.getFileName().toString());
             } catch (IOException e) {
-                logService.log(LogLevel.ERROR, LogCategory.PLUGIN,
+                logService.log(
+                    LogLevel.ERROR,
+                    LogCategory.PLUGIN,
                     Map.of("component", "PluginStorageService"),
                     "PLUGIN_PROMOTE_FAILED",
                     Map.of("jar", jar.toString(), "error", e.getMessage()),
-                    null, null);
+                    null,
+                    null
+                );
             }
         }
     }
@@ -114,16 +138,49 @@ public class PluginStorageService {
 
     /** Deletes a JAR from both system/ and staging/. */
     public void deleteJar(String jarName) {
+        if (!isValidJarName(jarName)) {
+            logService.log(
+                LogLevel.WARN,
+                LogCategory.PLUGIN,
+                Map.of("component", "PluginStorageService"),
+                "PLUGIN_DELETE_INVALID_NAME",
+                Map.of("jar", jarName),
+                null,
+                null
+            );
+            return;
+        }
         try {
             Files.deleteIfExists(systemDir.resolve(jarName));
             Files.deleteIfExists(stagingDir.resolve(jarName));
         } catch (IOException e) {
-            logService.log(LogLevel.WARN, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.WARN,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginStorageService"),
                 "PLUGIN_DELETE_FAILED",
                 Map.of("jar", jarName, "error", e.getMessage()),
-                null, null);
+                null,
+                null
+            );
         }
+    }
+
+    /**
+     * Validates that a JAR name only contains safe characters.
+     * Rejects path traversal attempts (.., /, \) and null bytes.
+     */
+    private boolean isValidJarName(String jarName) {
+        if (jarName == null || jarName.isBlank()) {
+            return false;
+        }
+        // Only allow alphanumeric, dash, underscore, dot
+        return (
+            jarName.matches("^[a-zA-Z0-9._-]+\\.jar$") &&
+            !jarName.contains("..") &&
+            !jarName.contains("/") &&
+            !jarName.contains("\\")
+        );
     }
 
     /** Checks if there are orphaned JARs in staging/ (crash recovery). */
@@ -136,9 +193,7 @@ public class PluginStorageService {
             return List.of();
         }
         try (Stream<Path> stream = Files.list(dir)) {
-            return stream
-                .filter(p -> p.toString().endsWith(".jar"))
-                .toList();
+            return stream.filter(p -> p.toString().endsWith(".jar")).toList();
         } catch (IOException e) {
             return List.of();
         }
