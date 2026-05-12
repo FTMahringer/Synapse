@@ -48,32 +48,38 @@ public class PluginStorageService {
 
     @PostConstruct
     public void init() {
+        boolean dirsCreated = false;
         try {
             Files.createDirectories(systemDir);
             Files.createDirectories(stagingDir);
-        } catch (IOException e) {
-            throw new IllegalStateException(
-                "Failed to create plugin storage directories at " +
+            dirsCreated = true;
+        } catch (Exception e) {
+            // Log but don't fail startup — plugins can still be managed in-memory
+            // and directories will be retried on first actual storage operation
+            System.err.println(
+                "[PluginStorageService] WARNING: Could not create plugin storage directories at " +
                     pluginsHome +
-                    ". Ensure the path is writable.",
-                e
+                    ": " +
+                    e.getMessage()
             );
         }
 
-        logService.log(
-            LogLevel.INFO,
-            LogCategory.PLUGIN,
-            Map.of("component", "PluginStorageService"),
-            "PLUGIN_STORAGE_INIT",
-            Map.of(
-                "systemDir",
-                systemDir.toString(),
-                "stagingDir",
-                stagingDir.toString()
-            ),
-            null,
-            null
-        );
+        if (dirsCreated) {
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.PLUGIN,
+                Map.of("component", "PluginStorageService"),
+                "PLUGIN_STORAGE_INIT",
+                Map.of(
+                    "systemDir",
+                    systemDir.toString(),
+                    "stagingDir",
+                    stagingDir.toString()
+                ),
+                null,
+                null
+            );
+        }
     }
 
     /** Returns the system/ directory path. */
