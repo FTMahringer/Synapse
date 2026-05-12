@@ -1,6 +1,6 @@
 {
   "name": "@synapse/dashboard",
-  "version": "2.5.6-dev",
+  "version": "2.5.7-dev",
   "private": true,
   "type": "module",
   "scripts": {

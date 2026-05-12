@@ -9,6 +9,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.7-dev] - 2026-05-12
+
+**Plugin Ecosystem — Official Plugin Library**
+
+### Added
+- 4 official plugins published to `synapse-plugins` repository:
+  - `telegram-channel` — Channel implementation with long-polling and webhook support
+  - `anthropic-provider` — ModelProvider for Claude (API key + ACP auth, streaming, tool calling, vision)
+  - `openai-provider` — ModelProvider for GPT (streaming, tool calling, organization scoping)
+  - `ollama-provider` — ModelProvider for local Ollama inference (zero external API calls)
+- Each plugin: manifest.yml, pom.xml, module-info.java, README.md, full implementation using only `java.net`
+- No external dependencies beyond `synapse-plugin-api` — proves JPMS isolation boundary
+
+### Fixed
+- nginx WebSocket proxy configuration (`/ws/` location block with upgrade headers)
+- Vite dev server WebSocket proxy config for local development
+
+### Changed
+- Dashboard version bumped to `2.5.7-dev`
+- Core version bumped to `2.5.7-dev`
+
+---
+
 ## [v2.5.6-dev] - 2026-05-12
 
 **Dashboard — Marketplace UI**
