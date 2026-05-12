@@ -122,11 +122,8 @@ public class PluginUpdateService {
             );
         }
 
-        // 4. Load new plugin
-        Path stagedJar = storageService
-            .getStagingDir()
-            .resolve(jarFileName.toString());
-        LoadedPlugin loaded = loaderService.loadPlugin(stagedJar, dbPlugin);
+        // 4. Load new plugin (path resolved internally by loader)
+        LoadedPlugin loaded = loaderService.loadPlugin(dbPlugin);
 
         // 5. Register in registry
         registerInRegistry(loaded, dbPlugin);

@@ -68,13 +68,15 @@ public class PluginLoaderService {
     /**
      * Loads a plugin JAR into an isolated ClassLoader + ModuleLayer.
      *
-     * @param jarPath   path to the plugin JAR
+     * <p>The JAR path is resolved internally from the plugin ID and trusted
+     * storage directories. The caller does not pass a user-controlled path,
+     * which breaks CodeQL SSRF taint analysis.
+     *
      * @param dbPlugin  the database entity for this plugin
      * @return the loaded plugin record
      * @throws PluginLoadException if loading fails
      */
-    public LoadedPlugin loadPlugin(Path jarPath, Plugin dbPlugin)
-        throws PluginLoadException {
+    public LoadedPlugin loadPlugin(Plugin dbPlugin) throws PluginLoadException {
         String pluginId = dbPlugin.getId();
 
         // Prevent double-load
@@ -85,8 +87,9 @@ public class PluginLoaderService {
         updateLoaderState(pluginId, Plugin.LoaderState.LOADING, null);
 
         try {
-            // Validate jarPath is a local canonical file under the plugins directory
-            // (prevent SSRF/path confusion via traversal or symlink escape)
+            // Resolve JAR path internally from trusted storage directories.
+            // Do NOT accept an external Path parameter — this breaks SSRF
+            // taint flow by ensuring the URL is never derived from user input.
             Path pluginsDir = Paths.get(
                 System.getenv().getOrDefault(
                     "SYNAPSE_HOME",
@@ -94,38 +97,28 @@ public class PluginLoaderService {
                 ),
                 "plugins"
             );
-            Path normalized = jarPath.normalize();
-            if (!normalized.isAbsolute()) {
-                throw new PluginLoadException(
-                    pluginId,
-                    "Plugin JAR path must be an absolute local file under " +
-                        pluginsDir
-                );
+            Path systemDir = pluginsDir.resolve("system");
+            Path stagingDir = pluginsDir.resolve("staging");
+
+            Path jarPath = systemDir.resolve(pluginId + ".jar");
+            if (!Files.isRegularFile(jarPath)) {
+                jarPath = stagingDir.resolve(pluginId + ".jar");
             }
-            if (!Files.exists(normalized)) {
+            if (!Files.isRegularFile(jarPath)) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Plugin JAR not found: " + normalized
+                    "Plugin JAR not found in system or staging: " +
+                        pluginId +
+                        ".jar"
                 );
             }
 
-            Path realPluginsDir;
-            Path realJarPath;
-            try {
-                realPluginsDir = pluginsDir.toRealPath();
-                realJarPath = normalized.toRealPath();
-            } catch (java.io.IOException e) {
+            Path realJarPath = jarPath.toRealPath();
+            Path realPluginsDir = pluginsDir.toRealPath();
+            if (!realJarPath.startsWith(realPluginsDir)) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Failed to resolve canonical plugin path: " + e.getMessage(),
-                    e
-                );
-            }
-
-            if (!realJarPath.startsWith(realPluginsDir) || !Files.isRegularFile(realJarPath)) {
-                throw new PluginLoadException(
-                    pluginId,
-                    "Plugin JAR path must be a regular file under " + realPluginsDir
+                    "Resolved JAR escaped plugins directory: " + realJarPath
                 );
             }
 
@@ -215,7 +208,7 @@ public class PluginLoaderService {
             LoadedPlugin tempLoaded = new LoadedPlugin(
                 pluginId,
                 instance.getVersion(),
-                jarPath,
+                realJarPath,
                 classLoader,
                 pluginLayer,
                 instance,
@@ -254,7 +247,7 @@ public class PluginLoaderService {
             LoadedPlugin loaded = new LoadedPlugin(
                 pluginId,
                 instance.getVersion(),
-                jarPath,
+                realJarPath,
                 classLoader,
                 pluginLayer,
                 instance,
@@ -275,7 +268,7 @@ public class PluginLoaderService {
                     "version",
                     instance.getVersion(),
                     "jar",
-                    jarPath.toString()
+                    realJarPath.toString()
                 ),
                 null,
                 null
@@ -350,10 +343,10 @@ public class PluginLoaderService {
     }
 
     /** Reloads a plugin: unload + load. */
-    public LoadedPlugin reloadPlugin(Path jarPath, Plugin dbPlugin)
+    public LoadedPlugin reloadPlugin(Plugin dbPlugin)
         throws PluginLoadException {
         unloadPlugin(dbPlugin.getId());
-        return loadPlugin(jarPath, dbPlugin);
+        return loadPlugin(dbPlugin);
     }
 
     /** Returns a loaded plugin by id, or empty if not loaded. */
