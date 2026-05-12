@@ -311,11 +311,13 @@ func (r *Requirements) PromptInstall() bool {
 	switch action {
 	case "auto":
 		r.RenderLine("Installing all missing requirements...")
+		success := r.installAll(missing)
 		r.CloseSection()
-		return r.installAll(missing)
+		return success
 	case "choose":
+		success := r.installChoose(missing)
 		r.CloseSection()
-		return r.installChoose(missing)
+		return success
 	case "skip":
 		r.RenderWarning("Skipping prerequisite installation")
 		r.CloseSection()
@@ -446,8 +448,16 @@ func getVersion(cmdStr string) (string, error) {
 	}
 	output := string(out)
 	for _, word := range strings.Fields(output) {
+		// Try the word directly
 		if isVersionString(word) {
 			return word, nil
+		}
+		// Try stripping common prefixes like "go", "docker", "v"
+		cleaned := strings.TrimPrefix(word, "go")
+		cleaned = strings.TrimPrefix(cleaned, "docker")
+		cleaned = strings.TrimPrefix(cleaned, "v")
+		if isVersionString(cleaned) {
+			return cleaned, nil
 		}
 	}
 	return strings.TrimSpace(output), nil

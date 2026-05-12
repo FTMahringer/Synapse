@@ -25,24 +25,35 @@ func NewWelcome(title, version, tagline string) *Welcome {
 	}
 }
 
+const welcomeWidth = 50
+
+// centerLine centers text within the welcome box width, accounting for ANSI codes.
+func centerLine(text string, width int, borderColor string) string {
+	plain := stripANSI(text)
+	padding := width - len(plain)
+	if padding < 0 {
+		padding = 0
+	}
+	leftPad := padding / 2
+	rightPad := padding - leftPad
+	return fmt.Sprintf("   %s║%s%s%s%s║%s",
+		borderColor, strings.Repeat(" ", leftPad), text, strings.Repeat(" ", rightPad), borderColor, theme.Reset)
+}
+
 // Render outputs the welcome banner.
 func (w *Welcome) Render() {
-	var b strings.Builder
-	b.WriteString("\n")
-	b.WriteString(theme.Sprintf(theme.Bold+theme.Blue, "   ╔══════════════════════════════════════════════════╗"))
-	b.WriteString("\n")
-	b.WriteString(theme.Sprintf(theme.Bold+theme.Blue, "   ║                                                  ║"))
-	b.WriteString("\n")
-	b.WriteString(fmt.Sprintf("   ║           %s%s%s%s                ║\n",
-		theme.White, theme.Bold, w.Title, theme.Blue))
-	b.WriteString("\n")
-	b.WriteString(fmt.Sprintf("   ║           %s%s%s%s               ║\n",
-		theme.Gray, w.Version, theme.Blue, theme.Bold))
-	b.WriteString("\n")
-	b.WriteString(theme.Sprintf(theme.Bold+theme.Blue, "   ║                                                  ║"))
-	b.WriteString("\n")
-	b.WriteString(theme.Sprintf(theme.Bold+theme.Blue, "   ╚══════════════════════════════════════════════════╝"))
-	b.WriteString("\n")
-	b.WriteString(fmt.Sprintf("\n%s   %s%s\n", theme.Gray, w.Tagline, theme.Reset))
-	fmt.Print(b.String())
+	border := theme.Bold + theme.Blue
+	topBorder := fmt.Sprintf("   %s╔%s╗%s", border, strings.Repeat("═", welcomeWidth), theme.Reset)
+	botBorder := fmt.Sprintf("   %s╚%s╝%s", border, strings.Repeat("═", welcomeWidth), theme.Reset)
+	emptyLine := fmt.Sprintf("   %s║%s║%s", border, strings.Repeat(" ", welcomeWidth), theme.Reset)
+
+	fmt.Println()
+	fmt.Println(topBorder)
+	fmt.Println(emptyLine)
+	fmt.Println(centerLine(theme.White+theme.Bold+w.Title+theme.Reset, welcomeWidth, border))
+	fmt.Println(emptyLine)
+	fmt.Println(centerLine(theme.Gray+w.Version+theme.Reset, welcomeWidth, border))
+	fmt.Println(emptyLine)
+	fmt.Println(botBorder)
+	fmt.Printf("\n%s   %s%s\n", theme.Gray, w.Tagline, theme.Reset)
 }

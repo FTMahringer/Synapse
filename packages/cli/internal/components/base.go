@@ -33,21 +33,67 @@ func NewBase(title, color string) BaseComponent {
 
 const sectionInnerWidth = 56
 
+// padRight pads text to the inner width with spaces, truncating if needed.
+func padRight(text string, width int) string {
+	// Strip ANSI codes for length calculation
+	plain := stripANSI(text)
+	if len(plain) >= width {
+		return text
+	}
+	return text + strings.Repeat(" ", width-len(plain))
+}
+
+// stripANSI removes ANSI escape sequences from a string.
+func stripANSI(s string) string {
+	var result strings.Builder
+	inEscape := false
+	for _, r := range s {
+		if r == '\x1b' {
+			inEscape = true
+			continue
+		}
+		if inEscape {
+			if r == 'm' {
+				inEscape = false
+			}
+			continue
+		}
+		result.WriteRune(r)
+	}
+	return result.String()
+}
+
+// borderLine returns a full horizontal border line with left and right corners.
+func borderLine(left, right string, width int) string {
+	mid := strings.Repeat("─", width)
+	return theme.Dim + left + mid + right + theme.Reset
+}
+
 // RenderSection opens a bordered section with the title.
 func (b *BaseComponent) RenderSection() {
 	titleLen := len(b.Title)
-	// Account for: ┌─ Title ──... where ┌─ = 2, spaces around title = 2
-	line := strings.Repeat("─", sectionInnerWidth-titleLen)
-	fmt.Printf("\n%s┌─%s %s%s%s %s%s%s\n",
-		theme.Dim, theme.Reset,
+	// Top border: ┌─ Title ──────────────────────────────────────┐
+	prefix := "┌─ "
+	suffix := "─┐"
+	dashCount := sectionInnerWidth - titleLen - len(prefix) - len(suffix) + 4 // +4 for ANSI spacing
+	if dashCount < 2 {
+		dashCount = 2
+	}
+	fmt.Printf("\n%s%s%s%s%s %s%s%s %s%s%s\n",
+		theme.Dim, prefix, theme.Reset,
 		b.Color, theme.Bold, b.Title, theme.Reset,
-		theme.Dim, line)
-	fmt.Printf("%s│%s\n", theme.Dim, theme.Reset)
+		theme.Dim, strings.Repeat("─", dashCount), suffix, theme.Reset)
+}
+
+// renderContentLine prints a content line with both left and right borders.
+func renderContentLine(text string) {
+	padded := padRight(text, sectionInnerWidth)
+	fmt.Printf("%s│%s %s %s│%s\n", theme.Dim, theme.Reset, padded, theme.Dim, theme.Reset)
 }
 
 // RenderLine prints a content line inside the section.
 func (b *BaseComponent) RenderLine(text string) {
-	fmt.Printf("%s│%s  %s\n", theme.Dim, theme.Reset, text)
+	renderContentLine(text)
 }
 
 // RenderLabel prints a styled key: value line.
@@ -66,10 +112,11 @@ func (b *BaseComponent) RenderPrompt(label, defaultVal string) {
 	if display == "" {
 		display = " "
 	}
-	fmt.Printf("%s│%s  %s%s%s %s[%s]%s: ",
-		theme.Dim, theme.Reset,
+	text := fmt.Sprintf("%s%s%s %s[%s]%s: ",
 		theme.White, label, theme.Reset,
 		theme.Dim, display, theme.Reset)
+	// Don't pad — prompt needs cursor at end
+	fmt.Printf("%s│%s %s", theme.Dim, theme.Reset, text)
 }
 
 // RenderOption prints a single selectable option with highlight.
@@ -88,7 +135,8 @@ func (b *BaseComponent) RenderOption(key, desc string, selected, highlighted boo
 	} else {
 		highlight = theme.Gray
 	}
-	fmt.Print(theme.Dim + "│" + theme.Reset + "  " + color + " " + marker + theme.Reset + " " + highlight + key + theme.Reset + " " + theme.Gray + desc + theme.Reset + "\n")
+	text := color + " " + marker + theme.Reset + " " + highlight + key + theme.Reset + " " + theme.Gray + desc + theme.Reset
+	renderContentLine(text)
 }
 
 // RenderCheckbox prints a checkbox option (for multi-select).
@@ -103,11 +151,11 @@ func (b *BaseComponent) RenderCheckbox(key, desc string, checked, highlighted bo
 	if highlighted {
 		highlight = theme.White
 	}
-	fmt.Printf("%s│%s  %s%s%s %s%s%s %s%s%s\n",
-		theme.Dim, theme.Reset,
+	text := fmt.Sprintf("%s%s%s %s%s%s %s%s%s",
 		color, marker, theme.Reset,
 		highlight, key, theme.Reset,
 		theme.Gray, desc, theme.Reset)
+	renderContentLine(text)
 }
 
 // RenderToggle prints a toggle state.
@@ -116,17 +164,14 @@ func (b *BaseComponent) RenderToggle(label string, enabled bool) {
 	if enabled {
 		state = theme.Sprintf(theme.Green, "[●] Enabled")
 	}
-	fmt.Printf("%s│%s  %s%s%s  %s\n", theme.Dim, theme.Reset, theme.White, label, theme.Reset, state)
+	text := fmt.Sprintf("%s%s%s  %s", theme.White, label, theme.Reset, state)
+	renderContentLine(text)
 }
 
 // RenderProgress prints a progress bar.
 func (b *BaseComponent) RenderProgress(percent, width int, message string) {
-	fmt.Printf("%s│%s  %s %s%d%%%s\n%s│%s  %s%s%s\n",
-		theme.Dim, theme.Reset,
-		theme.ProgressBar(percent, width),
-		theme.Bold, percent, theme.Reset,
-		theme.Dim, theme.Reset,
-		theme.Gray, message, theme.Reset)
+	b.RenderLine(fmt.Sprintf("%s %s%d%%%s", theme.ProgressBar(percent, width), theme.Bold, percent, theme.Reset))
+	b.RenderLine(fmt.Sprintf("%s%s%s", theme.Gray, message, theme.Reset))
 }
 
 // RenderOK prints a green checkmark message.
@@ -146,24 +191,7 @@ func (b *BaseComponent) RenderError(text string) {
 
 // CloseSection closes the bordered section.
 func (b *BaseComponent) CloseSection() {
-	// Match RenderSection: ┌─ = 2 chars prefix, so close needs └ + (innerWidth+2) dashes
-	// Actually: ┌─Title──... has 2 prefix chars, └Title──... would have 1 prefix char
-	// We want the total line length to match: prefix + content should align
-	// RenderSection: "┌─ Title " + title + " " + dashes = 2 + 1 + titleLen + 1 + (innerWidth-titleLen) = innerWidth + 4
-	// But visible chars: ┌─(2) + space(1) + title + space(1) + dashes = 4 + titleLen + (innerWidth-titleLen) = innerWidth + 4
-	// CloseSection: └(1) + dashes = should be innerWidth + 3 to match? No...
-	// Let's just make them the same total width: innerWidth + 4 visible chars on top, so bottom should be innerWidth + 3
-	// Actually simpler: count the visible chars in RenderSection output
-	// "┌─ Prerequisites ─────────────────────────────────────────────"
-	//  ^^                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	//  2 chars prefix    46 dashes (for 12-char title, innerWidth=56)
-	//  Total: 2 + 1 + 12 + 1 + 46 = 62 visible chars
-	// Close should be: "└─────────────────────────────────────────────────────────────"
-	//  ^               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	//  1 char prefix   61 dashes
-	// Total: 1 + 61 = 62 visible chars ✓
-	line := strings.Repeat("─", sectionInnerWidth+3)
-	fmt.Printf("%s│%s\n%s└%s%s%s\n", theme.Dim, theme.Reset, theme.Dim, line, theme.Reset, "")
+	fmt.Println(borderLine("└", "┘", sectionInnerWidth+2))
 }
 
 // ── Input helpers ──────────────────────────────────────────────────
@@ -215,7 +243,7 @@ func (b *BaseComponent) Confirm(message string, defaultVal bool) bool {
 	if defaultVal {
 		defaultStr = "Y"
 	}
-	fmt.Printf("\n%s│%s  %s%s%s\n", theme.Dim, theme.Reset, theme.Yellow, message, theme.Reset)
+	renderContentLine(fmt.Sprintf("%s%s%s", theme.Yellow, message, theme.Reset))
 	fmt.Printf("%s│%s  Proceed? (y/N) [%s%s%s]: ", theme.Dim, theme.Reset, theme.White, defaultStr, theme.Reset)
 
 	input, err := terminal.ReadLine()

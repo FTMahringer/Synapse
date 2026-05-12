@@ -188,79 +188,129 @@ GitLab self-managed:
 
 ---
 
-## v3.4.0 - Analytics & Insights
+## v3.4.0 - CLI & Installer Rework
+
+**Goal**: Professional, polished CLI installer with proper UX patterns, full box borders,
+input groups, and network configuration. Eliminate all "child illnesses" in the TUI.
+
+### Implementation Steps
+
+#### v3.3.1-dev: Border & Layout Foundation
+- Full box borders (left + right) on all sections
+- Consistent width calculation accounting for ANSI codes
+- Fix welcome banner double-line border alignment
+- Fix section open/close width mismatch
+- **Exit**: All sections render with clean, aligned full borders
+
+#### v3.3.2-dev: Component Group System
+- NavGroup / SectionGroup concept for nested inputs
+- Single section border enclosing multiple related components
+- Arrow-key navigation between inputs within a group
+- Enter to advance, Shift+Enter to go back
+- **Exit**: System Configuration section shows all 3 inputs (name, domain, data dir) in one bordered group
+
+#### v3.3.3-dev: Network & Port Configuration
+- Move network config after Security (naming + secrets)
+- Bind address selection: localhost / loopback (127.0.0.1) / LAN IP / custom IP
+- Auto-detect IPs from `ip a` / `ifconfig` / `ipconfig`
+- Dashboard port input with validation (numeric only, >1024, <65535)
+- Backend port internal-only (not user-configurable)
+- All other service ports internal-only (PostgreSQL, Redis, Qdrant, Grafana)
+- **Exit**: Network section renders after Security; port validation rejects invalid input
+
+#### v3.3.4-dev: Interactive Flow Hardening
+- Never auto-skip user-facing decisions
+- OS detection shown but not blocking
+- Package manager shown but user can override
+- Install action (auto/choose/skip) always shown explicitly
+- Clear "press Enter to continue" prompts between major steps
+- **Exit**: Every decision point is visible to the user; no hidden auto-selections
+
+#### v3.3.5-dev: Installer UX Polish
+- Progress indicators for long operations (installs, Docker pulls)
+- Better error messages with suggested fixes
+- Summary review before execution with ability to go back
+- Non-interactive / headless mode (`--yes` flag)
+- Config file import/export for repeatable installs
+- **Exit**: Installer works fully non-interactively with a config file
+
+#### v3.4.0: Tag CLI Rework Release
+
+---
+
+## v3.5.0 - Analytics & Insights
 
 **Goal**: Usage analytics, insights, and reporting for operators and admins.
 
 ### Implementation Steps
 
-#### v3.3.1-dev: Analytics Pipeline
+#### v3.4.1-dev: Analytics Pipeline
 - Event collection
 - Data warehouse integration
 - ETL pipelines
 - Reporting database
 - **Exit**: Events flowing end-to-end from app to reporting DB
 
-#### v3.3.2-dev: Dashboard & Reports
+#### v3.4.2-dev: Dashboard & Reports
 - System usage dashboard
 - Agent performance metrics
 - User engagement analytics
 - Cost tracking
 - **Exit**: Admin sees usage dashboard with real data
 
-#### v3.3.3-dev: AI Insights
+#### v3.4.3-dev: AI Insights
 - Conversation quality analysis
 - Agent behavior patterns
 - User intent detection
 - Anomaly detection
 - **Exit**: At least 2 insight types surfaced in dashboard with actionable output
 
-#### v3.3.4-dev: Analytics Reliability & Governance
+#### v3.4.4-dev: Analytics Reliability & Governance
 - Data quality and lineage validation
 - Privacy guardrails for analytics datasets
 - Dashboard correctness regression suite
 - Documentation updates for analytics operators
 - **Exit**: Privacy guardrails block PII from analytics; regression suite passes
 
-#### v3.4.0: Tag Analytics Release
+#### v3.5.0: Tag Analytics Release
 
 ---
 
-## v3.5.0 - Release Hardening (Final)
+## v3.6.0 - Release Hardening (Final)
 
 **Goal**: Final polish for production v4.0.0 release.
 
 ### Implementation Steps
 
-#### v3.4.1-dev: Documentation Audit
+#### v3.5.1-dev: Documentation Audit
 - API documentation completeness
 - Deployment guides review
 - Admin + user guides review
 - Plugin developer guide review
 - **Exit**: No undocumented public API endpoints; all guides up to date
 
-#### v3.4.2-dev: Performance Benchmarking
+#### v3.5.2-dev: Performance Benchmarking
 - Load testing
 - Stress testing
 - Capacity planning
 - Performance regression baseline
 - **Exit**: Benchmarks documented; no regressions vs v3.0.0
 
-#### v3.4.3-dev: Migration Guide
+#### v3.5.3-dev: Migration Guide
 - v3 → v4 migration path documented
 - Breaking changes documented
 - Database migration guide
 - Configuration changes guide
 - **Exit**: Migration guide reviewed and tested on a real v3.0.0 instance
 
-#### v3.4.4-dev: Release Notes
+#### v3.5.4-dev: Release Notes
 - Comprehensive changelog v3.0.0 → v4.0.0
 - Feature highlights
 - Known issues
 - Upgrade instructions
 - **Exit**: Release notes reviewed by maintainer
 
-#### v3.5.0: Pre-release Testing
+#### v3.6.0: Pre-release Testing
 - Final QA and testing
 - Documentation completeness audit
 - Migration guides finalized
@@ -281,8 +331,9 @@ GitLab self-managed:
 | v3.1.0 | Multi-Tenancy | Enterprise Features |
 | v3.2.0 | Infrastructure Platform | Deployment & Orchestration |
 | v3.3.0 | Frontend Modernization | UI/UX Enhancement |
-| v3.4.0 | Analytics & Insights | Reporting & Observability |
-| v3.5.0 | Release Hardening | Final Polish |
+| v3.4.0 | CLI & Installer Rework | TUI Polish & UX |
+| v3.5.0 | Analytics & Insights | Reporting & Observability |
+| v3.6.0 | Release Hardening | Final Polish |
 | **v4.0.0** | **Production** | **🚀 SYNAPSE V4** |
 
 ---
