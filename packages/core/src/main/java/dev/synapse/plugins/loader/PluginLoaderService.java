@@ -82,24 +82,33 @@ public class PluginLoaderService {
         updateLoaderState(pluginId, Plugin.LoaderState.LOADING, null);
 
         try {
-            // Validate jarPath is a local file (prevent SSRF via external URLs)
+            // Validate jarPath is a local file under the plugins directory
+            // (prevent SSRF via external URLs and path traversal)
+            Path normalized = jarPath.normalize();
+            Path pluginsDir = Path.of(
+                System.getenv().getOrDefault(
+                    "SYNAPSE_HOME",
+                    System.getProperty("user.home") + "/.synapse"
+                ),
+                "plugins"
+            ).normalize();
             if (
-                !jarPath.isAbsolute() ||
-                !jarPath.getRoot().toString().matches("^[A-Za-z]?:?[/\\\\].*")
+                !normalized.isAbsolute() || !normalized.startsWith(pluginsDir)
             ) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Plugin JAR path must be an absolute local file path"
+                    "Plugin JAR path must be an absolute local file under " +
+                        pluginsDir
                 );
             }
-            if (!java.nio.file.Files.exists(jarPath)) {
+            if (!java.nio.file.Files.exists(normalized)) {
                 throw new PluginLoadException(
                     pluginId,
-                    "Plugin JAR not found: " + jarPath
+                    "Plugin JAR not found: " + normalized
                 );
             }
 
-            URL jarUrl = jarPath.toUri().toURL();
+            URL jarUrl = normalized.toUri().toURL();
 
             // Layer 1: Create URLClassLoader (parent = platform class loader)
             URLClassLoader classLoader = new URLClassLoader(

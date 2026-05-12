@@ -150,7 +150,13 @@ public class PluginStorageService {
         if (!isValidJarName(fileName)) {
             throw new IllegalArgumentException("Invalid JAR name: " + fileName);
         }
-        Path target = stagingDir.resolve(fileName);
+        // Resolve target within stagingDir and normalize to prevent path traversal
+        Path target = stagingDir.resolve(fileName).normalize();
+        if (!target.startsWith(stagingDir.normalize())) {
+            throw new IllegalArgumentException(
+                "Path traversal detected: " + fileName
+            );
+        }
         Files.copy(sourceJar, target, StandardCopyOption.REPLACE_EXISTING);
         return target;
     }
