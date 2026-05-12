@@ -1,13 +1,13 @@
 package dev.synapse.core.bootstrap;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 import dev.synapse.core.BaseIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 class HealthControllerIntegrationTest extends BaseIntegrationTest {
@@ -17,7 +17,8 @@ class HealthControllerIntegrationTest extends BaseIntegrationTest {
 
     @Test
     void getHealth_shouldReturnHealthStatus() throws Exception {
-        mockMvc.perform(get("/api/health"))
+        mockMvc
+            .perform(get("/api/health"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.status").value("UP"))
             .andExpect(jsonPath("$.systemName").exists())

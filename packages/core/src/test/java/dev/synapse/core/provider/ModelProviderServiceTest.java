@@ -1,26 +1,25 @@
-package dev.synapse.core.provider;
+package dev.synapse.providers;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.synapse.core.common.domain.ModelProvider;
+import dev.synapse.core.common.repository.ModelProviderRepository;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.common.repository.ModelProviderRepository;
 import dev.synapse.core.infrastructure.security.SecretEncryptionService;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ModelProviderServiceTest {
@@ -71,7 +70,9 @@ class ModelProviderServiceTest {
     void findById_shouldReturnProviderWhenExists() {
         UUID providerId = testProvider.getId();
 
-        when(modelProviderRepository.findById(providerId)).thenReturn(Optional.of(testProvider));
+        when(modelProviderRepository.findById(providerId)).thenReturn(
+            Optional.of(testProvider)
+        );
 
         ModelProvider result = modelProviderService.findById(providerId);
 
@@ -85,9 +86,13 @@ class ModelProviderServiceTest {
     void findById_shouldThrowExceptionWhenNotFound() {
         UUID providerId = UUID.randomUUID();
 
-        when(modelProviderRepository.findById(providerId)).thenReturn(Optional.empty());
+        when(modelProviderRepository.findById(providerId)).thenReturn(
+            Optional.empty()
+        );
 
-        assertThrows(ResourceNotFoundException.class, () -> modelProviderService.findById(providerId));
+        assertThrows(ResourceNotFoundException.class, () ->
+            modelProviderService.findById(providerId)
+        );
         verify(modelProviderRepository, times(1)).findById(providerId);
     }
 
@@ -95,7 +100,9 @@ class ModelProviderServiceTest {
     void findByName_shouldReturnProviderWhenExists() {
         String providerName = "ollama";
 
-        when(modelProviderRepository.findByName(providerName)).thenReturn(Optional.of(testProvider));
+        when(modelProviderRepository.findByName(providerName)).thenReturn(
+            Optional.of(testProvider)
+        );
 
         ModelProvider result = modelProviderService.findByName(providerName);
 
@@ -108,9 +115,13 @@ class ModelProviderServiceTest {
     void findByName_shouldThrowExceptionWhenNotFound() {
         String providerName = "nonexistent";
 
-        when(modelProviderRepository.findByName(providerName)).thenReturn(Optional.empty());
+        when(modelProviderRepository.findByName(providerName)).thenReturn(
+            Optional.empty()
+        );
 
-        assertThrows(ResourceNotFoundException.class, () -> modelProviderService.findByName(providerName));
+        assertThrows(ResourceNotFoundException.class, () ->
+            modelProviderService.findByName(providerName)
+        );
         verify(modelProviderRepository, times(1)).findByName(providerName);
     }
 
@@ -120,13 +131,23 @@ class ModelProviderServiceTest {
 
         when(modelProviderRepository.existsById(providerId)).thenReturn(true);
         doNothing().when(modelProviderRepository).deleteById(providerId);
-        doNothing().when(logService).log(any(), any(), any(), any(), any(), any(), any());
+        doNothing()
+            .when(logService)
+            .log(any(), any(), any(), any(), any(), any(), any());
 
         modelProviderService.deleteById(providerId);
 
         verify(modelProviderRepository, times(1)).existsById(providerId);
         verify(modelProviderRepository, times(1)).deleteById(providerId);
-        verify(logService, times(1)).log(any(), any(), any(), any(), any(), any(), any());
+        verify(logService, times(1)).log(
+            any(),
+            any(),
+            any(),
+            any(),
+            any(),
+            any(),
+            any()
+        );
     }
 
     @Test
@@ -135,7 +156,9 @@ class ModelProviderServiceTest {
 
         when(modelProviderRepository.existsById(providerId)).thenReturn(false);
 
-        assertThrows(ResourceNotFoundException.class, () -> modelProviderService.deleteById(providerId));
+        assertThrows(ResourceNotFoundException.class, () ->
+            modelProviderService.deleteById(providerId)
+        );
         verify(modelProviderRepository, times(1)).existsById(providerId);
         verify(modelProviderRepository, never()).deleteById(any());
     }
@@ -149,7 +172,9 @@ class ModelProviderServiceTest {
 
         List<ModelProvider> enabledProviders = List.of(testProvider);
 
-        when(modelProviderRepository.findByEnabledTrue()).thenReturn(enabledProviders);
+        when(modelProviderRepository.findByEnabledTrue()).thenReturn(
+            enabledProviders
+        );
 
         List<ModelProvider> result = modelProviderService.findEnabled();
 

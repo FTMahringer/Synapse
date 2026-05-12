@@ -1,5 +1,10 @@
 package dev.synapse.core.agents;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import dev.synapse.agents.service.AgentCollaborationService;
 import dev.synapse.agents.service.AgentHardeningPolicyService;
 import dev.synapse.agents.service.HardeningDecision;
@@ -15,40 +20,45 @@ import dev.synapse.core.common.repository.TaskRepository;
 import dev.synapse.core.common.repository.TeamMembershipRepository;
 import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class AgentCollaborationServiceTest {
 
     @Mock
     private AgentTeamRepository teamRepository;
+
     @Mock
     private TeamMembershipRepository teamMembershipRepository;
+
     @Mock
     private CollaborationSessionRepository sessionRepository;
+
     @Mock
     private CollaborationMessageRepository messageRepository;
+
     @Mock
     private CollaborationDelegationRepository delegationRepository;
+
     @Mock
     private CollaborationSharedContextRepository sharedContextRepository;
+
     @Mock
     private TaskRepository taskRepository;
+
     @Mock
     private AgentHardeningPolicyService hardeningPolicyService;
+
     @Mock
     private SystemLogService logService;
 
@@ -67,7 +77,14 @@ class AgentCollaborationServiceTest {
             hardeningPolicyService,
             logService
         );
-        when(hardeningPolicyService.evaluateDelegation(any(), any(), any(), any())).thenReturn(
+        when(
+            hardeningPolicyService.evaluateDelegation(
+                any(),
+                any(),
+                any(),
+                any()
+            )
+        ).thenReturn(
             HardeningDecision.allow(List.of("TEST"), java.util.Map.of())
         );
     }
@@ -75,11 +92,12 @@ class AgentCollaborationServiceTest {
     @Test
     void createSession_rejectsWhenInitiatorNotInTeam() {
         when(teamRepository.existsById("ops-team")).thenReturn(true);
-        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(List.of());
+        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(
+            List.of()
+        );
 
-        assertThrows(
-            ValidationException.class,
-            () -> collaborationService.createSession("ops-team", "agent-alpha", null)
+        assertThrows(ValidationException.class, () ->
+            collaborationService.createSession("ops-team", "agent-alpha", null)
         );
     }
 
@@ -95,27 +113,40 @@ class AgentCollaborationServiceTest {
         membership.setTeamId("ops-team");
         membership.setAgentId("agent-alpha");
 
-        CollaborationSharedContextEntry existing = new CollaborationSharedContextEntry();
+        CollaborationSharedContextEntry existing =
+            new CollaborationSharedContextEntry();
         existing.setId(UUID.randomUUID());
         existing.setSessionId(sessionId);
         existing.setContextKey("project.state");
         existing.setVersion(2);
 
         when(teamRepository.existsById("ops-team")).thenReturn(true);
-        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
-        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(List.of(membership));
-        when(sharedContextRepository.findBySessionIdAndContextKey(sessionId, "project.state"))
-            .thenReturn(Optional.of(existing));
-        when(sharedContextRepository.save(any(CollaborationSharedContextEntry.class)))
-            .thenAnswer(invocation -> invocation.getArgument(0));
-
-        CollaborationSharedContextEntry updated = collaborationService.upsertSharedContext(
-            "ops-team",
-            sessionId,
-            "project.state",
-            "in-progress",
-            "agent-alpha"
+        when(sessionRepository.findById(sessionId)).thenReturn(
+            Optional.of(session)
         );
+        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(
+            List.of(membership)
+        );
+        when(
+            sharedContextRepository.findBySessionIdAndContextKey(
+                sessionId,
+                "project.state"
+            )
+        ).thenReturn(Optional.of(existing));
+        when(
+            sharedContextRepository.save(
+                any(CollaborationSharedContextEntry.class)
+            )
+        ).thenAnswer(invocation -> invocation.getArgument(0));
+
+        CollaborationSharedContextEntry updated =
+            collaborationService.upsertSharedContext(
+                "ops-team",
+                sessionId,
+                "project.state",
+                "in-progress",
+                "agent-alpha"
+            );
 
         assertEquals(3, updated.getVersion());
         assertEquals("agent-alpha", updated.getUpdatedByAgentId());

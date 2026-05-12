@@ -1,28 +1,39 @@
 package dev.synapse.core.security;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import dev.synapse.core.infrastructure.security.JwtService;
+import dev.synapse.core.infrastructure.security.TokenBlacklistService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import javax.crypto.SecretKey;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class JwtServiceTest {
 
     private JwtService jwtService;
-    private static final String TEST_SECRET = "CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256";
+    private static final String TEST_SECRET =
+        "CHANGE_ME_IN_PRODUCTION_THIS_MUST_BE_AT_LEAST_256_BITS_LONG_FOR_HS256";
     private static final long ACCESS_TOKEN_VALIDITY_MS = 900000; // 15 minutes
     private static final long REFRESH_TOKEN_VALIDITY_MS = 604800000; // 7 days
 
     @BeforeEach
     void setUp() {
-        jwtService = new JwtService(TEST_SECRET, ACCESS_TOKEN_VALIDITY_MS, REFRESH_TOKEN_VALIDITY_MS);
+        TokenBlacklistService blacklistService = mock(
+            TokenBlacklistService.class
+        );
+        when(blacklistService.isTokenRevoked(anyString())).thenReturn(false);
+        jwtService = new JwtService(
+            TEST_SECRET,
+            ACCESS_TOKEN_VALIDITY_MS,
+            REFRESH_TOKEN_VALIDITY_MS,
+            blacklistService
+        );
     }
 
     @Test
@@ -35,9 +46,11 @@ class JwtServiceTest {
 
         assertNotNull(token);
         assertTrue(token.length() > 0);
-        
+
         // Verify token can be parsed
-        SecretKey key = Keys.hmacShaKeyFor(TEST_SECRET.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(
+            TEST_SECRET.getBytes(StandardCharsets.UTF_8)
+        );
         Claims claims = Jwts.parser()
             .verifyWith(key)
             .build()
@@ -58,9 +71,11 @@ class JwtServiceTest {
 
         assertNotNull(token);
         assertTrue(token.length() > 0);
-        
+
         // Verify token can be parsed
-        SecretKey key = Keys.hmacShaKeyFor(TEST_SECRET.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(
+            TEST_SECRET.getBytes(StandardCharsets.UTF_8)
+        );
         Claims claims = Jwts.parser()
             .verifyWith(key)
             .build()
@@ -74,9 +89,15 @@ class JwtServiceTest {
     @Test
     void generateAccessToken_shouldContainIssuedAtAndExpiration() {
         UUID userId = UUID.randomUUID();
-        String token = jwtService.generateAccessToken(userId, "testuser", "USER");
+        String token = jwtService.generateAccessToken(
+            userId,
+            "testuser",
+            "USER"
+        );
 
-        SecretKey key = Keys.hmacShaKeyFor(TEST_SECRET.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(
+            TEST_SECRET.getBytes(StandardCharsets.UTF_8)
+        );
         Claims claims = Jwts.parser()
             .verifyWith(key)
             .build()
@@ -93,8 +114,16 @@ class JwtServiceTest {
         UUID userId1 = UUID.randomUUID();
         UUID userId2 = UUID.randomUUID();
 
-        String token1 = jwtService.generateAccessToken(userId1, "user1", "USER");
-        String token2 = jwtService.generateAccessToken(userId2, "user2", "ADMIN");
+        String token1 = jwtService.generateAccessToken(
+            userId1,
+            "user1",
+            "USER"
+        );
+        String token2 = jwtService.generateAccessToken(
+            userId2,
+            "user2",
+            "ADMIN"
+        );
 
         assertNotEquals(token1, token2);
     }
@@ -118,7 +147,9 @@ class JwtServiceTest {
 
         String token = jwtService.generateAccessToken(userId, username, role);
 
-        SecretKey key = Keys.hmacShaKeyFor(TEST_SECRET.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(
+            TEST_SECRET.getBytes(StandardCharsets.UTF_8)
+        );
         Claims claims = Jwts.parser()
             .verifyWith(key)
             .build()

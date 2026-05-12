@@ -1,7 +1,13 @@
 package dev.synapse.core.agents;
 
-import dev.synapse.agents.service.AgentPlanningService;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
 import dev.synapse.agents.service.AgentHardeningPolicyService;
+import dev.synapse.agents.service.AgentPlanningService;
 import dev.synapse.agents.service.HardeningDecision;
 import dev.synapse.core.common.domain.PlanningArtifact;
 import dev.synapse.core.common.domain.PlanningGoal;
@@ -12,36 +18,37 @@ import dev.synapse.core.common.repository.PlanningGoalRepository;
 import dev.synapse.core.common.repository.TeamMembershipRepository;
 import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 class AgentPlanningServiceTest {
 
     @Mock
     private AgentTeamRepository teamRepository;
+
     @Mock
     private TeamMembershipRepository teamMembershipRepository;
+
     @Mock
     private PlanningGoalRepository planningGoalRepository;
+
     @Mock
     private PlanningArtifactRepository planningArtifactRepository;
+
     @Mock
     private AgentHardeningPolicyService hardeningPolicyService;
+
     @Mock
     private SystemLogService logService;
 
@@ -57,9 +64,9 @@ class AgentPlanningServiceTest {
             hardeningPolicyService,
             logService
         );
-        when(hardeningPolicyService.evaluatePlanning(any(), anyInt(), anyInt())).thenReturn(
-            HardeningDecision.allow(List.of("TEST"), Map.of())
-        );
+        when(
+            hardeningPolicyService.evaluatePlanning(any(), anyInt(), anyInt())
+        ).thenReturn(HardeningDecision.allow(List.of("TEST"), Map.of()));
     }
 
     @Test
@@ -75,13 +82,20 @@ class AgentPlanningServiceTest {
         membership.setAgentId("agent-alpha");
 
         when(teamRepository.existsById("ops-team")).thenReturn(true);
-        when(planningGoalRepository.findById(goalId)).thenReturn(Optional.of(goal));
-        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(List.of(membership));
-        when(planningArtifactRepository.findByGoalIdOrderByPlanVersionDesc(goalId)).thenReturn(List.of());
+        when(planningGoalRepository.findById(goalId)).thenReturn(
+            Optional.of(goal)
+        );
+        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(
+            List.of(membership)
+        );
+        when(
+            planningArtifactRepository.findByGoalIdOrderByPlanVersionDesc(
+                goalId
+            )
+        ).thenReturn(List.of());
 
-        assertThrows(
-            ValidationException.class,
-            () -> planningService.createInitialPlan(
+        assertThrows(ValidationException.class, () ->
+            planningService.createInitialPlan(
                 "ops-team",
                 goalId,
                 "summary",
@@ -119,11 +133,23 @@ class AgentPlanningServiceTest {
         latestPlan.setStatus(PlanningArtifact.PlanStatus.ACTIVE);
 
         when(teamRepository.existsById("ops-team")).thenReturn(true);
-        when(planningGoalRepository.findById(goalId)).thenReturn(Optional.of(goal));
-        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(List.of(membership));
-        when(planningArtifactRepository.findById(basePlanId)).thenReturn(Optional.of(basePlan));
-        when(planningArtifactRepository.findByGoalIdOrderByPlanVersionDesc(goalId)).thenReturn(List.of(latestPlan));
-        when(planningArtifactRepository.save(any(PlanningArtifact.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(planningGoalRepository.findById(goalId)).thenReturn(
+            Optional.of(goal)
+        );
+        when(teamMembershipRepository.findByTeamId("ops-team")).thenReturn(
+            List.of(membership)
+        );
+        when(planningArtifactRepository.findById(basePlanId)).thenReturn(
+            Optional.of(basePlan)
+        );
+        when(
+            planningArtifactRepository.findByGoalIdOrderByPlanVersionDesc(
+                goalId
+            )
+        ).thenReturn(List.of(latestPlan));
+        when(
+            planningArtifactRepository.save(any(PlanningArtifact.class))
+        ).thenAnswer(invocation -> invocation.getArgument(0));
 
         PlanningArtifact refined = planningService.refinePlan(
             "ops-team",
@@ -135,7 +161,10 @@ class AgentPlanningServiceTest {
             "agent-alpha"
         );
 
-        assertEquals(PlanningArtifact.PlanStatus.SUPERSEDED, basePlan.getStatus());
+        assertEquals(
+            PlanningArtifact.PlanStatus.SUPERSEDED,
+            basePlan.getStatus()
+        );
         assertEquals(2, refined.getPlanVersion());
         assertEquals(PlanningArtifact.PlanStatus.ACTIVE, refined.getStatus());
     }

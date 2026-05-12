@@ -1,23 +1,22 @@
-package dev.synapse.core.conversation;
+package dev.synapse.conversation;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 import dev.synapse.core.common.domain.Conversation;
-import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.common.repository.ConversationRepository;
+import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ConversationServiceTest {
@@ -45,14 +44,22 @@ class ConversationServiceTest {
         savedConversation.setUserId(testUserId);
         savedConversation.setStatus(Conversation.ConversationStatus.ACTIVE);
 
-        when(conversationRepository.save(any(Conversation.class))).thenReturn(savedConversation);
+        when(conversationRepository.save(any(Conversation.class))).thenReturn(
+            savedConversation
+        );
 
-        Conversation result = conversationService.create(testAgentId, testUserId);
+        Conversation result = conversationService.create(
+            testAgentId,
+            testUserId
+        );
 
         assertNotNull(result);
         assertEquals(testAgentId, result.getAgentId());
         assertEquals(testUserId, result.getUserId());
-        assertEquals(Conversation.ConversationStatus.ACTIVE, result.getStatus());
+        assertEquals(
+            Conversation.ConversationStatus.ACTIVE,
+            result.getStatus()
+        );
         verify(conversationRepository, times(1)).save(any(Conversation.class));
     }
 
@@ -78,7 +85,9 @@ class ConversationServiceTest {
         Conversation conversation = new Conversation();
         conversation.setId(conversationId);
 
-        when(conversationRepository.findById(conversationId)).thenReturn(Optional.of(conversation));
+        when(conversationRepository.findById(conversationId)).thenReturn(
+            Optional.of(conversation)
+        );
 
         Conversation result = conversationService.findById(conversationId);
 
@@ -91,9 +100,13 @@ class ConversationServiceTest {
     void findById_shouldThrowExceptionWhenNotFound() {
         UUID conversationId = UUID.randomUUID();
 
-        when(conversationRepository.findById(conversationId)).thenReturn(Optional.empty());
+        when(conversationRepository.findById(conversationId)).thenReturn(
+            Optional.empty()
+        );
 
-        assertThrows(ResourceNotFoundException.class, () -> conversationService.findById(conversationId));
+        assertThrows(ResourceNotFoundException.class, () ->
+            conversationService.findById(conversationId)
+        );
         verify(conversationRepository, times(1)).findById(conversationId);
     }
 
@@ -107,9 +120,13 @@ class ConversationServiceTest {
         conv2.setUserId(testUserId);
         List<Conversation> conversations = Arrays.asList(conv1, conv2);
 
-        when(conversationRepository.findByUserId(testUserId)).thenReturn(conversations);
+        when(conversationRepository.findByUserId(testUserId)).thenReturn(
+            conversations
+        );
 
-        List<Conversation> result = conversationService.findByUserId(testUserId);
+        List<Conversation> result = conversationService.findByUserId(
+            testUserId
+        );
 
         assertEquals(2, result.size());
         result.forEach(conv -> assertEquals(testUserId, conv.getUserId()));
@@ -121,7 +138,9 @@ class ConversationServiceTest {
         Conversation conversation = new Conversation();
         conversation.setId(UUID.randomUUID());
 
-        when(conversationRepository.save(conversation)).thenReturn(conversation);
+        when(conversationRepository.save(conversation)).thenReturn(
+            conversation
+        );
 
         Conversation result = conversationService.save(conversation);
 
@@ -134,7 +153,9 @@ class ConversationServiceTest {
     void deleteById_shouldDeleteWhenExists() {
         UUID conversationId = UUID.randomUUID();
 
-        when(conversationRepository.existsById(conversationId)).thenReturn(true);
+        when(conversationRepository.existsById(conversationId)).thenReturn(
+            true
+        );
         doNothing().when(conversationRepository).deleteById(conversationId);
 
         conversationService.deleteById(conversationId);
@@ -147,9 +168,13 @@ class ConversationServiceTest {
     void deleteById_shouldThrowExceptionWhenNotFound() {
         UUID conversationId = UUID.randomUUID();
 
-        when(conversationRepository.existsById(conversationId)).thenReturn(false);
+        when(conversationRepository.existsById(conversationId)).thenReturn(
+            false
+        );
 
-        assertThrows(ResourceNotFoundException.class, () -> conversationService.deleteById(conversationId));
+        assertThrows(ResourceNotFoundException.class, () ->
+            conversationService.deleteById(conversationId)
+        );
         verify(conversationRepository, times(1)).existsById(conversationId);
         verify(conversationRepository, never()).deleteById(any());
     }
