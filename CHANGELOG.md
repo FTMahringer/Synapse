@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.1-dev] - 2026-05-12
+
+**Plugin Ecosystem — Plugin API Module**
+
+### Added
+- `synapse-plugin-api` Maven module (`dev.synapse:synapse-plugin-api:1.0.0`) published to GitHub Packages
+- JPMS module descriptor (`module synapse.plugin.api`) — exports only `dev.synapse.plugin.api`, nothing else
+- `SynapsePlugin` — base interface for all plugin types (`getId`, `getName`, `getVersion`, `onLoad`, `onUnload`)
+- `Channel` — bidirectional messaging channel interface (`getChannelId`, `onMessage`, `sendMessage`, `onInstall`, `onUninstall`)
+- `ModelProvider` — LLM backend interface (`getProviderId`, `complete`, `stream`, `getCapabilities`, `listModels`, `configure`)
+- `PluginContext` — injected context providing scoped `logger`, `config`, `eventBus`, `executor`, `authMode`, `routeMessage`
+- `PluginConfig` — typed config wrapper for manifest `config_schema` values with secret field support
+- `PluginEventBus` — plugin-to-core event publishing and topic subscription
+- `PluginLogger` — scoped logger tagged with plugin id, routed to system log
+- `AuthMode` enum — `API_KEY`, `ACP`, `NONE` for credential routing in model providers
+- Supporting value types: `InboundMessage`, `OutboundMessage`, `CompletionRequest`, `CompletionResponse`, `StreamHandler`, `ModelCapabilities`, `ModelInfo`, `PluginEvent`
+- Updated `synapse-plugin-template`: now depends on `synapse-plugin-api:1.0.0`, drops Spring Boot, includes proper JPMS `module-info.java`, scaffold classes for Channel and ModelProvider, updated `plugin.yaml` manifest format for v2.6.0
+
+---
+
 ## [v2.5.0] - 2026-05-12
 
 **Milestone: Security Hardening**

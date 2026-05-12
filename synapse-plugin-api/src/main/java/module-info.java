@@ -1,4 +1,3 @@
-module dev.synapse.synapse-plugin-api {
-  requires java.logging;
-  exports dev.synapse.plugin.api;
+module synapse.plugin.api {
+    exports dev.synapse.plugin.api;
 }

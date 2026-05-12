@@ -2,7 +2,7 @@
 
 > **Your AI. Your Rules. Your Stack.**
 
-**Current Release**: v2.4.0 (Advanced Agent Capabilities)
+**Current Release**: v2.5.0 (Security Hardening)
 
 SYNAPSE is a self-hosted, fully extensible AI platform that puts you in complete control of your AI environment. Run it on your own infrastructure, connect any model provider, build custom agent teams, and extend everything through a powerful plugin system — without ever depending on a third-party cloud.
 
