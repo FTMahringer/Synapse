@@ -41,7 +41,7 @@ func Sprintf(style, format string, a ...any) string {
 
 // Header returns a styled header line.
 func Header(text string) string {
-	return Sprintf(Bold+Blue, text)
+	return Bold + Blue + text + Reset
 }
 
 // OK returns a green checkmark message.
@@ -61,7 +61,7 @@ func Warning(text string) string {
 
 // DimText returns dimmed text.
 func DimText(text string) string {
-	return Sprintf(Dim, text)
+	return Dim + text + Reset
 }
 
 // Label returns a styled label:value pair.

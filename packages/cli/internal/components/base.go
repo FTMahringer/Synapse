@@ -84,11 +84,7 @@ func (b *BaseComponent) RenderOption(key, desc string, selected, highlighted boo
 	} else {
 		highlight = theme.Gray
 	}
-	fmt.Printf("%s│%s  %s %s%s%s %s%s%s\n",
-		theme.Dim, theme.Reset,
-		color, marker, theme.Reset,
-		highlight, key, theme.Reset,
-		theme.Gray, desc, theme.Reset)
+	fmt.Print(theme.Dim + "│" + theme.Reset + "  " + color + " " + marker + theme.Reset + " " + highlight + key + theme.Reset + " " + theme.Gray + desc + theme.Reset + "\n")
 }
 
 // RenderCheckbox prints a checkbox option (for multi-select).
@@ -147,7 +143,7 @@ func (b *BaseComponent) RenderError(text string) {
 // CloseSection closes the bordered section.
 func (b *BaseComponent) CloseSection() {
 	line := strings.Repeat("─", 60)
-	fmt.Printf("%s│%s\n%s└%s%s%s\n", theme.Dim, theme.Reset, theme.Dim, line, theme.Reset)
+	fmt.Printf("%s│%s\n%s└%s%s%s\n", theme.Dim, theme.Reset, theme.Dim, line, theme.Reset, "")
 }
 
 // ── Input helpers ──────────────────────────────────────────────────
