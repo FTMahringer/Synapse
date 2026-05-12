@@ -625,6 +625,7 @@ func RunWizard(rootDir string, skipDocker bool) error {
 	provSection.RenderSection()
 
 	providerSelect := components.NewSearchList("Primary provider", AvailableProviders(), cfg.Provider)
+	providerSelect.NoBorder = true
 	cfg.Provider = providerSelect.Prompt()
 
 	// Provider-specific credential prompts
@@ -652,6 +653,7 @@ func RunWizard(rootDir string, skipDocker bool) error {
 	chSection.RenderLine("")
 
 	chSelect := components.NewMultiSelect("Channels", AvailableChannels(), cfg.Channels)
+	chSelect.NoBorder = true
 	cfg.Channels = chSelect.Prompt()
 	chSection.CloseSection()
 
@@ -662,6 +664,7 @@ func RunWizard(rootDir string, skipDocker bool) error {
 	skSection.RenderLine("")
 
 	skSelect := components.NewMultiSelect("Skills", AvailableSkills(), cfg.Skills)
+	skSelect.NoBorder = true
 	cfg.Skills = skSelect.Prompt()
 	skSection.CloseSection()
 

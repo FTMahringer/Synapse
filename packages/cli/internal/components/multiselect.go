@@ -9,11 +9,12 @@ import (
 // Use ↑/↓ to navigate, Space to toggle, Enter to confirm, Escape to cancel.
 type MultiSelect struct {
 	BaseComponent
-	Label   string
-	Options []Option
-	Default []string // pre-selected keys
-	Values  []string // selected keys after prompt
-	index   int
+	Label    string
+	Options  []Option
+	Default  []string // pre-selected keys
+	Values   []string // selected keys after prompt
+	index    int
+	NoBorder bool // When true, doesn't render its own section border (for use inside another section)
 }
 
 // NewMultiSelect creates a multi-select component.
@@ -33,7 +34,9 @@ func NewMultiSelect(label string, options []Option, defaultVals []string) *Multi
 
 // Prompt displays the options with arrow-key navigation and Space to toggle.
 func (m *MultiSelect) Prompt() []string {
-	m.RenderSection()
+	if !m.NoBorder {
+		m.RenderSection()
+	}
 	m.RenderLine(m.Label)
 	m.RenderLine("  ↑/↓ navigate • Space toggle • Enter confirm • Esc cancel")
 	m.RenderLine("")
@@ -44,13 +47,18 @@ func (m *MultiSelect) Prompt() []string {
 	for {
 		newIdx, action, err := m.MultiSelectNavigate(m.index, len(m.Options))
 		if err != nil {
+			if !m.NoBorder {
+				m.CloseSection()
+			}
 			return m.Values
 		}
 
 		switch action {
 		case "cancel":
 			// Escape pressed — keep current values
-			m.CloseSection()
+			if !m.NoBorder {
+				m.CloseSection()
+			}
 			return m.Values
 
 		case "toggle":
@@ -71,7 +79,9 @@ func (m *MultiSelect) Prompt() []string {
 
 		case "confirm":
 			// Enter pressed — confirm selection
-			m.CloseSection()
+			if !m.NoBorder {
+				m.CloseSection()
+			}
 			return m.Values
 
 		case "move":

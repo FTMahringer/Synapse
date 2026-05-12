@@ -31,9 +31,13 @@ func NewBase(title, color string) BaseComponent {
 
 // ── Section rendering ──────────────────────────────────────────────
 
+const sectionInnerWidth = 56
+
 // RenderSection opens a bordered section with the title.
 func (b *BaseComponent) RenderSection() {
-	line := strings.Repeat("─", 56)
+	titleLen := len(b.Title)
+	// Account for: ┌─ Title ──... where ┌─ = 2, spaces around title = 2
+	line := strings.Repeat("─", sectionInnerWidth-titleLen)
 	fmt.Printf("\n%s┌─%s %s%s%s %s%s%s\n",
 		theme.Dim, theme.Reset,
 		b.Color, theme.Bold, b.Title, theme.Reset,
@@ -142,7 +146,23 @@ func (b *BaseComponent) RenderError(text string) {
 
 // CloseSection closes the bordered section.
 func (b *BaseComponent) CloseSection() {
-	line := strings.Repeat("─", 60)
+	// Match RenderSection: ┌─ = 2 chars prefix, so close needs └ + (innerWidth+2) dashes
+	// Actually: ┌─Title──... has 2 prefix chars, └Title──... would have 1 prefix char
+	// We want the total line length to match: prefix + content should align
+	// RenderSection: "┌─ Title " + title + " " + dashes = 2 + 1 + titleLen + 1 + (innerWidth-titleLen) = innerWidth + 4
+	// But visible chars: ┌─(2) + space(1) + title + space(1) + dashes = 4 + titleLen + (innerWidth-titleLen) = innerWidth + 4
+	// CloseSection: └(1) + dashes = should be innerWidth + 3 to match? No...
+	// Let's just make them the same total width: innerWidth + 4 visible chars on top, so bottom should be innerWidth + 3
+	// Actually simpler: count the visible chars in RenderSection output
+	// "┌─ Prerequisites ─────────────────────────────────────────────"
+	//  ^^                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	//  2 chars prefix    46 dashes (for 12-char title, innerWidth=56)
+	//  Total: 2 + 1 + 12 + 1 + 46 = 62 visible chars
+	// Close should be: "└─────────────────────────────────────────────────────────────"
+	//  ^               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	//  1 char prefix   61 dashes
+	// Total: 1 + 61 = 62 visible chars ✓
+	line := strings.Repeat("─", sectionInnerWidth+3)
 	fmt.Printf("%s│%s\n%s└%s%s%s\n", theme.Dim, theme.Reset, theme.Dim, line, theme.Reset, "")
 }
 

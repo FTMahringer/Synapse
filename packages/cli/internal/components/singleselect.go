@@ -15,11 +15,12 @@ type Option struct {
 // Use ↑/↓ to navigate, Enter/Space to confirm, Escape to cancel.
 type SingleSelect struct {
 	BaseComponent
-	Label   string
-	Options []Option
-	Default string
-	Value   string
-	index   int
+	Label    string
+	Options  []Option
+	Default  string
+	Value    string
+	index    int
+	NoBorder bool // When true, doesn't render its own section border (for use inside another section)
 }
 
 // NewSingleSelect creates a single-select component.
@@ -37,7 +38,9 @@ func NewSingleSelect(label string, options []Option, defaultVal string) *SingleS
 
 // Prompt displays the options with arrow-key navigation and reads a selection.
 func (s *SingleSelect) Prompt() string {
-	s.RenderSection()
+	if !s.NoBorder {
+		s.RenderSection()
+	}
 	s.RenderLine(s.Label)
 	s.RenderLine("")
 
@@ -47,19 +50,26 @@ func (s *SingleSelect) Prompt() string {
 	for {
 		newIdx, err := s.NavigateList(s.index, len(s.Options))
 		if err != nil {
+			if !s.NoBorder {
+				s.CloseSection()
+			}
 			return s.Value
 		}
 
 		if newIdx == -1 {
 			// Escape pressed — keep current value
-			s.CloseSection()
+			if !s.NoBorder {
+				s.CloseSection()
+			}
 			return s.Value
 		}
 
 		if newIdx == s.index {
 			// Enter or Space pressed — confirm selection
 			s.Value = s.Options[s.index].Key
-			s.CloseSection()
+			if !s.NoBorder {
+				s.CloseSection()
+			}
 			return s.Value
 		}
 

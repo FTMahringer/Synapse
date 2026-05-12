@@ -237,6 +237,8 @@ func SelectPackageManager(title string) *PackageManagerInfo {
 // ── Install logic ──────────────────────────────────────────────────
 
 // PromptInstall asks the user how to handle missing/outdated requirements.
+// When there's only one obvious choice (single package manager, auto install),
+// it skips the interactive prompt and just shows the result.
 func (r *Requirements) PromptInstall() bool {
 	missing := r.getActionable()
 	if len(missing) == 0 {
@@ -244,41 +246,83 @@ func (r *Requirements) PromptInstall() bool {
 		return true
 	}
 
-	// First, let user select package manager (only if one wasn't pre-set)
-	if r.PkgMgr == nil {
-		r.RenderSection()
-		r.RenderLine("Select package manager for installations:")
-		picked := SelectPackageManager("Package manager")
-		if picked != nil {
-			r.PkgMgr = picked
-			r.RenderOK(fmt.Sprintf("Using: %s", picked.Name))
-		} else {
-			r.RenderWarning("No package manager selected — will try scripts/fallbacks")
-		}
-		r.CloseSection()
-	}
-
 	r.RenderSection()
 	r.RenderLine("Some prerequisites need attention:")
+	for _, req := range missing {
+		status := "not installed"
+		if req.Status == StatusVersionMismatch {
+			status = fmt.Sprintf("installed %s, need %s", req.CurrentVersion, req.MinVersion)
+		}
+		r.RenderBullet(false, fmt.Sprintf("%s — %s", req.Name, status))
+	}
 	r.RenderLine("")
 
-	action := NewSingleSelect("How would you like to proceed?",
-		[]Option{
-			{Key: "auto", Description: "Install/update all requirements [recommended]"},
-			{Key: "choose", Description: "Choose individually what to install"},
-			{Key: "skip", Description: "Skip — I'll handle it myself"},
-		}, "auto").Prompt()
+	// Detect package manager — auto-select if only one found
+	if r.PkgMgr == nil {
+		detected := DetectPackageManagers()
+		if len(detected) == 1 {
+			r.PkgMgr = &detected[0]
+			r.RenderLine(fmt.Sprintf("Package manager: %s (%s)", r.PkgMgr.Name, r.PkgMgr.Name))
+		} else if len(detected) > 1 {
+			r.RenderLine("Select package manager for installations:")
+			opts := make([]Option, len(detected))
+			for i, pm := range detected {
+				desc := "package manager"
+				switch pm.Name {
+				case "winget", "choco", "scoop":
+					desc = "Windows package manager"
+				case "brew", "macports":
+					desc = "macOS package manager"
+				case "apt", "apt-get", "dnf", "yum", "pacman", "zypper", "apk":
+					desc = "Linux package manager"
+				}
+				opts[i] = Option{Key: pm.Name, Description: desc}
+			}
+			sel := NewSingleSelect("", opts, detected[0].Name)
+			sel.NoBorder = true
+			chosen := sel.Prompt()
+			for _, pm := range detected {
+				if pm.Name == chosen {
+					r.PkgMgr = &pm
+					break
+				}
+			}
+			r.RenderOK(fmt.Sprintf("Using: %s", r.PkgMgr.Name))
+		} else {
+			r.RenderWarning("No package manager detected — will try scripts/fallbacks")
+		}
+		r.RenderLine("")
+	}
+
+	// Auto-select "auto" when there's a package manager and missing reqs
+	action := "auto"
+	if r.PkgMgr == nil && len(missing) > 0 {
+		// No package manager — let user choose how to proceed
+		sel := NewSingleSelect("How would you like to proceed?",
+			[]Option{
+				{Key: "auto", Description: "Try script-based installs [recommended]"},
+				{Key: "choose", Description: "Choose individually what to install"},
+				{Key: "skip", Description: "Skip — I'll handle it myself"},
+			}, "auto")
+		sel.NoBorder = true
+		action = sel.Prompt()
+	}
 
 	switch action {
 	case "auto":
+		r.RenderLine("Installing all missing requirements...")
+		r.CloseSection()
 		return r.installAll(missing)
 	case "choose":
+		r.CloseSection()
 		return r.installChoose(missing)
 	case "skip":
 		r.RenderWarning("Skipping prerequisite installation")
+		r.CloseSection()
 		return true
 	}
 
+	r.CloseSection()
 	return true
 }
 

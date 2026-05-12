@@ -19,6 +19,7 @@ type SearchList struct {
 	index    int
 	filter   string
 	filtered []Option
+	NoBorder bool // When true, doesn't render its own section border (for use inside another section)
 }
 
 // NewSearchList creates a searchable list component.
@@ -37,7 +38,9 @@ func NewSearchList(label string, options []Option, defaultVal string) *SearchLis
 
 // Prompt displays the searchable list with live filtering.
 func (s *SearchList) Prompt() string {
-	s.RenderSection()
+	if !s.NoBorder {
+		s.RenderSection()
+	}
 	s.RenderLine(s.Label)
 	s.RenderLine("  Type to filter • ↑/↓ navigate • Enter confirm • Esc cancel")
 	s.RenderLine("")
@@ -56,13 +59,17 @@ func (s *SearchList) Prompt() string {
 		s.renderFiltered()
 	})
 	if err != nil {
-		s.CloseSection()
+		if !s.NoBorder {
+			s.CloseSection()
+		}
 		return s.Value
 	}
 
 	// If filter is empty, use default
 	if filter == "" {
-		s.CloseSection()
+		if !s.NoBorder {
+			s.CloseSection()
+		}
 		return s.Default
 	}
 
@@ -70,7 +77,9 @@ func (s *SearchList) Prompt() string {
 	for _, opt := range s.filtered {
 		if strings.EqualFold(opt.Key, filter) {
 			s.Value = opt.Key
-			s.CloseSection()
+			if !s.NoBorder {
+				s.CloseSection()
+			}
 			return s.Value
 		}
 	}
@@ -78,13 +87,17 @@ func (s *SearchList) Prompt() string {
 	// If we have filtered results, use the first one
 	if len(s.filtered) > 0 {
 		s.Value = s.filtered[0].Key
-		s.CloseSection()
+		if !s.NoBorder {
+			s.CloseSection()
+		}
 		return s.Value
 	}
 
 	// No match — use default
 	s.RenderWarning(fmt.Sprintf("No match for '%s'. Using default: %s", filter, s.Default))
-	s.CloseSection()
+	if !s.NoBorder {
+		s.CloseSection()
+	}
 	return s.Default
 }
 
