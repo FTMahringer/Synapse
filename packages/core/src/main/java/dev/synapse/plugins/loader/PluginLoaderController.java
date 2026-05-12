@@ -4,9 +4,7 @@ import dev.synapse.core.common.domain.Plugin;
 import dev.synapse.core.common.repository.PluginRepository;
 import dev.synapse.core.dto.DtoMapper;
 import dev.synapse.core.dto.PluginDTO;
-import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.plugins.PluginLifecycleService;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -91,8 +89,7 @@ public class PluginLoaderController {
     public PluginDTO loadPlugin(@PathVariable String id)
         throws PluginLoadException {
         Plugin dbPlugin = lifecycleService.findById(id);
-        java.nio.file.Path jarPath = resolveJarPath(dbPlugin);
-        LoadedPlugin loaded = loaderService.loadPlugin(jarPath, dbPlugin);
+        LoadedPlugin loaded = loaderService.loadPlugin(dbPlugin);
         registerInRegistry(loaded, dbPlugin);
         return DtoMapper.toDTO(dbPlugin);
     }
@@ -110,11 +107,10 @@ public class PluginLoaderController {
     public PluginDTO reloadPlugin(@PathVariable String id)
         throws PluginLoadException {
         Plugin dbPlugin = lifecycleService.findById(id);
-        java.nio.file.Path jarPath = resolveJarPath(dbPlugin);
         loaderService.unloadPlugin(id);
         channelRegistry.unregisterByPluginId(id);
         providerRegistry.unregisterByPluginId(id);
-        LoadedPlugin loaded = loaderService.loadPlugin(jarPath, dbPlugin);
+        LoadedPlugin loaded = loaderService.loadPlugin(dbPlugin);
         registerInRegistry(loaded, dbPlugin);
         return DtoMapper.toDTO(dbPlugin);
     }
@@ -231,34 +227,6 @@ public class PluginLoaderController {
             "installedVersion",
             item.installedVersion() != null ? item.installedVersion() : ""
         );
-    }
-
-    private java.nio.file.Path resolveJarPath(Plugin dbPlugin) {
-        String jarName = dbPlugin.getId() + ".jar";
-        java.nio.file.Path systemJar = storageService
-            .getSystemDir()
-            .resolve(jarName);
-        if (java.nio.file.Files.exists(systemJar)) {
-            return systemJar;
-        }
-        java.nio.file.Path stagingJar = storageService
-            .getStagingDir()
-            .resolve(jarName);
-        if (java.nio.file.Files.exists(stagingJar)) {
-            return stagingJar;
-        }
-        // Try to find any matching JAR
-        List<java.nio.file.Path> candidates = storageService
-            .listSystemJars()
-            .stream()
-            .filter(p ->
-                p.getFileName().toString().startsWith(dbPlugin.getId() + "-")
-            )
-            .toList();
-        if (!candidates.isEmpty()) {
-            return candidates.get(0);
-        }
-        throw new ResourceNotFoundException("Plugin JAR", dbPlugin.getId());
     }
 
     private void registerInRegistry(LoadedPlugin loaded, Plugin dbPlugin) {

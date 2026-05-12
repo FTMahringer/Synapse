@@ -123,10 +123,7 @@ public class StartupPluginScanner {
             }
 
             try {
-                LoadedPlugin loadedPlugin = loaderService.loadPlugin(
-                    jar,
-                    dbPlugin
-                );
+                LoadedPlugin loadedPlugin = loaderService.loadPlugin(dbPlugin);
                 registerInRegistry(loadedPlugin, dbPlugin);
                 loaded++;
             } catch (PluginLoadException e) {
