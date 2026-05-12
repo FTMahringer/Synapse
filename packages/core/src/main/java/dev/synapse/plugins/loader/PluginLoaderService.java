@@ -113,7 +113,16 @@ public class PluginLoaderService {
             String fileUrl =
                 "file://" +
                 normalized.toAbsolutePath().toString().replace('\\', '/');
-            URL jarUrl = new URL(fileUrl);
+
+            // Validate the constructed URL is a file:// URL before use
+            java.net.URI safeUri = java.net.URI.create(fileUrl);
+            if (!"file".equalsIgnoreCase(safeUri.getScheme())) {
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin JAR must be a local file"
+                );
+            }
+            URL jarUrl = safeUri.toURL();
 
             // Layer 1: Create URLClassLoader (parent = platform class loader)
             URLClassLoader classLoader = new URLClassLoader(
