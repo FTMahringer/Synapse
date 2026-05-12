@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.4.6-dev] - 2026-05-11
+
+**Security Hardening — Security Validation & Runbooks**
+
+### Added
+- SecurityValidationTest with integration tests for authentication, authorization, rate limiting, CORS, and security headers
+- SECURITY_INCIDENT_RESPONSE.md runbook with severity levels, response procedures, recovery procedures, and communication templates
+- SECURITY_DEPLOYMENT_CHECKLIST.md with pre-deployment, deployment, and post-deployment security checks
+
+---
+
 ## [v2.4.5-dev] - 2026-05-11
 
 **Security Hardening — GDPR Compliance**
