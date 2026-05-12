@@ -52,6 +52,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `PluginLifecycleService` integrated with `PluginStorageService` for JAR deletion on uninstall
 - OpenAPI spec `plugin-api.yaml` updated with Plugin Loader endpoints and loader state schemas
 
+### Fixed
+- **Compose Smoke Test compilation failure**: Added `synapse-plugin-api` dependency to `packages/core/pom.xml`
+- **Docker build**: Updated `Dockerfile` to build `synapse-plugin-api` first, updated `docker-compose.yml` build context to repo root
+- **CodeQL path-injection alerts** (2x): Added `isValidJarName()` validation in `PluginStorageService` to reject path traversal
+- **Startup failure — `system_logs` table not ready**: Made `SystemLogService.write()` catch `DataAccessException` and fall back to stderr when table doesn't exist yet (pre-migration startup phase)
+- **Plugin loader compilation errors**: Fixed `SystemLogService.log()` parameter order (UUID not Throwable), fixed `InboundMessage` accessor methods (`getChannelId()`, `getExternalUserId()`, `getText()`)
+
 ### Documentation
 - Added `synapse-docs/docs/plugins/development/plugin-loader.mdx` — comprehensive loader architecture guide
 - Updated `synapse-docs/sidebars.ts` to include plugin loader documentation
