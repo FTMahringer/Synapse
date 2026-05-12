@@ -92,8 +92,13 @@ public class PluginContextFactory {
                     LogCategory.PLUGIN,
                     Map.of("component", pluginId),
                     "PLUGIN_ERROR",
-                    Map.of("message", message),
-                    throwable,
+                    Map.of(
+                        "message",
+                        message,
+                        "exception",
+                        throwable != null ? throwable.getMessage() : null
+                    ),
+                    null,
                     null
                 );
             }
@@ -192,11 +197,11 @@ public class PluginContextFactory {
                         pluginId,
                         Map.of(
                             "channelId",
-                            message.channelId(),
+                            message.getChannelId(),
                             "senderId",
-                            message.senderId(),
+                            message.getExternalUserId(),
                             "content",
-                            message.content()
+                            message.getText()
                         )
                     )
                 );

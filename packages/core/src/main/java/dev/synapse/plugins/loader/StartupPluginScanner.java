@@ -136,7 +136,7 @@ public class StartupPluginScanner {
                     Map.of("component", "StartupPluginScanner"),
                     "PLUGIN_STARTUP_LOAD_FAILED",
                     Map.of("id", dbPlugin.getId(), "error", e.getMessage()),
-                    e,
+                    null,
                     null
                 );
                 failed++;
@@ -194,7 +194,7 @@ public class StartupPluginScanner {
                     Map.of("component", "StartupPluginScanner"),
                     "PLUGIN_CHANNEL_INSTALL_FAILED",
                     Map.of("id", loaded.pluginId(), "error", e.getMessage()),
-                    e,
+                    null,
                     null
                 );
             }
@@ -211,7 +211,7 @@ public class StartupPluginScanner {
                     Map.of("component", "StartupPluginScanner"),
                     "PLUGIN_PROVIDER_CONFIGURE_FAILED",
                     Map.of("id", loaded.pluginId(), "error", e.getMessage()),
-                    e,
+                    null,
                     null
                 );
             }
