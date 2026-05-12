@@ -421,263 +421,230 @@ Skills + MCP types deferred to v2.7.0.
 
 ## v2.7.0 - Plugin Ecosystem Advanced Features
 
-#### v2.6.1-dev: Plugin Registry Service
-- Central plugin registry API
-- Plugin metadata management
-- Dependency resolution
-- Version compatibility checking
-- Plugin search and filtering
+**Goal**: Registry Service, new plugin types (MCP, Skills, Bundles), governance, and admin
+security controls. Completes the plugin platform story.
 
-#### v2.6.2-dev: Official Plugin Library
-- Web search plugin (Java)
-- File operations plugin (Java)
-- Code execution plugin (Java)
-- API client plugin (Java)
-- Database connectors
-- **Exit**: 5+ official Java plugins available
+**Full design spec**: [`docs/superpowers/specs/2026-05-12-v2.7.0-plugin-ecosystem-advanced-design.md`](../superpowers/specs/2026-05-12-v2.7.0-plugin-ecosystem-advanced-design.md)
 
-#### v2.6.3-dev: External Plugin Runtime (Foundation)
-- Process manager for external plugins
-- gRPC-based IPC mechanism
-- Plugin lifecycle for external processes
-- Error handling and recovery
-- **Exit**: Foundation for Python/Node.js plugins ready
-
-#### v2.6.4-dev: Registry Reliability & Governance
-- Registry mirroring/caching strategy
-- Metadata quality checks and trust signals
-- Dependency conflict simulation tests
-- Documentation updates for registry administration
-
-#### v2.7.0: Tag Plugin Advanced Features Release
-
----
-
-## v2.8.0 - Multi-Tenancy
-
-**Goal**: Support multiple organizations with data isolation.
+**Architecture decisions:**
+- Plugin Registry Service: embedded (default) or standalone container — same codebase, toggled by config
+- Custom sources: GitHub, GitLab, Forgejo, Nexus/Maven — each with internal or store visibility
+- Store Policy: community enable/disable, whitelist/blacklist by tag/badge/id, role-based CLI restrictions
+- MCP Server plugins: declarative YAML only, no ClassLoader, core handles protocol
+- Skills plugins: wrapper/bundle format around skills.sh, declarative, no Java code
+- Bundle (meta) plugin type: cross-type install packages, trust tier = lowest component tier
+- Governance: plugin signing (keypair), reporting + takedowns, deprecation + compatibility matrix — each own dev version
+- Official library expansion: mix of all 4 types to prove end-to-end
 
 ### Implementation Steps
 
-#### v2.7.1-dev: Tenant Model
-- Organization entity
-- Tenant isolation in database
-- Tenant-specific configuration
-- Tenant onboarding flow
+#### v2.6.1-dev: Plugin Registry Service Core
+- Metadata API (search, versions, compatibility)
+- Artifact proxy + cache (JAR caching, cache TTL, manual invalidation)
+- Embedded mode (default) + standalone container mode via `SYNAPSE_REGISTRY_MODE`
+- Background source sync with configurable interval
+- `synapse registry sync` CLI command
+- **Exit**: Registry serves metadata + JARs; standalone starts as separate container
 
-#### v2.7.2-dev: Resource Quotas
-- Per-tenant limits (agents, conversations, storage)
-- Usage tracking
-- Billing integration hooks
-- Quota enforcement
+#### v2.6.2-dev: Custom Registry Sources
+- Add/remove sources: GitHub, GitLab, Forgejo, Nexus/Maven
+- Visibility toggle: `internal` or `store`
+- Per-source trust tier and sync interval
+- `synapse registry add-source` CLI command
+- **Exit**: Private GitLab source registers, syncs, appears in store
 
-#### v2.7.3-dev: Tenant Admin Portal
-- Organization management UI
-- User management per tenant
-- Billing dashboard
-- Usage analytics
+#### v2.6.3-dev: Store Policy & Admin Security Controls
+- Community plugin enable/disable (hides tab + blocks installs)
+- Whitelist/blacklist by plugin id, author, tag, trust badge
+- Role-based CLI command restrictions (scaffold, publish, install)
+- Store Policy dashboard page (Settings → Plugin Store Policy)
+- **Exit**: Community disabled = tab hidden; role block = correct error message
 
-#### v2.7.4-dev: Tenant Isolation Validation
-- Cross-tenant access boundary testing
-- Quota enforcement stress tests
-- Tenant backup/restore drills
-- Documentation updates for tenant operations
+#### v2.6.4-dev: MCP Server Plugin Type
+- YAML manifest loader for `type: mcp`
+- `MCPServerRegistry`
+- `stdio`, `sse`, `http` transport support
+- No ClassLoader / no bytecode scan path
+- **Exit**: `filesystem-mcp` installs and connects via stdio transport
 
-#### v2.8.0: Tag Multi-Tenancy Release
+#### v2.6.5-dev: Skills + Skill Bundle Plugin Type
+- skills.sh fetch + local skill storage
+- `SkillsBundleRegistry`
+- Atomic bundle install/uninstall (all-or-nothing)
+- Dashboard: bundle shown as single unit
+- **Exit**: `research-skills-bundle` installs all 3 skills, uninstalls as unit
 
----
+#### v2.6.6-dev: Bundle (Meta) Plugin Type
+- Cross-type meta-manifest loader (`type: bundle`)
+- Trust tier resolution: lowest component tier wins
+- Pre-install component conflict check
+- Blocked-component error message names the specific component
+- One-click install and uninstall of all components
+- **Exit**: `research-powerpack` installs all components in one click
 
-## v2.9.0 - Infrastructure & Deployment Platform
+#### v2.6.7-dev: Governance — Plugin Signing
+- Author keypair tooling (`synapse plugin sign`)
+- Signature embedded in JAR manifest
+- Registry verify on ingest + on every install
+- Trust badges: Verified Official, Verified Community, Unverified, Tampered
+- Unsigned community plugin: admin confirm required
+- Tampered JAR: hard block, no override
+- **Exit**: Signed JAR passes; tampered JAR hard-blocked with clear error
 
-**Goal**: Production-ready deployment infrastructure with Docker-first philosophy, optional Kubernetes orchestration, and distributed execution capabilities.
+#### v2.6.8-dev: Governance — Reporting & Takedowns
+- Report flow: store UI + `synapse plugin report <id>`
+- Report categories: malicious, broken, license violation, spam
+- Admin review dashboard (dismiss / warn / takedown)
+- Auto-hide threshold (configurable, e.g. 5 reports in 24h)
+- Community repo: GitHub issue auto-created on report
+- Existing installs: dashboard warning on takedown
+- **Exit**: Report filed → admin notified → plugin hidden on takedown
 
-**Philosophy**: SYNAPSE follows the deployment model of OpenClaw, Langfuse, Open WebUI, Supabase, and GitLab self-managed:
-- Docker Compose remains the primary deployment method
-- Single-node and bare-metal deployments are first-class citizens
-- Kubernetes is optional for advanced/enterprise scenarios
-- Self-hosting and homelab-friendly
+#### v2.6.9-dev: Governance — Deprecation & Compatibility Matrix
+- Manifest `deprecated` field (since, reason, migration URL)
+- Registry compatibility matrix (plugin version ↔ Synapse version ranges)
+- Store + CLI warnings on deprecated or incompatible versions
+- Update prompt shown automatically
+- Admin-suppressible warnings for frozen environments
+- **Exit**: Deprecated plugin warns + shows migration link; incompatible version blocked
 
-### Implementation Steps
+#### v2.6.10-dev: Official Plugin Library Expansion
+- `discord-channel` (Channel)
+- `deepseek-provider` (Model Provider)
+- `filesystem-mcp` + `brave-search-mcp` (MCP Server — stdio + http)
+- `research-skills-bundle` + `developer-tools-bundle` (Skill Bundle)
+- `research-powerpack` (Bundle — cross-type)
+- All signed, all with compatibility matrix entries
+- **Exit**: All 7 install cleanly; meta-bundle end-to-end install works
 
-#### v2.8.1-dev: Docker & Bare-Metal Hardening
-**Production-ready single-node deployments**
-- Enhanced Docker Compose for production (healthchecks, restart policies, resource limits)
-- Multi-node Docker Swarm deployment guide
-- Bare-metal installation scripts (systemd services, log rotation)
-- Database backup and restore workflows
-- Traefik reverse proxy integration (preferred for advanced setups)
-- Nginx Proxy Manager guide (simple homelab option)
-- Environment variable validation and setup wizard
-- Production security checklist
+#### v2.6.11-dev: Hardening
+- Full regression suite: all new plugin types, registry sync, governance edge cases
+- Registry sync survives source downtime (graceful degradation)
+- Performance baselines: bundle install < 5s for 5-component bundle
+- Documentation: operator guide, developer guide updates
+- **Exit**: All regression tests pass; Docker build passes
 
-#### v2.8.2-dev: Infrastructure Dashboard
-**Admin UI for infrastructure visibility and management**
-- Infrastructure overview page (admin-only)
-- Node registration system (Kubernetes clusters, Docker hosts, VMs, bare-metal)
-- Cluster health monitoring (online/offline status, CPU/RAM/storage)
-- Running workload visualization
-- Team resource allocation interface
-- Similar to: Portainer, Rancher, Proxmox, GitLab runner dashboards
-
-**Resource Assignment Features:**
-- Assign infrastructure to specific teams/projects
-- Reserve nodes for testing/staging/production
-- Define execution pools (GPU nodes, lightweight CPU, etc.)
-- Restrict workloads to specific clusters
-
-#### v2.8.3-dev: Runner & Worker System
-**Distributed execution and CI/CD runner integration**
-- Worker registration protocol
-- Distributed task execution framework
-- GitHub Actions self-hosted runner integration
-- GitLab Runner integration
-- Forgejo/Gitea Actions runner support
-- Runner health monitoring and auto-restart
-- Runner tagging and capability detection
-- Team-based runner allocation
-- Secure execution isolation (sandboxing, resource limits)
-- Runner workload queue management
-
-**Use Cases:**
-- SYNAPSE as lightweight orchestration platform
-- CI/CD execution manager for teams
-- Distributed AI compute platform
-
-#### v2.8.4-dev: Kubernetes Support (Optional)
-**Advanced deployment for enterprise environments**
-- Kubernetes manifests (Deployments, Services, StatefulSets)
-- Helm chart with configurable values
-- Traefik Ingress resources
-- Horizontal Pod Autoscaling (HPA)
-- High availability (HA) configuration
-- Multi-replica PostgreSQL with replication
-- Redis Sentinel for HA caching
-- Qdrant cluster mode
-- Storage class recommendations
-- Kubernetes cluster registration in Infrastructure Dashboard
-
-**Documentation:**
-- Migration guide: Docker Compose → Kubernetes
-- Kubernetes deployment sizing guide
-- When to use Kubernetes vs Docker
-
-#### v2.8.5-dev: Infrastructure Hardening & DR
-- Disaster recovery validation (restore drills, failover checks)
-- Capacity/load validation for runner orchestration
-- Observability SLOs for infrastructure components
-- Documentation updates for production operations
-
-#### v2.9.0: Tag Infrastructure Platform Release
-- Complete Docker-first deployment ecosystem
-- Optional Kubernetes orchestration
-- Infrastructure management UI
-- Distributed worker system
-- **📝 Documentation:** Complete deployment guides overhaul
-- **🏷️ Tag:** `v2.9.0` (major milestone)
-- **📦 Release:** Comprehensive infrastructure release notes
-- **📚 Update:** Installation, runner setup, Traefik guides
+#### v2.7.0: Tag Plugin Ecosystem Advanced Release
 
 ---
 
-## v2.10.0 - Frontend Modernization
+## v2.8.0 - External Plugin Runtime Foundation
 
-**Goal**: Enhanced UI/UX with modern Vue 3 patterns.
+**Goal**: Build the process management and IPC infrastructure that external language runtimes
+(Python, Node.js) will run on in v2.9.0. No language runtimes shipped in this milestone —
+foundation only.
 
 ### Implementation Steps
 
-#### v2.9.1-dev: Component Library
-- Design system
-- Reusable components
-- Storybook integration
-- Accessibility (a11y)
+#### v2.7.1-dev: Plugin Process Manager
+- External plugin process lifecycle (spawn, monitor, restart, kill)
+- Process health checks (heartbeat, crash detection)
+- Process isolation (separate OS process per external plugin)
+- Resource limits for external processes (CPU, memory via cgroups or OS limits)
+- Plugin process state persisted in DB (same ACTIVE/DISABLED/ERROR model as Java plugins)
+- **Exit**: A dummy external process registers, heartbeats, gets killed cleanly
 
-#### v2.9.2-dev: State Management
-- Pinia store organization
-- Optimistic updates
-- Offline support
-- Real-time synchronization
+#### v2.7.2-dev: gRPC IPC Layer
+- gRPC-based communication between SYNAPSE core and external plugin processes
+- Proto definitions for: plugin registration, lifecycle hooks, event bus, config injection
+- Bidirectional streaming for event bus messages
+- Connection retry + backoff on process restart
+- Timeout enforcement matching Java plugin resource limit model
+- **Exit**: Core calls a gRPC stub plugin, receives response, handles timeout correctly
 
-#### v2.9.3-dev: Performance
-- Code splitting
-- Lazy loading
-- Bundle size optimization
-- Server-side rendering (SSR)
+#### v2.7.3-dev: External Plugin Manifest + Loader
+- `type: external` manifest format
+- Declares runtime type (`python`, `nodejs` — validated but not executed yet)
+- Declares entry point, args, env
+- Loader detects external type, hands off to process manager instead of ClassLoader
+- Sandbox: no JPMS (not applicable), OS-level isolation only
+- **Exit**: External plugin manifest validates; process manager picks it up
 
-#### v2.9.4-dev: Frontend QA & Accessibility Hardening
-- Cross-browser verification matrix
-- Accessibility audit and remediation pass
-- Interaction latency profiling
-- Documentation updates for frontend contribution standards
+#### v2.7.4-dev: Foundation Hardening
+- Integration tests: process crash recovery, IPC reconnect, heartbeat timeout
+- Performance baseline: IPC round-trip latency < 50ms on localhost
+- Documentation: external plugin runtime design and extension guide
+- **Exit**: Crash recovery test passes; latency baseline met
 
-#### v2.10.0: Tag Frontend Release
+#### v2.8.0: Tag External Runtime Foundation Release
 
 ---
 
-## v2.11.0 - Analytics & Insights
+## v2.9.0 - External Plugin Language Runtimes
 
-**Goal**: Usage analytics, insights, and reporting.
+**Goal**: Deliver working Python and Node.js plugin runtimes on top of the v2.8.0 foundation.
+Community developers can write plugins in Python or Node.js.
 
 ### Implementation Steps
 
-#### v2.10.1-dev: Analytics Pipeline
-- Event collection
-- Data warehouse integration
-- ETL pipelines
-- Reporting database
+#### v2.8.1-dev: Python Plugin Runtime
+- Python runtime bootstrap (venv management, dependency install from `requirements.txt`)
+- Python SDK package (`synapse-plugin-sdk` on PyPI) — mirrors `synapse-plugin-api` interfaces
+- Python plugin template in `/synapse-plugin-template` (Python variant)
+- `SynapsePlugin`, `Channel`, `ModelProvider` base classes in Python
+- End-to-end: Python channel plugin installs, loads, routes a message
+- **Exit**: Python Channel plugin installs from store, receives + sends a message
 
-#### v2.10.2-dev: Dashboard & Reports
-- System usage dashboard
-- Agent performance metrics
-- User engagement analytics
-- Cost tracking
+#### v2.8.2-dev: Node.js Plugin Runtime
+- Node.js runtime bootstrap (npm dependency install from `package.json`)
+- Node.js SDK package (`@synapse/plugin-sdk` on npm) — mirrors `synapse-plugin-api` interfaces
+- Node.js plugin template in `/synapse-plugin-template` (Node.js variant)
+- `SynapsePlugin`, `Channel`, `ModelProvider` base classes in TypeScript
+- End-to-end: Node.js model provider plugin installs, loads, completes a request
+- **Exit**: Node.js ModelProvider plugin installs from store, completes a request
 
-#### v2.10.3-dev: AI Insights
-- Conversation quality analysis
-- Agent behavior patterns
-- User intent detection
-- Anomaly detection
+#### v2.8.3-dev: Multi-Language CLI Support
+- `synapse plugin scaffold` TUI: add Python + Node.js options
+- `synapse plugin validate`: language-aware validation (checks SDK version, entry point)
+- `synapse plugin package`: language-aware packaging (bundles deps, produces distributable)
+- **Exit**: Developer scaffolds, validates, and packages a Python plugin end-to-end via CLI
 
-#### v2.10.4-dev: Analytics Reliability & Governance
-- Data quality and lineage validation
-- Privacy guardrails for analytics datasets
-- Dashboard correctness regression suite
-- Documentation updates for analytics operators
+#### v2.8.4-dev: External Runtime Hardening
+- Full regression suite: Python + Node.js lifecycle, crash recovery, IPC reconnect
+- Security review: external process isolation, dependency supply-chain risks
+- Performance baselines: external plugin message latency vs Java plugin baseline
+- Documentation: Python + Node.js plugin developer guides
+- **Exit**: All regression tests pass; security review complete; docs published
 
-#### v2.11.0: Tag Analytics Release
+#### v2.9.0: Tag External Language Runtimes Release
 
 ---
 
-## v2.12.0 - Release Hardening (Final)
+## v2.10.0 - V3 Release Hardening
 
-**Goal**: Final polish for production v3.0.0 release.
+**Goal**: Final polish and validation before tagging v3.0.0.
 
 ### Implementation Steps
 
-#### v2.11.1-dev: Documentation Audit
-- API documentation completeness
-- Deployment guides
-- Admin guides
-- User guides
+#### v2.9.1-dev: Documentation Audit
+- API documentation completeness check
+- Plugin developer guide review (Java, Python, Node.js)
+- Deployment and operator guide review
+- Admin guide review
+- **Exit**: No undocumented public API endpoints; all guides accurate
 
-#### v2.11.2-dev: Performance Benchmarking
-- Load testing
-- Stress testing
-- Capacity planning
-- Performance regression tests
+#### v2.9.2-dev: Performance Benchmarking
+- Load testing across plugin types
+- Stress testing registry under concurrent installs
+- Capacity planning documentation
+- Performance regression baseline vs v2.5.0
+- **Exit**: Benchmarks documented; no regressions
 
-#### v2.11.3-dev: Migration Guide
-- v2 → v3 migration path
-- Breaking changes documentation
-- Database migrations
-- Configuration changes
+#### v2.9.3-dev: Migration Guide
+- v2 → v3 migration path documented
+- Breaking changes listed
+- Database migration guide
+- Plugin developer migration guide (API changes)
+- **Exit**: Migration guide tested on a real v2.5.0 instance
 
-#### v2.11.4-dev: Release Notes
-- Comprehensive changelog
-- Feature highlights
-- Known issues
-- Upgrade instructions
+#### v2.9.4-dev: Release Notes & Final QA
+- Comprehensive changelog v2.5.0 → v3.0.0
+- Feature highlights across all plugin milestones
+- Known issues documented
+- Final QA pass
+- **Exit**: Release notes reviewed; no open blockers
 
-#### v2.12.0: Pre-release Testing
+#### v2.10.0: Pre-release Testing
 - Final QA and testing
 - Documentation completeness audit
 - Migration guides finalized
@@ -694,34 +661,33 @@ Skills + MCP types deferred to v2.7.0.
 ## Summary Timeline
 
 | Version | Milestone | Focus Area |
-|---------|-----------|------------|
+|---|---|---|
 | v2.1.0 | Package Restructure | Architecture & Code Organization |
 | v2.2.0 | Observability | Monitoring & Tracing |
 | v2.3.0 | Performance | Caching & Optimization |
 | v2.4.0 | Advanced Agents | AI Capabilities |
 | v2.5.0 | Security | Hardening & Compliance |
-| v2.6.0 | Plugin Ecosystem | Java-First Extensibility |
-| v2.7.0 | Plugin Advanced | Registry & External Runtime |
-| v2.8.0 | Multi-Tenancy | Enterprise Features |
-| v2.9.0 | Infrastructure Platform | Deployment & Orchestration |
-| v2.10.0 | Frontend | UI/UX Enhancement |
-| v2.11.0 | Analytics | Insights & Reporting |
-| v2.12.0 | Release Hardening | Final Polish |
-| **v3.0.0** | **Production** | **🚀 SYNAPSE V3** |
+| v2.6.0 | Plugin Ecosystem | Java-First Foundation |
+| v2.7.0 | Plugin Advanced | Registry, New Types & Governance |
+| v2.8.0 | External Runtime Foundation | Process Manager & gRPC IPC |
+| v2.9.0 | External Language Runtimes | Python & Node.js Plugins |
+| v2.10.0 | Release Hardening | Final Polish |
+| **v3.0.0** | **Production** | **🚀 SYNAPSE V3 — The Plugin Platform** |
+
+*Multi-Tenancy, Infrastructure, Frontend, Analytics → continued in [SYNAPSE V4 Roadmap](./SYNAPSE_V4_IMPLEMENTATION_ROADMAP.md)*
 
 ---
 
 ## Success Criteria for v3.0.0
 
-✅ Clean, modular architecture with clear domain boundaries  
-✅ Efficient resource usage and responsive performance for self-hosted deployments  
-✅ Reliable operation in homelab and small-team production environments  
-✅ Comprehensive monitoring and observability  
-✅ Simple Docker Compose deployment with optional Kubernetes support  
-✅ Horizontally scalable through distributed infrastructure  
-✅ Multi-tenant capable with data isolation  
-✅ Plugin ecosystem with community contribution framework  
-✅ Infrastructure dashboard for hybrid deployment management  
-✅ Production-ready distributed execution and worker orchestration  
-✅ Complete documentation for self-hosting and enterprise deployments  
+✅ Clean, modular architecture with clear domain boundaries
+✅ Comprehensive monitoring, observability, and performance caching
+✅ Advanced agent capabilities with memory, collaboration, and reasoning
+✅ Production-grade security hardening and compliance
+✅ Full plugin ecosystem: Java, Python, Node.js, MCP, Skills, Bundles
+✅ Plugin Registry Service with multi-source support (GitHub, GitLab, Forgejo, Nexus)
+✅ Governance layer: signing, reporting, deprecation + compatibility matrix
+✅ Admin security controls: store policy, role restrictions, custom sources
+✅ Reliable operation in homelab and small-team production environments
+✅ Complete documentation for self-hosting, operators, and plugin developers
 ✅ Stable operation under realistic self-hosted workloads
