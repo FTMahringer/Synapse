@@ -1,23 +1,22 @@
 package dev.synapse.users;
 
 import dev.synapse.core.common.domain.User;
+import dev.synapse.core.common.repository.UserRepository;
 import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.exception.ValidationException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import dev.synapse.core.common.repository.UserRepository;
 import dev.synapse.core.infrastructure.security.PasswordHashingService;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -43,21 +42,29 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<User> findAll(int page, int size) {
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "username"));
+        PageRequest pageRequest = PageRequest.of(
+            page,
+            size,
+            Sort.by(Sort.Direction.ASC, "username")
+        );
         return userRepository.findAll(pageRequest).getContent();
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user-sessions", key = "'id:' + #id")
     public User findById(UUID id) {
-        return userRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("User", id.toString()));
+        return userRepository
+            .findById(id)
+            .orElseThrow(() ->
+                new ResourceNotFoundException("User", id.toString())
+            );
     }
 
     @Transactional(readOnly = true)
     @Cacheable(value = "user-sessions", key = "'username:' + #username")
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username)
+        return userRepository
+            .findByUsername(username)
             .orElseThrow(() -> new ResourceNotFoundException("User", username));
     }
 
@@ -65,28 +72,42 @@ public class UserService {
     @CacheEvict(value = "user-sessions", allEntries = true)
     public User create(User user, String plainPassword) {
         if (userRepository.existsByUsername(user.getUsername())) {
-            throw new ValidationException("Username already exists: " + user.getUsername());
+            throw new ValidationException(
+                "Username already exists: " + user.getUsername()
+            );
         }
-        
+
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new ValidationException("Email already exists: " + user.getEmail());
+            throw new ValidationException(
+                "Email already exists: " + user.getEmail()
+            );
         }
-        
+
         String hashedPassword = passwordHashingService.hash(plainPassword);
         user.setPasswordHash(hashedPassword);
-        
+
         User saved = userRepository.save(user);
-        
+
         logService.log(
             LogLevel.INFO,
             LogCategory.AUTH,
-            Map.of("component", "UserService", "userId", saved.getId().toString()),
+            Map.of(
+                "component",
+                "UserService",
+                "userId",
+                saved.getId().toString()
+            ),
             "USER_CREATED",
-            Map.of("username", saved.getUsername(), "role", saved.getRole().name()),
+            Map.of(
+                "username",
+                saved.getUsername(),
+                "role",
+                saved.getRole().name()
+            ),
             null,
             null
         );
-        
+
         return saved;
     }
 
@@ -94,40 +115,71 @@ public class UserService {
     @CacheEvict(value = "user-sessions", allEntries = true)
     public User update(UUID id, User updates) {
         User existing = findById(id);
-        
+
         boolean changed = false;
         Map<String, Object> changes = new java.util.HashMap<>();
-        
-        if (updates.getUsername() != null && !updates.getUsername().equals(existing.getUsername())) {
+
+        if (
+            updates.getUsername() != null &&
+            !updates.getUsername().equals(existing.getUsername())
+        ) {
             if (userRepository.existsByUsername(updates.getUsername())) {
-                throw new ValidationException("Username already exists: " + updates.getUsername());
+                throw new ValidationException(
+                    "Username already exists: " + updates.getUsername()
+                );
             }
-            changes.put("username", Map.of("from", existing.getUsername(), "to", updates.getUsername()));
+            changes.put(
+                "username",
+                Map.of(
+                    "from",
+                    existing.getUsername(),
+                    "to",
+                    updates.getUsername()
+                )
+            );
             existing.setUsername(updates.getUsername());
             changed = true;
         }
-        
-        if (updates.getEmail() != null && !updates.getEmail().equals(existing.getEmail())) {
+
+        if (
+            updates.getEmail() != null &&
+            !updates.getEmail().equals(existing.getEmail())
+        ) {
             if (userRepository.existsByEmail(updates.getEmail())) {
-                throw new ValidationException("Email already exists: " + updates.getEmail());
+                throw new ValidationException(
+                    "Email already exists: " + updates.getEmail()
+                );
             }
-            changes.put("email", Map.of("from", existing.getEmail(), "to", updates.getEmail()));
+            changes.put(
+                "email",
+                Map.of("from", existing.getEmail(), "to", updates.getEmail())
+            );
             existing.setEmail(updates.getEmail());
             changed = true;
         }
-        
-        if (updates.getRole() != null && updates.getRole() != existing.getRole()) {
-            changes.put("role", Map.of("from", existing.getRole().name(), "to", updates.getRole().name()));
+
+        if (
+            updates.getRole() != null && updates.getRole() != existing.getRole()
+        ) {
+            changes.put(
+                "role",
+                Map.of(
+                    "from",
+                    existing.getRole().name(),
+                    "to",
+                    updates.getRole().name()
+                )
+            );
             existing.setRole(updates.getRole());
             changed = true;
         }
-        
+
         if (!changed) {
             return existing;
         }
-        
+
         User saved = userRepository.save(existing);
-        
+
         logService.log(
             LogLevel.INFO,
             LogCategory.AUTH,
@@ -137,7 +189,7 @@ public class UserService {
             null,
             null
         );
-        
+
         return saved;
     }
 
@@ -148,7 +200,7 @@ public class UserService {
         String hashedPassword = passwordHashingService.hash(newPlainPassword);
         user.setPasswordHash(hashedPassword);
         userRepository.save(user);
-        
+
         logService.log(
             LogLevel.INFO,
             LogCategory.AUTH,
@@ -166,9 +218,9 @@ public class UserService {
         if (!userRepository.existsById(id)) {
             throw new ResourceNotFoundException("User", id.toString());
         }
-        
+
         userRepository.deleteById(id);
-        
+
         logService.log(
             LogLevel.INFO,
             LogCategory.AUTH,
@@ -177,6 +229,49 @@ public class UserService {
             Map.of(),
             null,
             null
+        );
+    }
+
+    @Transactional
+    @CacheEvict(value = "user-sessions", allEntries = true)
+    public void anonymize(UUID id) {
+        User user = findById(id);
+        String anonymizedUsername = "deleted-user-" + id;
+        String anonymizedEmail = "deleted-" + id + "@anon.local";
+        user.setUsername(anonymizedUsername);
+        user.setEmail(anonymizedEmail);
+        userRepository.save(user);
+
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.AUTH,
+            Map.of("component", "UserService", "userId", id.toString()),
+            "USER_ANONYMIZED",
+            Map.of(
+                "anonymizedUsername",
+                anonymizedUsername,
+                "anonymizedEmail",
+                anonymizedEmail
+            ),
+            null,
+            null
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, Object> getUserDataExport(UUID id) {
+        User user = findById(id);
+        return Map.of(
+            "id",
+            user.getId(),
+            "username",
+            user.getUsername(),
+            "email",
+            user.getEmail(),
+            "role",
+            user.getRole().name(),
+            "createdAt",
+            user.getCreatedAt().toString()
         );
     }
 }

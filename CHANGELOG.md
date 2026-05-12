@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.4.5-dev] - 2026-05-11
+
+**Security Hardening — GDPR Compliance**
+
+### Added
+- DataExportService for collecting all user data for GDPR export (profile, conversations, login history)
+- DataDeletionService for GDPR right-to-deletion (anonymization and hard delete)
+- DataExportController with `GET /api/compliance/export/{userId}`, `POST /api/compliance/anonymize/{userId}`, and `DELETE /api/compliance/delete/{userId}` — all secured by ADMIN role
+- `anonymize(UUID id)` and `getUserDataExport(UUID id)` methods in UserService
+
+---
+
 ## [v2.4.4-dev] - 2026-05-11
 
 **Security Hardening — Audit Logging**
