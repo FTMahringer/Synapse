@@ -3,7 +3,6 @@ package dev.synapse.core.dto;
 import dev.synapse.core.common.domain.*;
 import dev.synapse.tools.ToolDefinition;
 import dev.synapse.tools.ToolExecutionResponse;
-
 import java.util.UUID;
 
 public class DtoMapper {
@@ -63,7 +62,10 @@ public class DtoMapper {
         );
     }
 
-    public static Conversation fromCreateRequest(CreateConversationRequest request, UUID userId) {
+    public static Conversation fromCreateRequest(
+        CreateConversationRequest request,
+        UUID userId
+    ) {
         Conversation conversation = new Conversation();
         conversation.setAgentId(request.agentId());
         conversation.setUserId(userId);
@@ -122,7 +124,17 @@ public class DtoMapper {
             plugin.getVersion(),
             plugin.getStatus().name(),
             plugin.getManifest(),
-            plugin.getCreatedAt()
+            plugin.getCreatedAt(),
+            plugin.getStorageTier() != null
+                ? plugin.getStorageTier().name()
+                : null,
+            plugin.getLoaderState() != null
+                ? plugin.getLoaderState().name()
+                : null,
+            plugin.getErrorMessage(),
+            plugin.getLoadedAt(),
+            plugin.getApiVersion(),
+            plugin.getTrustTier() != null ? plugin.getTrustTier().name() : null
         );
     }
 
@@ -156,7 +168,9 @@ public class DtoMapper {
             entry.getNamespace(),
             entry.getTier().name(),
             entry.getPromotedAt(),
-            entry.getPromotionReason() != null ? entry.getPromotionReason().name() : null,
+            entry.getPromotionReason() != null
+                ? entry.getPromotionReason().name()
+                : null,
             entry.getLastAccessedAt(),
             entry.getAccessCount(),
             entry.getRetentionUntil(),
@@ -190,7 +204,9 @@ public class DtoMapper {
         );
     }
 
-    public static CollaborationDelegationDTO toDTO(CollaborationDelegation delegation) {
+    public static CollaborationDelegationDTO toDTO(
+        CollaborationDelegation delegation
+    ) {
         return new CollaborationDelegationDTO(
             delegation.getId(),
             delegation.getSessionId(),
@@ -204,7 +220,9 @@ public class DtoMapper {
         );
     }
 
-    public static SharedContextEntryDTO toDTO(CollaborationSharedContextEntry entry) {
+    public static SharedContextEntryDTO toDTO(
+        CollaborationSharedContextEntry entry
+    ) {
         return new SharedContextEntryDTO(
             entry.getId(),
             entry.getSessionId(),
@@ -259,7 +277,9 @@ public class DtoMapper {
         );
     }
 
-    public static ToolExecutionResponseDTO toDTO(ToolExecutionResponse response) {
+    public static ToolExecutionResponseDTO toDTO(
+        ToolExecutionResponse response
+    ) {
         return new ToolExecutionResponseDTO(
             response.toolId(),
             response.status(),

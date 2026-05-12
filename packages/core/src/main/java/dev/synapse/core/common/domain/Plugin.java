@@ -1,11 +1,10 @@
 package dev.synapse.core.common.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.time.Instant;
 import java.util.Map;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(name = "plugins")
@@ -35,17 +34,60 @@ public class Plugin {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "storage_tier", nullable = false)
+    private StorageTier storageTier = StorageTier.SYSTEM;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "loader_state", nullable = false)
+    private LoaderState loaderState = LoaderState.UNLOADED;
+
+    @Column(name = "error_message")
+    private String errorMessage;
+
+    @Column(name = "loaded_at")
+    private Instant loadedAt;
+
+    @Column(name = "api_version")
+    private String apiVersion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "trust_tier", nullable = false)
+    private TrustTier trustTier = TrustTier.COMMUNITY;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
     }
 
     public enum PluginType {
-        CHANNEL, MODEL, SKILL, MCP
+        CHANNEL,
+        MODEL,
+        SKILL,
+        MCP,
     }
 
     public enum PluginStatus {
-        INSTALLED, DISABLED, ERROR
+        INSTALLED,
+        DISABLED,
+        ERROR,
+    }
+
+    public enum StorageTier {
+        SYSTEM,
+        STAGING,
+    }
+
+    public enum LoaderState {
+        UNLOADED,
+        LOADING,
+        LOADED,
+        ERROR,
+    }
+
+    public enum TrustTier {
+        OFFICIAL,
+        COMMUNITY,
     }
 
     public String getId() {
@@ -98,5 +140,53 @@ public class Plugin {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public StorageTier getStorageTier() {
+        return storageTier;
+    }
+
+    public void setStorageTier(StorageTier storageTier) {
+        this.storageTier = storageTier;
+    }
+
+    public LoaderState getLoaderState() {
+        return loaderState;
+    }
+
+    public void setLoaderState(LoaderState loaderState) {
+        this.loaderState = loaderState;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    public Instant getLoadedAt() {
+        return loadedAt;
+    }
+
+    public void setLoadedAt(Instant loadedAt) {
+        this.loadedAt = loadedAt;
+    }
+
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+    }
+
+    public TrustTier getTrustTier() {
+        return trustTier;
+    }
+
+    public void setTrustTier(TrustTier trustTier) {
+        this.trustTier = trustTier;
     }
 }

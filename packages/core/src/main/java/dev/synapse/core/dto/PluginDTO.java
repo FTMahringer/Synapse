@@ -1,7 +1,6 @@
 package dev.synapse.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.Instant;
 import java.util.Map;
 
@@ -13,5 +12,11 @@ public record PluginDTO(
     String version,
     String status,
     Map<String, Object> manifest,
-    Instant createdAt
+    Instant createdAt,
+    String storageTier,
+    String loaderState,
+    String errorMessage,
+    Instant loadedAt,
+    String apiVersion,
+    String trustTier
 ) {}

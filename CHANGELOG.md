@@ -9,6 +9,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.2-dev] - 2026-05-12
+
+**Plugin Ecosystem — Plugin Loader & Storage**
+
+### Added
+- `PluginStorageService` — manages `system/` and `staging/` plugin directories under `$SYNAPSE_HOME/plugins/`
+- `PluginLoaderService` — core loader creating isolated `URLClassLoader` + JPMS `ModuleLayer` per plugin
+  - ServiceLoader-based plugin discovery from JAR manifest
+  - `PluginContext` injection with scoped logger, config, event bus, bounded executor, auth mode
+  - Lifecycle hook execution: `onLoad()` → active → `onUnload()`
+  - In-memory tracking of loaded plugins with thread-safe registry
+- `ChannelRegistry` — runtime registry for loaded Channel plugins with unique `channel_id` slot enforcement
+- `ModelProviderRegistry` — runtime registry for loaded ModelProvider plugins with unique `provider_id` slot enforcement
+- `PluginContextFactory` — creates injected PluginContext instances with:
+  - `PluginLogger` implementation routing to SystemLogService
+  - `PluginConfig` implementation backed by manifest `config_schema`
+  - `PluginEventBus` implementation publishing to core EventPublisher
+  - Bounded virtual thread `ExecutorService` (Official: 25, Community: 10 threads)
+  - `AuthMode` detection from config keys
+- `StartupPluginScanner` — startup scan of `system/` JARs with:
+  - Crash recovery: detects orphaned `staging/` JARs and logs warnings
+  - DB record matching, disabled plugin skipping
+  - Automatic registry registration (Channel → onInstall, ModelProvider → configure)
+- `PluginShutdownHook` — graceful shutdown: unload all plugins, promote `staging/` → `system/`
+- `PluginLoaderController` — REST API for loader operations:
+  - `GET /api/plugins/loader/status` — list loaded plugins with runtime info
+  - `POST /api/plugins/{id}/load` — load a plugin from stored JAR
+  - `POST /api/plugins/{id}/unload` — unload a plugin
+  - `POST /api/plugins/{id}/reload` — reload a plugin
+  - `GET /api/plugins/loader/orphans` — list orphaned staging JARs
+  - `POST /api/plugins/loader/promote` — promote staging JARs to system
+- Database migration `V18__plugin_loader_state.sql` — adds to `plugins` table:
+  - `storage_tier` (SYSTEM / STAGING)
+  - `loader_state` (UNLOADED / LOADING / LOADED / ERROR)
+  - `error_message` — diagnostic on load failure
+  - `loaded_at` — timestamp of last successful load
+  - `api_version` — required synapse-plugin-api version
+  - `trust_tier` (OFFICIAL / COMMUNITY)
+- `Plugin` entity updated with new enums: `StorageTier`, `LoaderState`, `TrustTier`
+- `PluginDTO` and `DtoMapper` updated to expose loader state fields
+- `PluginLifecycleService` integrated with `PluginStorageService` for JAR deletion on uninstall
+- OpenAPI spec `plugin-api.yaml` updated with Plugin Loader endpoints and loader state schemas
+
+### Documentation
+- Added `synapse-docs/docs/plugins/development/plugin-loader.mdx` — comprehensive loader architecture guide
+- Updated `synapse-docs/sidebars.ts` to include plugin loader documentation
+- Updated `synapse-docs/docs/plugins/plugin-api-reference.mdx` with v2.5.2-dev loader notice
+- Restored missing `openapi/*.yaml` files in `synapse-docs/openapi/` (copied from `static/openapi/`)
+
+---
+
 ## [v2.5.1-dev] - 2026-05-12
 
 **Plugin Ecosystem — Plugin API Module**
