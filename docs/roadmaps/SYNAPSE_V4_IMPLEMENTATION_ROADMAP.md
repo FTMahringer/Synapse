@@ -288,7 +288,7 @@ GitLab self-managed:
 ---
 
 ## Success Criteria for v4.0.0
-
+ 
 ✅ Multi-tenant capable with full data isolation between organizations
 ✅ Production-grade Docker Compose deployment with optional Kubernetes
 ✅ Distributed worker/runner system for CI/CD and compute workloads
@@ -298,3 +298,21 @@ GitLab self-managed:
 ✅ Complete documentation for self-hosting, enterprise, and plugin developers
 ✅ Stable operation under realistic multi-tenant production workloads
 ✅ Clean migration path from v3.0.0 documented and validated
+
+
+---
+
+## What happens from now on
+
+The Versioning, how it was previously, is completely changing.
+We now move to the more modern versioning, with <year>.<month>.<day>.<version>-<versiontype>, so its like this: 
+2026.05.12.v1-dev, then testing and fixing with hotfix:
+2026.05.12.v1-hotfix.
+then next version is:
+2026.05.12.v2-dev then testing.
+then next day:
+2026.05.13.v1-dev
+and so on.
+then next month:
+2026.06.1.v1-dev
+and so on.
