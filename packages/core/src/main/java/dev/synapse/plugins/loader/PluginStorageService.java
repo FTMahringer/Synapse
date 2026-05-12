@@ -47,9 +47,18 @@ public class PluginStorageService {
     }
 
     @PostConstruct
-    public void init() throws IOException {
-        Files.createDirectories(systemDir);
-        Files.createDirectories(stagingDir);
+    public void init() {
+        try {
+            Files.createDirectories(systemDir);
+            Files.createDirectories(stagingDir);
+        } catch (IOException e) {
+            throw new IllegalStateException(
+                "Failed to create plugin storage directories at " +
+                    pluginsHome +
+                    ". Ensure the path is writable.",
+                e
+            );
+        }
 
         logService.log(
             LogLevel.INFO,
