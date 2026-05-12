@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.5-dev] - 2026-05-12
+
+**Plugin Ecosystem — CLI Tooling**
+
+### Added
+- `synapse plugins` command family expanded with 14 subcommands:
+  - `list` — list installed plugins with status, loader state, trust tier
+  - `info <pluginId>` — detailed plugin info (name, type, version, status, loader state, trust tier, dependencies, errors)
+  - `load <pluginId>` — load a plugin into the JVM
+  - `unload <pluginId>` — unload a plugin from the JVM
+  - `reload <pluginId>` — reload a plugin
+  - `enable <pluginId>` — enable a plugin
+  - `disable <pluginId>` — disable a plugin
+  - `uninstall <pluginId>` — uninstall a plugin
+  - `install <manifest-json>` — install a plugin from manifest JSON
+  - `validate <jarPath>` — validate a plugin JAR (bytecode scan for forbidden references)
+  - `resolve-deps <pluginId>` — resolve dependency chain for a plugin
+  - `logs <pluginId>` — show last system logs scoped to a plugin (default 50 entries)
+  - `status` — show plugin loader status (loaded plugins with type info)
+  - `orphans` — list orphaned staging JARs
+  - `promote` — promote all staging JARs to system/
+  - `publish <pluginId>` — print plugin publishing guidance (official/community repo submission)
+
+---
+
 ## [v2.5.4-dev] - 2026-05-12
 
 **Plugin Ecosystem — Sandboxing & Security**
