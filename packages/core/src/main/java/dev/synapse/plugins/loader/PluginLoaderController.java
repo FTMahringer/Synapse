@@ -179,7 +179,21 @@ public class PluginLoaderController {
         if (jarPath == null || jarPath.isBlank()) {
             throw new IllegalArgumentException("jarPath is required");
         }
-        LoadedPlugin loaded = updateService.updatePlugin(id, Path.of(jarPath));
+        String trimmed = jarPath.trim();
+        if (
+            trimmed.contains("..") ||
+            trimmed.contains("/") ||
+            trimmed.contains("\\") ||
+            !trimmed.endsWith(".jar")
+        ) {
+            throw new IllegalArgumentException(
+                "jarPath must be a safe .jar filename"
+            );
+        }
+        LoadedPlugin loaded = updateService.updatePlugin(
+            id,
+            Path.of(trimmed).getFileName()
+        );
         Plugin dbPlugin = lifecycleService.findById(id);
         return DtoMapper.toDTO(dbPlugin);
     }

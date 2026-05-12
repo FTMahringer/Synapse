@@ -61,6 +61,13 @@ public class PluginUpdateService {
      */
     public LoadedPlugin updatePlugin(String pluginId, Path newJarPath)
         throws PluginLoadException {
+        Path jarFileName = newJarPath.getFileName();
+        if (jarFileName == null || !jarFileName.equals(newJarPath)) {
+            throw new PluginLoadException(
+                pluginId,
+                "Invalid JAR path: only a file name is allowed"
+            );
+        }
         Plugin dbPlugin = pluginRepository
             .findById(pluginId)
             .orElseThrow(() ->
@@ -106,7 +113,7 @@ public class PluginUpdateService {
 
         // 3. Stage new JAR
         try {
-            storageService.stageJar(newJarPath);
+            storageService.stageJar(jarFileName);
         } catch (Exception e) {
             throw new PluginLoadException(
                 pluginId,
@@ -118,7 +125,7 @@ public class PluginUpdateService {
         // 4. Load new plugin
         Path stagedJar = storageService
             .getStagingDir()
-            .resolve(newJarPath.getFileName().toString());
+            .resolve(jarFileName.toString());
         LoadedPlugin loaded = loaderService.loadPlugin(stagedJar, dbPlugin);
 
         // 5. Register in registry
@@ -126,7 +133,7 @@ public class PluginUpdateService {
 
         // 6. Promote to system
         try {
-            storageService.promoteToSystem(newJarPath.getFileName().toString());
+            storageService.promoteToSystem(jarFileName.toString());
         } catch (java.io.IOException e) {
             throw new PluginLoadException(
                 pluginId,
