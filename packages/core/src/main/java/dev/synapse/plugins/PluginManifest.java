@@ -1,7 +1,7 @@
 package dev.synapse.plugins;
 
 import dev.synapse.core.common.domain.Plugin;
-
+import dev.synapse.plugins.loader.PluginDependency;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +18,8 @@ public record PluginManifest(
     String description,
     String minSynapse,
     List<String> tags,
+    List<PluginDependency> dependencies,
+    List<PluginDependency> softDependencies,
     Map<String, Object> raw
 ) {
     public static PluginManifest fromMap(Map<String, Object> map) {
@@ -30,9 +32,20 @@ public record PluginManifest(
         }
 
         Object tagsObj = map.get("tags");
-        List<String> tags = tagsObj instanceof List<?> list
-            ? list.stream().map(Object::toString).toList()
-            : List.of();
+        List<String> tags =
+            tagsObj instanceof List<?> list
+                ? list.stream().map(Object::toString).toList()
+                : List.of();
+
+        List<PluginDependency> deps = PluginDependency.fromManifest(map);
+        List<PluginDependency> hardDeps = deps
+            .stream()
+            .filter(d -> !d.soft())
+            .toList();
+        List<PluginDependency> softDeps = deps
+            .stream()
+            .filter(d -> d.soft())
+            .toList();
 
         return new PluginManifest(
             str(map, "id"),
@@ -44,6 +57,8 @@ public record PluginManifest(
             str(map, "description"),
             str(map, "min_synapse"),
             tags,
+            hardDeps,
+            softDeps,
             map
         );
     }

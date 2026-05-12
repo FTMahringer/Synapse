@@ -9,6 +9,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.3-dev] - 2026-05-12
+
+**Plugin Ecosystem — Dependency Resolver & Conflict Detection**
+
+### Added
+- `PluginDependency` — parsed dependency declaration from manifest (`requires.plugins[]` hard deps, `requires.soft_requires[]` soft deps)
+- `VersionConstraint` — semver constraint parser supporting `*`, `>=`, `>`, `<=`, `<`, `^`, `~` operators
+- `DependencyGraph` — directed graph with cycle detection (DFS) and topological sort for install ordering
+- `DependencyResolutionException` — typed resolution failures: `MISSING_DEPENDENCY`, `VERSION_MISMATCH`, `CYCLE_DETECTED`, `SLOT_CLASH`, `ALREADY_INSTALLED_OLDER`, `CONFIG_SCHEMA_INCOMPATIBLE`
+- `PluginDependencyResolver` — core resolver service:
+  - Parses manifest dependencies recursively (transitive hard deps)
+  - Detects cycles before any install begins
+  - Version-aware conflict checks: newer → update prompt; older → block; satisfied → proceed
+  - Slot clash detection against `ChannelRegistry` and `ModelProviderRegistry`
+- `PluginUpdateService` — plugin update flow: unload old → delete JAR → stage new → load → register → promote to system
+  - Config schema migration check: blocks update if new required fields are unfilled
+- `PluginLoaderController` new endpoints:
+  - `POST /api/plugins/{id}/resolve-deps` — resolve and return dependency chain
+  - `POST /api/plugins/{id}/update` — update plugin to new JAR
+  - `POST /api/plugins/check-slot-clash` — check manifest for slot conflicts
+- `PluginLifecycleService` integration: dependency resolution runs during `install()`, stores dep list on plugin entity
+- `PluginManifest` updated with `dependencies` and `softDependencies` fields
+- `PluginDTO` and `DtoMapper` updated to expose `dependencies` list
+- Database migration `V19__plugin_dependencies.sql` — `plugin_dependencies` table with resolution state tracking
+
+---
+
 ## [v2.5.2-dev] - 2026-05-12
 
 **Plugin Ecosystem — Plugin Loader & Storage**

@@ -9,7 +9,9 @@ import dev.synapse.core.infrastructure.exception.ResourceNotFoundException;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
+import dev.synapse.plugins.loader.PluginDependencyResolver;
 import dev.synapse.plugins.loader.PluginStorageService;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,6 +34,7 @@ public class PluginLifecycleService {
     private final EventPublisher eventPublisher;
     private final PluginStatsService statsService;
     private final PluginStorageService storageService;
+    private final PluginDependencyResolver dependencyResolver;
 
     public PluginLifecycleService(
         PluginRepository pluginRepository,
@@ -39,7 +42,8 @@ public class PluginLifecycleService {
         SystemLogService logService,
         EventPublisher eventPublisher,
         PluginStatsService statsService,
-        PluginStorageService storageService
+        PluginStorageService storageService,
+        PluginDependencyResolver dependencyResolver
     ) {
         this.pluginRepository = pluginRepository;
         this.validator = validator;
@@ -47,6 +51,7 @@ public class PluginLifecycleService {
         this.eventPublisher = eventPublisher;
         this.statsService = statsService;
         this.storageService = storageService;
+        this.dependencyResolver = dependencyResolver;
     }
 
     @Transactional
@@ -79,6 +84,26 @@ public class PluginLifecycleService {
                 plugin.setApiVersion(av.toString());
             }
         }
+
+        // Resolve dependencies before saving
+        PluginDependencyResolver.ResolutionResult depResult =
+            dependencyResolver.resolve(rawManifest);
+        if (!depResult.success()) {
+            throw new IllegalArgumentException(
+                "Dependency resolution failed: " + depResult.message()
+            );
+        }
+
+        List<String> depIds = new ArrayList<>();
+        for (var item : depResult.items()) {
+            if (
+                item.action() !=
+                PluginDependencyResolver.ResolutionItem.Action.SKIP_SOFT
+            ) {
+                depIds.add(item.dependencyId());
+            }
+        }
+        plugin.setDependencies(depIds);
 
         Plugin saved = pluginRepository.save(plugin);
 

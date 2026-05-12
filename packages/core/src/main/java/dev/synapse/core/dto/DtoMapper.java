@@ -134,7 +134,8 @@ public class DtoMapper {
             plugin.getErrorMessage(),
             plugin.getLoadedAt(),
             plugin.getApiVersion(),
-            plugin.getTrustTier() != null ? plugin.getTrustTier().name() : null
+            plugin.getTrustTier() != null ? plugin.getTrustTier().name() : null,
+            plugin.getDependencies()
         );
     }
 
