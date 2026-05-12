@@ -5,11 +5,10 @@ import dev.synapse.core.common.repository.PluginRepository;
 import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
-import org.springframework.stereotype.Service;
-
 import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.stereotype.Service;
 
 /**
  * Plugin update service: unload old, swap ClassLoader, reload new.
@@ -60,15 +59,33 @@ public class PluginUpdateService {
      * @return the loaded plugin record
      * @throws PluginLoadException if loading fails
      */
-    public LoadedPlugin updatePlugin(String pluginId, Path newJarPath) throws PluginLoadException {
-        Plugin dbPlugin = pluginRepository.findById(pluginId)
-            .orElseThrow(() -> new PluginLoadException(pluginId, "Plugin not found in database"));
+    public LoadedPlugin updatePlugin(String pluginId, Path newJarPath)
+        throws PluginLoadException {
+        Plugin dbPlugin = pluginRepository
+            .findById(pluginId)
+            .orElseThrow(() ->
+                new PluginLoadException(
+                    pluginId,
+                    "Plugin not found in database"
+                )
+            );
 
-        logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.PLUGIN,
             Map.of("component", "PluginUpdateService"),
             "PLUGIN_UPDATE_START",
-            Map.of("id", pluginId, "fromVersion", dbPlugin.getVersion(), "jar", newJarPath.toString()),
-            null, null);
+            Map.of(
+                "id",
+                pluginId,
+                "fromVersion",
+                dbPlugin.getVersion(),
+                "jar",
+                newJarPath.toString()
+            ),
+            null,
+            null
+        );
 
         // 1. Unload current if loaded
         if (loaderService.isLoaded(pluginId)) {
@@ -81,7 +98,9 @@ public class PluginUpdateService {
         String oldJarName = pluginId + ".jar";
         storageService.deleteJar(oldJarName);
         // Also delete any versioned JARs
-        storageService.listSystemJars().stream()
+        storageService
+            .listSystemJars()
+            .stream()
             .filter(p -> p.getFileName().toString().startsWith(pluginId + "-"))
             .forEach(p -> storageService.deleteJar(p.getFileName().toString()));
 
@@ -89,24 +108,42 @@ public class PluginUpdateService {
         try {
             storageService.stageJar(newJarPath);
         } catch (Exception e) {
-            throw new PluginLoadException(pluginId, "Failed to stage new JAR: " + e.getMessage(), e);
+            throw new PluginLoadException(
+                pluginId,
+                "Failed to stage new JAR: " + e.getMessage(),
+                e
+            );
         }
 
         // 4. Load new plugin
-        Path stagedJar = storageService.getStagingDir().resolve(newJarPath.getFileName().toString());
+        Path stagedJar = storageService
+            .getStagingDir()
+            .resolve(newJarPath.getFileName().toString());
         LoadedPlugin loaded = loaderService.loadPlugin(stagedJar, dbPlugin);
 
         // 5. Register in registry
         registerInRegistry(loaded, dbPlugin);
 
         // 6. Promote to system
-        storageService.promoteToSystem(newJarPath.getFileName().toString());
+        try {
+            storageService.promoteToSystem(newJarPath.getFileName().toString());
+        } catch (java.io.IOException e) {
+            throw new PluginLoadException(
+                pluginId,
+                "Failed to promote updated JAR to system: " + e.getMessage(),
+                e
+            );
+        }
 
-        logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.PLUGIN,
             Map.of("component", "PluginUpdateService"),
             "PLUGIN_UPDATE_COMPLETE",
             Map.of("id", pluginId, "version", loaded.version()),
-            null, null);
+            null,
+            null
+        );
 
         return loaded;
     }
@@ -123,7 +160,9 @@ public class PluginUpdateService {
         Map<String, Object> newManifest
     ) {
         @SuppressWarnings("unchecked")
-        Map<String, Object> currentSchema = extractConfigSchema(currentManifest);
+        Map<String, Object> currentSchema = extractConfigSchema(
+            currentManifest
+        );
         @SuppressWarnings("unchecked")
         Map<String, Object> newSchema = extractConfigSchema(newManifest);
 
@@ -132,12 +171,18 @@ public class PluginUpdateService {
             String key = entry.getKey();
             if (!currentSchema.containsKey(key)) {
                 @SuppressWarnings("unchecked")
-                Map<String, Object> fieldMeta = entry.getValue() instanceof Map<?, ?> m
-                    ? (Map<String, Object>) m : Map.of();
+                Map<String, Object> fieldMeta =
+                    entry.getValue() instanceof Map<?, ?> m
+                        ? (Map<String, Object>) m
+                        : Map.of();
                 Object required = fieldMeta.get("required");
                 if (Boolean.TRUE.equals(required)) {
-                    return Optional.of("New required config field '" + key + "' added in update. " +
-                        "Please configure before updating.");
+                    return Optional.of(
+                        "New required config field '" +
+                            key +
+                            "' added in update. " +
+                            "Please configure before updating."
+                    );
                 }
             }
         }
@@ -146,7 +191,9 @@ public class PluginUpdateService {
     }
 
     @SuppressWarnings("unchecked")
-    private Map<String, Object> extractConfigSchema(Map<String, Object> manifest) {
+    private Map<String, Object> extractConfigSchema(
+        Map<String, Object> manifest
+    ) {
         Object config = manifest.get("config_schema");
         if (config instanceof Map<?, ?> m) {
             return (Map<String, Object>) m;
@@ -165,22 +212,34 @@ public class PluginUpdateService {
             try {
                 channel.onInstall();
             } catch (Exception e) {
-                logService.log(LogLevel.WARN, LogCategory.PLUGIN,
+                logService.log(
+                    LogLevel.WARN,
+                    LogCategory.PLUGIN,
                     Map.of("component", "PluginUpdateService"),
                     "PLUGIN_CHANNEL_INSTALL_FAILED",
                     Map.of("id", loaded.pluginId(), "error", e.getMessage()),
-                    null, null);
+                    null,
+                    null
+                );
             }
-        } else if (instance instanceof dev.synapse.plugin.api.ModelProvider provider) {
+        } else if (
+            instance instanceof dev.synapse.plugin.api.ModelProvider provider
+        ) {
             providerRegistry.register(loaded, provider);
             try {
-                provider.configure(contextFactory.createContext(dbPlugin, instance));
+                provider.configure(
+                    contextFactory.createContext(dbPlugin, instance)
+                );
             } catch (Exception e) {
-                logService.log(LogLevel.WARN, LogCategory.PLUGIN,
+                logService.log(
+                    LogLevel.WARN,
+                    LogCategory.PLUGIN,
                     Map.of("component", "PluginUpdateService"),
                     "PLUGIN_PROVIDER_CONFIGURE_FAILED",
                     Map.of("id", loaded.pluginId(), "error", e.getMessage()),
-                    null, null);
+                    null,
+                    null
+                );
             }
         }
     }
