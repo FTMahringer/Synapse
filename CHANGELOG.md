@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.0] - 2026-05-12
+
+**Milestone: Security Hardening**
+
+### Added
+- Comprehensive API security framework with JWT hardening, rate limiting, CORS enforcement, and brute-force protection
+- Secrets management system with AES-256 encrypted vault, automated rotation, and secure distribution
+- Audit logging infrastructure with tamper-resistant logs, compliance formats, and real-time monitoring
+- Compliance framework supporting HIPAA, SOC2 Type II, and GDPR with data residency controls
+- Security validation suite including penetration testing, vulnerability scanning, and security runbooks
+- Security incident response runbooks with severity levels and recovery procedures
+- Security deployment checklists for production hardening
+
+### Security Fixes
+- All security vulnerabilities identified during the security audit have been resolved
+- Enhanced input validation across all API endpoints
+- Improved authentication and authorization boundary checks
+- Strengthened secrets handling and storage mechanisms
+
+### Development Versions
+- v2.4.2-dev: API Security
+- v2.4.3-dev: Secrets Management
+- v2.4.4-dev: Audit Logging
+- v2.4.5-dev: Compliance Framework
+- v2.4.6-dev: Security Validation & Runbooks
+
+---
+
 ## [v2.4.6-dev] - 2026-05-11
 
 **Security Hardening — Security Validation & Runbooks**
