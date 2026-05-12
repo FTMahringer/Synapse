@@ -16,9 +16,10 @@ This is the canonical rules document for SYNAPSE project workflow and quality ga
 
 For each dev version, always:
 1. Commit changes with a clear Conventional Commit message.
-2. Create annotated tag for the dev version.
-3. Push immediately (`main` + tag), do not batch.
-4. Create GitHub **pre-release** after docs/changelog updates.
+2. Update `CHANGELOG.md` with the version entry BEFORE tagging.
+3. Create annotated tag for the dev version.
+4. Push immediately (`main` + tag), do not batch.
+5. Create GitHub **pre-release** after docs/changelog updates.
 
 ### Milestone releases (`v*.x.0`)
 
@@ -107,10 +108,17 @@ For every milestone:
 ## 5) Testing and quality gates
 
 Before commit/merge:
-1. Code compiles.
+1. Code compiles (Maven `mvn compile` or `docker compose build backend`).
 2. Relevant tests pass.
 3. Linters pass if configured.
-4. For infra/backend changes, Docker Compose smoke check passes.
+4. For infra/backend changes, Docker Compose build verification is MANDATORY.
+5. After Docker Compose build passes, a full smoke check (`docker compose up -d` + health endpoint) is recommended before milestone releases.
+
+For build errors discovered in CI after push:
+1. Immediately fix the compilation error.
+2. Tag as `vX.Y.Z-hotfix`.
+3. Push hotfix and create GitHub pre-release.
+4. Continue with the next dev version.
 
 Quality expectations:
 - No committed secrets.

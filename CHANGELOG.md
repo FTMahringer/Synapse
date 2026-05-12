@@ -7,6 +7,88 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+---
+
+## [v2.4.4-dev] - 2026-05-11
+
+**Security Hardening — Audit Logging**
+
+### Added
+- SecurityAuditEvent JPA entity with `security_audit_events` database table
+- SecurityAuditEventRepository for paginated queries by user, event type, and time range
+- Flyway V17 migration creating the `security_audit_events` table with indexes
+- SecurityAuditService for recording login attempts, authorization denials, and user actions
+- AuditLogController with `GET /api/audit/events` secured by ADMIN role
+- Audit events wired into AuthenticationService (login attempts) and JwtAuthenticationFilter (auth denials)
+
+---
+
+## [v2.4.3-dev] - 2026-05-11
+
+**Security Hardening — Secrets Management**
+
+### Added
+- SecretValidator for startup detection of default secrets (warns in dev, fails in production)
+- TokenBlacklistService for Redis-backed token revocation with TTL-based auto-cleanup
+- JWT ID (JTI) claim added to all tokens for revocation support
+- Token blacklist check integrated into JwtService.isTokenValid()
+- `revokeToken()` method in JwtService for token revocation
+- `logout()` method in AuthenticationService that revokes the current token
+- Old refresh token revocation on token refresh
+- `POST /api/auth/logout` endpoint returning 204 No Content
+- `synapse.security.require-secrets-override` configuration property
+
+---
+
+## [v2.4.2-hotfix] - 2026-05-11
+
+### Fixed
+- Fixed RateLimitingFilter compilation error: replaced `HttpServletResponse.SC_TOO_MANY_REQUESTS` (not available in Jakarta Servlet API version used) with numeric 429 constant.
+
+---
+
+## [v2.4.2-dev] - 2026-05-11
+
+**Security Hardening — API Security**
+
+### Added
+- CORS configuration via WebConfig (configurable allowed origins, credentials, max age)
+- Security headers: X-Content-Type-Options, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy
+- RateLimitingFilter with configurable requests-per-minute (default 60) and login-specific limit (default 10)
+- Brute-force protection: account lockout after 5 failed attempts, 15-minute lockout duration, configurable
+- `rate-limiting.*` and `cors.*` configuration properties with environment variable overrides
+
+---
+
+## [v2.4.1-dev] - 2026-05-11
+
+**CLI Component Framework & Interactive Installer**
+
+### Added
+- Reusable TUI component framework: BaseComponent, TextInput, SingleSelect, MultiSelect, SearchList, Toggle, Confirm, Progress, Summary, Welcome, Requirements
+- Raw terminal input handler with cross-platform arrow-key, Enter, and Space support
+- SYNAPSE brand theme package with ANSI color codes
+- `synapse install` command with full interactive installation wizard
+- OS detection (Windows/Linux/macOS) with package manager identification
+- Prerequisites check with version-aware auto-install (Docker, Git, Go)
+- Model provider search with API Key and Subscription auth mode support
+- Channel plugin multi-select (Telegram, Discord, WhatsApp, Slack, Matrix)
+- Skill plugin multi-select (web-search, code-execution, image-generation, etc.)
+- Config persistence to `~/.synapse/install.yaml` with pre-filled defaults on re-run
+- Bootstrap scripts (`install.sh`, `install.ps1`) that install Go, build CLI, and add `synapse` to PATH
+- Spec document: `docs/superpowers/CLI_COMPONENT_FRAMEWORK.md`
+
+### Changed
+- `install.sh` now detects OS, installs Go, builds CLI to `~/.local/bin`, and adds to PATH
+- `install.ps1` moved to root, installs Go, builds CLI to `%LOCALAPPDATA%\synapse\bin`, and adds to PATH
+
+### Removed
+- `packages/cli/Dockerfile` — no longer needed (Go installed by bootstrap scripts)
+- `installer/install.ps1` — replaced by root-level `install.ps1`
+- `installer/install.tui.ps1` — superseded by Go TUI installer
+
+---
+
 ## [v2.4.0] - 2026-05-11
 
 **Milestone:** Advanced Agent Capabilities
