@@ -2,6 +2,8 @@ package dev.synapse.core.common.domain;
 
 import jakarta.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -54,6 +56,9 @@ public class Plugin {
     @Enumerated(EnumType.STRING)
     @Column(name = "trust_tier", nullable = false)
     private TrustTier trustTier = TrustTier.COMMUNITY;
+
+    @Transient
+    private List<String> dependencies = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {
@@ -188,5 +193,14 @@ public class Plugin {
 
     public void setTrustTier(TrustTier trustTier) {
         this.trustTier = trustTier;
+    }
+
+    public List<String> getDependencies() {
+        return dependencies;
+    }
+
+    public void setDependencies(List<String> dependencies) {
+        this.dependencies =
+            dependencies != null ? dependencies : new ArrayList<>();
     }
 }
