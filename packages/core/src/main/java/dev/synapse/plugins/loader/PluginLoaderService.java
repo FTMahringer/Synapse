@@ -9,8 +9,6 @@ import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.plugin.api.SynapsePlugin;
-import org.springframework.stereotype.Service;
-
 import java.lang.module.Configuration;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
@@ -21,6 +19,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Service;
 
 /**
  * Core plugin loader service.
@@ -43,20 +42,24 @@ public class PluginLoaderService {
     private final SystemLogService logService;
     private final EventPublisher eventPublisher;
     private final PluginContextFactory contextFactory;
+    private final PluginSandboxService sandboxService;
 
     /** In-memory registry of currently loaded plugins by id. */
-    private final Map<String, LoadedPlugin> loadedPlugins = new ConcurrentHashMap<>();
+    private final Map<String, LoadedPlugin> loadedPlugins =
+        new ConcurrentHashMap<>();
 
     public PluginLoaderService(
         PluginRepository pluginRepository,
         SystemLogService logService,
         EventPublisher eventPublisher,
-        PluginContextFactory contextFactory
+        PluginContextFactory contextFactory,
+        PluginSandboxService sandboxService
     ) {
         this.pluginRepository = pluginRepository;
         this.logService = logService;
         this.eventPublisher = eventPublisher;
         this.contextFactory = contextFactory;
+        this.sandboxService = sandboxService;
     }
 
     /**
@@ -67,7 +70,8 @@ public class PluginLoaderService {
      * @return the loaded plugin record
      * @throws PluginLoadException if loading fails
      */
-    public LoadedPlugin loadPlugin(Path jarPath, Plugin dbPlugin) throws PluginLoadException {
+    public LoadedPlugin loadPlugin(Path jarPath, Plugin dbPlugin)
+        throws PluginLoadException {
         String pluginId = dbPlugin.getId();
 
         // Prevent double-load
@@ -82,24 +86,29 @@ public class PluginLoaderService {
 
             // Layer 1: Create URLClassLoader (parent = platform class loader)
             URLClassLoader classLoader = new URLClassLoader(
-                new URL[]{jarUrl},
+                new URL[] { jarUrl },
                 ClassLoader.getPlatformClassLoader()
             );
 
             // Layer 2: Create JPMS ModuleLayer
             ModuleFinder pluginFinder = ModuleFinder.of(jarPath);
-            Set<ModuleDescriptor> descriptors = pluginFinder.findAll().stream()
+            Set<ModuleDescriptor> descriptors = pluginFinder
+                .findAll()
+                .stream()
                 .map(java.lang.module.ModuleReference::descriptor)
                 .collect(Collectors.toSet());
 
             if (descriptors.isEmpty()) {
                 classLoader.close();
-                throw new PluginLoadException(pluginId,
+                throw new PluginLoadException(
+                    pluginId,
                     "JAR contains no module descriptor (module-info.class). " +
-                    "Plugins must declare a JPMS module.");
+                        "Plugins must declare a JPMS module."
+                );
             }
 
-            Set<String> moduleNames = descriptors.stream()
+            Set<String> moduleNames = descriptors
+                .stream()
                 .map(ModuleDescriptor::name)
                 .collect(Collectors.toSet());
 
@@ -125,9 +134,11 @@ public class PluginLoaderService {
             Optional<SynapsePlugin> instanceOpt = loader.findFirst();
             if (instanceOpt.isEmpty()) {
                 classLoader.close();
-                throw new PluginLoadException(pluginId,
+                throw new PluginLoadException(
+                    pluginId,
                     "No SynapsePlugin implementation found in JAR. " +
-                    "Ensure META-INF/services/dev.synapse.plugin.api.SynapsePlugin is present.");
+                        "Ensure META-INF/services/dev.synapse.plugin.api.SynapsePlugin is present."
+                );
             }
 
             SynapsePlugin instance = instanceOpt.get();
@@ -135,14 +146,55 @@ public class PluginLoaderService {
             // Validate id matches
             if (!pluginId.equals(instance.getId())) {
                 classLoader.close();
-                throw new PluginLoadException(pluginId,
-                    "Plugin id mismatch: manifest says '" + pluginId +
-                    "' but implementation says '" + instance.getId() + "'");
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin id mismatch: manifest says '" +
+                        pluginId +
+                        "' but implementation says '" +
+                        instance.getId() +
+                        "'"
+                );
             }
 
-            // Inject context and call onLoad
+            // Validate JPMS isolation
+            LoadedPlugin tempLoaded = new LoadedPlugin(
+                pluginId,
+                instance.getVersion(),
+                jarPath,
+                classLoader,
+                pluginLayer,
+                instance,
+                Instant.now()
+            );
+            if (!sandboxService.validateJpmsIsolation(tempLoaded)) {
+                classLoader.close();
+                throw new PluginLoadException(
+                    pluginId,
+                    "JPMS isolation validation failed: plugin can access forbidden core modules"
+                );
+            }
+
+            // Inject context and call onLoad with timeout
             var context = contextFactory.createContext(dbPlugin, instance);
-            instance.onLoad(context);
+            boolean onLoadOk = sandboxService.runLifecycleHookWithTimeout(
+                pluginId,
+                () -> {
+                    try {
+                        instance.onLoad(context);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                },
+                true,
+                dbPlugin
+            );
+            if (!onLoadOk) {
+                classLoader.close();
+                throw new PluginLoadException(
+                    pluginId,
+                    "Plugin onLoad() failed or timed out; plugin marked ERROR"
+                );
+            }
 
             LoadedPlugin loaded = new LoadedPlugin(
                 pluginId,
@@ -157,24 +209,42 @@ public class PluginLoaderService {
             loadedPlugins.put(pluginId, loaded);
             updateLoaderState(pluginId, Plugin.LoaderState.LOADED, null);
 
-            logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+            logService.log(
+                LogLevel.INFO,
+                LogCategory.PLUGIN,
                 Map.of("component", "PluginLoaderService"),
                 "PLUGIN_LOADED",
-                Map.of("id", pluginId, "version", instance.getVersion(),
-                       "jar", jarPath.toString()),
-                null, null);
+                Map.of(
+                    "id",
+                    pluginId,
+                    "version",
+                    instance.getVersion(),
+                    "jar",
+                    jarPath.toString()
+                ),
+                null,
+                null
+            );
 
-            eventPublisher.publish(SynapseEvent.of(SynapseEventType.LOG_WRITTEN,
-                "PluginLoaderService",
-                Map.of("event", "PLUGIN_LOADED", "pluginId", pluginId)));
+            eventPublisher.publish(
+                SynapseEvent.of(
+                    SynapseEventType.LOG_WRITTEN,
+                    "PluginLoaderService",
+                    Map.of("event", "PLUGIN_LOADED", "pluginId", pluginId)
+                )
+            );
 
             return loaded;
-
         } catch (PluginLoadException e) {
-            updateLoaderState(pluginId, Plugin.LoaderState.ERROR, e.getMessage());
+            updateLoaderState(
+                pluginId,
+                Plugin.LoaderState.ERROR,
+                e.getMessage()
+            );
             throw e;
         } catch (Exception e) {
-            String msg = "Unexpected error during plugin load: " + e.getMessage();
+            String msg =
+                "Unexpected error during plugin load: " + e.getMessage();
             updateLoaderState(pluginId, Plugin.LoaderState.ERROR, msg);
             throw new PluginLoadException(pluginId, msg, e);
         }
@@ -192,20 +262,41 @@ public class PluginLoaderService {
             return false;
         }
 
-        loaded.unload();
+        Plugin dbPlugin = pluginRepository.findById(pluginId).orElse(null);
+        if (dbPlugin != null) {
+            sandboxService.runLifecycleHookWithTimeout(
+                pluginId,
+                () -> {
+                    try {
+                        loaded.instance().onUnload();
+                    } catch (Exception e) {
+                        // Logged by sandbox service; do not block unload
+                    }
+                },
+                false,
+                dbPlugin
+            );
+        } else {
+            loaded.unload();
+        }
         updateLoaderState(pluginId, Plugin.LoaderState.UNLOADED, null);
 
-        logService.log(LogLevel.INFO, LogCategory.PLUGIN,
+        logService.log(
+            LogLevel.INFO,
+            LogCategory.PLUGIN,
             Map.of("component", "PluginLoaderService"),
             "PLUGIN_UNLOADED",
             Map.of("id", pluginId),
-            null, null);
+            null,
+            null
+        );
 
         return true;
     }
 
     /** Reloads a plugin: unload + load. */
-    public LoadedPlugin reloadPlugin(Path jarPath, Plugin dbPlugin) throws PluginLoadException {
+    public LoadedPlugin reloadPlugin(Path jarPath, Plugin dbPlugin)
+        throws PluginLoadException {
         unloadPlugin(dbPlugin.getId());
         return loadPlugin(jarPath, dbPlugin);
     }
@@ -233,14 +324,20 @@ public class PluginLoaderService {
         }
     }
 
-    private void updateLoaderState(String pluginId, Plugin.LoaderState state, String errorMessage) {
-        pluginRepository.findById(pluginId).ifPresent(p -> {
-            p.setLoaderState(state);
-            p.setErrorMessage(errorMessage);
-            if (state == Plugin.LoaderState.LOADED) {
-                p.setLoadedAt(Instant.now());
-            }
-            pluginRepository.save(p);
-        });
+    private void updateLoaderState(
+        String pluginId,
+        Plugin.LoaderState state,
+        String errorMessage
+    ) {
+        pluginRepository
+            .findById(pluginId)
+            .ifPresent(p -> {
+                p.setLoaderState(state);
+                p.setErrorMessage(errorMessage);
+                if (state == Plugin.LoaderState.LOADED) {
+                    p.setLoadedAt(Instant.now());
+                }
+                pluginRepository.save(p);
+            });
     }
 }

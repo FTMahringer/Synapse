@@ -10,6 +10,7 @@ import dev.synapse.core.infrastructure.logging.LogCategory;
 import dev.synapse.core.infrastructure.logging.LogLevel;
 import dev.synapse.core.infrastructure.logging.SystemLogService;
 import dev.synapse.plugins.loader.PluginDependencyResolver;
+import dev.synapse.plugins.loader.PluginSandboxService;
 import dev.synapse.plugins.loader.PluginStorageService;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,7 @@ public class PluginLifecycleService {
     private final PluginStatsService statsService;
     private final PluginStorageService storageService;
     private final PluginDependencyResolver dependencyResolver;
+    private final PluginSandboxService sandboxService;
 
     public PluginLifecycleService(
         PluginRepository pluginRepository,
@@ -43,7 +45,8 @@ public class PluginLifecycleService {
         EventPublisher eventPublisher,
         PluginStatsService statsService,
         PluginStorageService storageService,
-        PluginDependencyResolver dependencyResolver
+        PluginDependencyResolver dependencyResolver,
+        PluginSandboxService sandboxService
     ) {
         this.pluginRepository = pluginRepository;
         this.validator = validator;
@@ -52,6 +55,7 @@ public class PluginLifecycleService {
         this.statsService = statsService;
         this.storageService = storageService;
         this.dependencyResolver = dependencyResolver;
+        this.sandboxService = sandboxService;
     }
 
     @Transactional
@@ -104,6 +108,15 @@ public class PluginLifecycleService {
             }
         }
         plugin.setDependencies(depIds);
+
+        // Set sandbox defaults based on trust tier
+        plugin.setLifecycleTimeoutMs(
+            sandboxService.getLifecycleTimeoutMs(plugin)
+        );
+        plugin.setMessageTimeoutMs(
+            sandboxService.getMessageHandlerTimeoutMs(plugin)
+        );
+        plugin.setMaxLogsPerMinute(sandboxService.getMaxLogsPerMinute(plugin));
 
         Plugin saved = pluginRepository.save(plugin);
 

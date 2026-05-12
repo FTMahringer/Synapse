@@ -9,6 +9,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v2.5.4-dev] - 2026-05-12
+
+**Plugin Ecosystem — Sandboxing & Security**
+
+### Added
+- `BytecodeScanner` — ASM-based bytecode scanner that walks all classes in a plugin JAR at install time
+  - Rejects forbidden references: `sun.*`, `com.sun.*`, Spring internals, JPA/Hibernate, Redis/Lettuce, PostgreSQL driver, core SYNAPSE classes
+  - Allowed packages: `dev.synapse.plugin.api.*`, `java.*`, `javax.*`, `jdk.*`, `org.slf4j.*`
+  - Scans class references, method invocations, field accesses, annotations, descriptors
+- `PluginSandboxService` — sandbox enforcement service:
+  - `scanJar()` — runs bytecode scan and returns violations
+  - `validateJpmsIsolation()` — confirms plugin module cannot resolve core modules
+  - `runLifecycleHookWithTimeout()` — executes `onLoad()`/`onUnload()` with trust-tier timeouts
+    - Official: 30s lifecycle, 60s message handler, 1000 logs/min
+    - Community: 10s lifecycle, 30s message handler, 300 logs/min
+  - Marks plugin `ERROR` + disables on lifecycle hook timeout
+- `PluginSandboxController` — REST API:
+  - `POST /api/plugins/sandbox/scan` — scan a JAR for forbidden references
+  - `GET /api/plugins/{id}/sandbox/limits` — get resource limits for a plugin
+- `PluginLoaderService` integration:
+  - JPMS isolation validation before `onLoad()`
+  - `onLoad()` and `onUnload()` wrapped with timeout guardrails
+- `PluginLifecycleService` integration: sets sandbox defaults during install based on trust tier
+- `Plugin` entity updated with sandbox fields: `scanClean`, `scanViolations`, `sandboxEnabled`, `lifecycleTimeoutMs`, `messageTimeoutMs`, `maxLogsPerMinute`
+- `PluginDTO` and `DtoMapper` updated to expose sandbox fields
+- ASM dependency (`org.ow2.asm:asm:9.7.1`, `asm-tree:9.7.1`) added to `packages/core/pom.xml`
+- Database migration `V20__plugin_sandbox.sql` — adds sandbox state columns to `plugins` table
+
+---
+
 ## [v2.5.3-dev] - 2026-05-12
 
 **Plugin Ecosystem — Dependency Resolver & Conflict Detection**

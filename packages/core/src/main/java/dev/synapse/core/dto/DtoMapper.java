@@ -135,7 +135,12 @@ public class DtoMapper {
             plugin.getLoadedAt(),
             plugin.getApiVersion(),
             plugin.getTrustTier() != null ? plugin.getTrustTier().name() : null,
-            plugin.getDependencies()
+            plugin.getDependencies(),
+            plugin.getScanClean(),
+            plugin.isSandboxEnabled(),
+            plugin.getLifecycleTimeoutMs(),
+            plugin.getMessageTimeoutMs(),
+            plugin.getMaxLogsPerMinute()
         );
     }
 

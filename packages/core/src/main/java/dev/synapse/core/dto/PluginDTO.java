@@ -20,5 +20,10 @@ public record PluginDTO(
     Instant loadedAt,
     String apiVersion,
     String trustTier,
-    List<String> dependencies
+    List<String> dependencies,
+    Boolean scanClean,
+    Boolean sandboxEnabled,
+    Long lifecycleTimeoutMs,
+    Long messageTimeoutMs,
+    Integer maxLogsPerMinute
 ) {}

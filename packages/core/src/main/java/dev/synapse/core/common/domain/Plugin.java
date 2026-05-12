@@ -60,6 +60,25 @@ public class Plugin {
     @Transient
     private List<String> dependencies = new ArrayList<>();
 
+    @Column(name = "scan_clean")
+    private Boolean scanClean;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "scan_violations", columnDefinition = "jsonb")
+    private Map<String, Object> scanViolations;
+
+    @Column(name = "sandbox_enabled", nullable = false)
+    private boolean sandboxEnabled = true;
+
+    @Column(name = "lifecycle_timeout_ms")
+    private Long lifecycleTimeoutMs;
+
+    @Column(name = "message_timeout_ms")
+    private Long messageTimeoutMs;
+
+    @Column(name = "max_logs_per_minute")
+    private Integer maxLogsPerMinute;
+
     @PrePersist
     protected void onCreate() {
         createdAt = Instant.now();
