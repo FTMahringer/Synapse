@@ -324,6 +324,89 @@ input groups, and network configuration. Eliminate all "child illnesses" in the 
 
 ---
 
+## v3.7.0 - Security & Admin Hardening
+
+**Goal**: Device trust, admin approval workflows, and security hardening.
+
+*Ideas sourced from: `ideas/DEVICE_TRUST_AND_FIRST_BOOT_SECURITY.md`, `ideas/ADMIN_REQUEST_NOTIFICATION_CHANNEL.md`, `ideas/ADMIN_DEBUG_COMMAND_FAMILY.md`*
+
+### Implementation Steps
+
+#### v3.6.1-dev: Device Trust System
+- Device identity issuance at first login
+- Server-side trust store
+- First local TUI approval requirement
+- Device approval table in Admin UI
+- **Exit**: New devices require admin approval before full access
+
+#### v3.6.2-dev: Admin Request Workflow
+- User request submission API
+- Admin approval/rejection workflow
+- Status tracking and notifications
+- Immutable audit trail
+- **Exit**: Users can request privileged actions, admins approve/reject
+
+#### v3.6.3-dev: Rules System - Agent Overrides
+- Template scope resolution
+- Admin-approved agent override workflow
+- Policy diff/preview endpoint
+- **Exit**: Users can request agent overrides, admins approve
+
+#### v3.6.4-dev: Admin Debug Commands
+- Admin-only command namespace (`/debug ...`)
+- Read-only introspection commands first
+- Approval-gated mutating operations
+- Redis/Postgres inspection integrations
+- **Exit**: Admins have secure debug capabilities with full audit
+
+#### v3.6.5-dev: Security Validation
+- Cross-tenant access boundary tests
+- Device trust isolation tests
+- Audit trail verification
+- **Exit**: All security features validated and documented
+
+#### v3.7.0: Tag Security Release
+
+---
+
+## v3.8.0 - Plugin Ecosystem Extensions
+
+**Goal**: Public plugin store, Maven publishing, and ecosystem growth.
+
+*Ideas sourced from: `ideas/PLUGIN_STORE_WEBSITE.md`, `ideas/PLUGIN_PUBLISHING_AND_MAVEN_REPOSITORIES.md`*
+
+### Implementation Steps
+
+#### v3.7.1-dev: Maven Repository Setup
+- Self-hosted Nexus instance (or compatible)
+- synapse-plugin-api hosting
+- Admin-configurable repository URL
+- **Exit**: Admins can configure private plugin repos
+
+#### v3.7.2-dev: Plugin Publishing Workflow
+- Bytecode scan validation
+- Manifest validation
+- Dependency resolution check
+- Trust tier assignment
+- **Exit**: Secure plugin publishing pipeline
+
+#### v3.7.3-dev: Plugin Store Website
+- Public-facing website (Modrinth-inspired)
+- Plugin pages with descriptions, screenshots
+- Author profiles, download counts
+- Search + filter by category
+- **Exit**: Public plugin browsing site live
+
+#### v3.7.4-dev: SDK & Developer Experience
+- Official Python SDK
+- Official TypeScript SDK
+- Plugin development guide
+- **Exit**: Developers can build plugins with official SDKs
+
+#### v3.8.0: Tag Ecosystem Release
+
+---
+
 ## Summary Timeline
 
 | Version | Milestone | Focus Area |
@@ -334,6 +417,8 @@ input groups, and network configuration. Eliminate all "child illnesses" in the 
 | v3.4.0 | CLI & Installer Rework | TUI Polish & UX |
 | v3.5.0 | Analytics & Insights | Reporting & Observability |
 | v3.6.0 | Release Hardening | Final Polish |
+| v3.7.0 | Security & Admin Hardening | Device Trust, Admin Workflows |
+| v3.8.0 | Plugin Ecosystem | Maven, Store Website, SDKs |
 | **v4.0.0** | **Production** | **🚀 SYNAPSE V4** |
 
 ---
