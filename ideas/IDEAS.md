@@ -113,6 +113,15 @@ This file is a compact index for active idea domains. Detailed content is mainta
     - distributed agent memory
     - container orchestration layer
 
+17. [CONTAINERIZED_AI_FIRM_TEAMS.md](./CONTAINERIZED_AI_FIRM_TEAMS.md)
+    - hierarchical vs flat vs hybrid container models
+    - AI-Firm container design and failure modes
+    - Team container groups (Lead + Specialists)
+    - Inter-container communication via message bus
+    - Shared storage layers (global, team, agent)
+    - Distributed state with Redis
+    - Resource allocation and scaling strategies
+
 ---
 
 ## Roadmap Promotion Notes
