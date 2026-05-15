@@ -85,6 +85,16 @@ This file is a compact index for active idea domains. Detailed content is mainta
     - edge deployment profile
     - emergency agent freeze
 
+14. [INFRASTRUCTURE_INTEGRATION_PLUGINS.md](./INFRASTRUCTURE_INTEGRATION_PLUGINS.md)
+    - new plugin type: Integration
+    - Proxmox VE integration (VM/CT management)
+    - Linux system integration (process, services, logs)
+    - Docker integration (container lifecycle)
+    - Traefik integration (routing, certificates)
+    - Nginx Proxy Manager integration
+    - Kubernetes integration (pods, deployments)
+    - Cloud provider integration (AWS, GCP, Azure)
+
 ---
 
 ## Roadmap Promotion Notes
