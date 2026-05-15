@@ -50,6 +50,41 @@ This file is a compact index for active idea domains. Detailed content is mainta
    - agentic SIEM for security monitoring
    - infrastructure agent copilot for platform engineering
 
+10. [VOICE_AUDIO_MULTIMODAL.md](./VOICE_AUDIO_MULTIMODAL.md)
+    - voice conversation interface (WebRTC)
+    - text-to-speech and speech-to-text pipelines
+    - multi-modal image analysis
+    - document processing (PDF, DOCX)
+    - vision-enhanced agent memory
+
+11. [WORKFLOW_AUTOMATION.md](./WORKFLOW_AUTOMATION.md)
+    - visual workflow builder
+    - scheduled task engine and cron
+    - webhook trigger system
+    - cross-agent workflow coordination
+    - workflow templates library
+    - failure handling and resumption
+
+12. [DEVELOPER_EXPERIENCE.md](./DEVELOPER_EXPERIENCE.md)
+    - official multi-language SDKs
+    - GraphQL API surface
+    - agent debugging and telemetry
+    - local development mode
+    - cost usage dashboard
+    - resource optimization recommendations
+    - backup and restore CLI
+
+13. [SECURITY_COMPLIANCE_ADVANCED.md](./SECURITY_COMPLIANCE_ADVANCED.md)
+    - zero-trust authentication (hardware keys, biometrics)
+    - fine-grained RBAC
+    - data residency controls
+    - automated compliance reporting
+    - audit log streaming
+    - federated architecture
+    - agent-to-agent protocol (A2A)
+    - edge deployment profile
+    - emergency agent freeze
+
 ---
 
 ## Roadmap Promotion Notes
