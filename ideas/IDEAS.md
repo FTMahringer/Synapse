@@ -43,6 +43,13 @@ This file is a compact index for active idea domains. Detailed content is mainta
    - approval-gated recovery actions (including password reset workflows)
    - optional Redis/Postgres inspection integrations
 
+9. [AGENT_SELF_HOSTED_PLATFORM.md](./AGENT_SELF_HOSTED_PLATFORM.md)
+   - agent control plane for multi-agent orchestration
+   - stateful graph-based runtime (LangGraph-style)
+   - local model router for hybrid deployments
+   - agentic SIEM for security monitoring
+   - infrastructure agent copilot for platform engineering
+
 ---
 
 ## Roadmap Promotion Notes
