@@ -103,6 +103,16 @@ This file is a compact index for active idea domains. Detailed content is mainta
     - OIDC session management
     - Multi-OIDC provider support
 
+16. [CONTAINERIZED_AGENTS.md](./CONTAINERIZED_AGENTS.md)
+    - containerized agent runtime (per-agent containers)
+    - global shared storage for skills/plugins
+    - agent registry and discovery
+    - inter-agent communication bus
+    - shared skill and plugin libraries
+    - agent resource quotas
+    - distributed agent memory
+    - container orchestration layer
+
 ---
 
 ## Roadmap Promotion Notes
