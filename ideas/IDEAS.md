@@ -95,6 +95,14 @@ This file is a compact index for active idea domains. Detailed content is mainta
     - Kubernetes integration (pods, deployments)
     - Cloud provider integration (AWS, GCP, Azure)
 
+15. [OIDC_SSO_INTEGRATION.md](./OIDC_SSO_INTEGRATION.md)
+    - OIDC provider framework (pluggable architecture)
+    - PocketId integration (first post-release priority)
+    - Authentik integration
+    - Auto-user provisioning from OIDC claims
+    - OIDC session management
+    - Multi-OIDC provider support
+
 ---
 
 ## Roadmap Promotion Notes
